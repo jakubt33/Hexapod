@@ -19,16 +19,24 @@ void delay_us(volatile unsigned counter)
 int main(void)
 {
 	init_LED();
+	init_ADC();
 	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
 
-	batt_5_5();
+	volatile unsigned ADC_value = 0;
 	while (1)
 	{
-		delay_ms(1000);
-		LED_LEG1_OFF;
-
-		delay_ms(1000);
-		LED_LEG1_ON;
-
+		ADC_value = ADC1->DR;
+		if(ADC_value<2672)
+			batt_critical();
+		else if(ADC_value<2882)
+			batt_1_5();
+		else if(ADC_value<3092)
+			batt_2_5();
+		else if(ADC_value<3302)
+			batt_3_5();
+		else if(ADC_value<3512)
+			batt_4_5();
+		else
+			batt_5_5();
 	}
 }
