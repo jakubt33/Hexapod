@@ -14,6 +14,31 @@ volatile unsigned int Batt_2_5_value;
 volatile unsigned int Batt_1_5_value;
 volatile unsigned int Batt_critical_value;
 
+void init_TIM2()
+{
+	NVIC_InitTypeDef NVIC_InitStruct;
+	TIM_TimeBaseInitTypeDef TIM_InitStruct;
+
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); // w³¹cza zegar dla peryferium TIM2
+
+	TIM_InitStruct.TIM_ClockDivision = TIM_CKD_DIV1; // dzielnik 1
+	TIM_InitStruct.TIM_CounterMode = TIM_CounterMode_Up; // licznik w górê
+	TIM_InitStruct.TIM_Period = 222; // okres licznika 222us
+	TIM_InitStruct.TIM_Prescaler = 7; // preskaler 8
+	TIM_TimeBaseInit(TIM2, &TIM_InitStruct); // inicjalizuje TIM2
+	//wywo³anie przerwania z f=50hz, regulacja 90kroków w kadym
+
+	TIM_ClearFlag( TIM2, TIM_FLAG_Update ); // czyœci flagê aktualizacji TIM2
+	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); // w³¹cza przerwanie aktualizacji TIM2
+	TIM_Cmd(TIM2, ENABLE); // w³¹cza timer TIM2
+
+	NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn; // wybór linii przerwania
+	NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE; // w³¹czenie linii
+	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0; // priorytet
+	NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0; // podgrupa
+	NVIC_Init(&NVIC_InitStruct); // inicjalizacja linii przerwania
+}
+
 
 void set_SupplyVoltage(volatile float MaxVoltage)
 {
