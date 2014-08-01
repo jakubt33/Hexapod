@@ -67,17 +67,18 @@ Discarded input sections
  .text          0x00000000        0x0 src\main.o
  .data          0x00000000        0x0 src\main.o
  .bss           0x00000000        0x0 src\main.o
- .text.batt_5_5
-                0x00000000       0x40 src\main.o
  .text.batt_4_5
                 0x00000000       0x40 src\main.o
  .text.batt_3_5
                 0x00000000       0x40 src\main.o
  .text.batt_2_5
                 0x00000000       0x40 src\main.o
+ .text.batt_1_5
+                0x00000000       0x40 src\main.o
  .text.batt_critical
                 0x00000000       0x40 src\main.o
- .text.delay    0x00000000       0x12 src\main.o
+ .text.delay_us
+                0x00000000       0x12 src\main.o
  .text          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_wwdg.o
  .data          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_wwdg.o
  .bss           0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_wwdg.o
@@ -1307,7 +1308,7 @@ LOAD d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gc
                 0x08000000                g_pfnVectors
                 0x080001d0                . = ALIGN (0x4)
 
-.text           0x080001d0      0x36c
+.text           0x080001d0      0x3a8
                 0x080001d0                . = ALIGN (0x4)
  *(.text)
  .text          0x080001d0       0x54 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
@@ -1385,101 +1386,104 @@ LOAD d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gc
                 0x08000368                USART1_IRQHandler
                 0x08000368                I2C1_ER_IRQHandler
                 0x08000368                TIM1_BRK_TIM15_IRQHandler
- .text.batt_1_5
+ .text.batt_5_5
                 0x0800036c       0x40 src\main.o
-                0x0800036c                batt_1_5
+                0x0800036c                batt_5_5
  .text.init_LED
                 0x080003ac       0x34 src\main.o
                 0x080003ac                init_LED
- .text.startup.main
+ .text.delay_ms
                 0x080003e0       0x1c src\main.o
-                0x080003e0                main
+                0x080003e0                delay_ms
+ .text.startup.main
+                0x080003fc       0x3c src\main.o
+                0x080003fc                main
  .text.RCC_APB2PeriphClockCmd
-                0x080003fc       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
-                0x080003fc                RCC_APB2PeriphClockCmd
+                0x08000438       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+                0x08000438                RCC_APB2PeriphClockCmd
  .text.GPIO_Init
-                0x08000414       0xa0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x08000414                GPIO_Init
+                0x08000450       0xa0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08000450                GPIO_Init
  .text.GPIO_StructInit
-                0x080004b4       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x080004b4                GPIO_StructInit
+                0x080004f0       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x080004f0                GPIO_StructInit
  .text.GPIO_SetBits
-                0x080004c4        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x080004c4                GPIO_SetBits
+                0x08000500        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08000500                GPIO_SetBits
  .text.GPIO_ResetBits
-                0x080004c8        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x080004c8                GPIO_ResetBits
+                0x08000504        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08000504                GPIO_ResetBits
  .text.GPIO_WriteBit
-                0x080004cc        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x080004cc                GPIO_WriteBit
- *fill*         0x080004d6        0x2 00
+                0x08000508        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08000508                GPIO_WriteBit
+ *fill*         0x08000512        0x2 00
  .text.__libc_init_array
-                0x080004d8       0x4c d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-init.o)
-                0x080004d8                __libc_init_array
+                0x08000514       0x4c d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-init.o)
+                0x08000514                __libc_init_array
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x08000524        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+ .eh_frame      0x08000560        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
  *(.init)
- .init          0x08000524        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
-                0x08000524                _init
- .init          0x08000528        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
+ .init          0x08000560        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
+                0x08000560                _init
+ .init          0x08000564        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
  *(.fini)
- .fini          0x08000530        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
-                0x08000530                _fini
- .fini          0x08000534        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
-                0x0800053c                . = ALIGN (0x4)
-                0x0800053c                _etext = .
+ .fini          0x0800056c        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
+                0x0800056c                _fini
+ .fini          0x08000570        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
+                0x08000578                . = ALIGN (0x4)
+                0x08000578                _etext = .
 
-.vfp11_veneer   0x0800053c        0x0
+.vfp11_veneer   0x08000578        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x0800053c        0x0
+.v4_bx          0x08000578        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x0800053c        0x0
+.iplt           0x08000578        0x0
  .iplt          0x00000000        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
 
-.rel.dyn        0x0800053c        0x0
+.rel.dyn        0x08000578        0x0
  .rel.iplt      0x00000000        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
 
-.rodata         0x0800053c        0x0
-                0x0800053c                . = ALIGN (0x4)
+.rodata         0x08000578        0x0
+                0x08000578                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
-                0x0800053c                . = ALIGN (0x4)
+                0x08000578                . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x0800053c        0x0
-                0x0800053c                __exidx_start = .
+.ARM            0x08000578        0x0
+                0x08000578                __exidx_start = .
  *(.ARM.exidx*)
-                0x0800053c                __exidx_end = .
+                0x08000578                __exidx_end = .
 
-.preinit_array  0x0800053c        0x0
-                0x0800053c                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x08000578        0x0
+                0x08000578                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x0800053c                PROVIDE (__preinit_array_end, .)
+                0x08000578                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x0800053c        0x4
-                0x0800053c                PROVIDE (__init_array_start, .)
+.init_array     0x08000578        0x4
+                0x08000578                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  *(.init_array*)
- .init_array    0x0800053c        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
-                0x08000540                PROVIDE (__init_array_end, .)
+ .init_array    0x08000578        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+                0x0800057c                PROVIDE (__init_array_end, .)
 
-.fini_array     0x08000540        0x4
-                0x08000540                PROVIDE (__fini_array_start, .)
+.fini_array     0x0800057c        0x4
+                0x0800057c                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x08000540        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
-                0x08000544                PROVIDE (__fini_array_end, .)
-                0x08000544                _sidata = LOADADDR (.data)
+ .fini_array    0x0800057c        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+                0x08000580                PROVIDE (__fini_array_end, .)
+                0x08000580                _sidata = LOADADDR (.data)
 
-.data           0x20000000        0x0 load address 0x08000544
+.data           0x20000000        0x0 load address 0x08000580
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -1487,14 +1491,14 @@ LOAD d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gc
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _edata = .
 
-.jcr            0x20000000        0x0 load address 0x08000544
+.jcr            0x20000000        0x0 load address 0x08000580
  .jcr           0x20000000        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
 
-.igot.plt       0x20000000        0x0 load address 0x08000544
+.igot.plt       0x20000000        0x0 load address 0x08000580
  .igot.plt      0x00000000        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
                 0x20000000                . = ALIGN (0x4)
 
-.bss            0x20000000       0x1c load address 0x08000544
+.bss            0x20000000       0x1c load address 0x08000580
                 0x20000000                _sbss = .
                 0x20000000                __bss_start__ = _sbss
  *(.bss)
@@ -1506,7 +1510,7 @@ LOAD d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gc
                 0x2000001c                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000001c       0x80 load address 0x08000544
+                0x2000001c       0x80 load address 0x08000580
                 0x2000001c                . = ALIGN (0x4)
                 0x2000001c                PROVIDE (end, .)
                 0x2000001c                PROVIDE (_end, .)
@@ -2176,7 +2180,8 @@ batt_4_5                                          src\main.o
 batt_5_5                                          src\main.o
 batt_critical                                     src\main.o
 cleanup_glue                                      d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-reent.o)
-delay                                             src\main.o
+delay_ms                                          src\main.o
+delay_us                                          src\main.o
 end                                               d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-syscalls.o)
 environ                                           d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-syscalls.o)
 errno                                             d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-sbrkr.o)
