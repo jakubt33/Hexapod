@@ -26,15 +26,15 @@ int main(void)
 	while (1)
 	{
 		ADC_value = ADC1->DR;
-		if(ADC_value<2672)
+		if(ADC_value<Batt_critical_value)
 			batt_critical();
-		else if(ADC_value<2882)
+		else if(ADC_value<Batt_1_5_value)
 			batt_1_5();
-		else if(ADC_value<3092)
+		else if(ADC_value<Batt_2_5_value)
 			batt_2_5();
-		else if(ADC_value<3302)
+		else if(ADC_value<Batt_3_5_value)
 			batt_3_5();
-		else if(ADC_value<3512)
+		else if(ADC_value<Batt_4_5_value)
 			batt_4_5();
 		else
 			batt_5_5();
