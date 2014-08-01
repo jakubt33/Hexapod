@@ -23,7 +23,7 @@ void init_TIM2()
 
 	TIM_InitStruct.TIM_ClockDivision = TIM_CKD_DIV1; // dzielnik 1
 	TIM_InitStruct.TIM_CounterMode = TIM_CounterMode_Up; // licznik w górê
-	TIM_InitStruct.TIM_Period = 222; // okres licznika 222us
+	TIM_InitStruct.TIM_Period = 111; // okres licznika 222 us
 	TIM_InitStruct.TIM_Prescaler = 7; // preskaler 8
 	TIM_TimeBaseInit(TIM2, &TIM_InitStruct); // inicjalizuje TIM2
 	//wywo³anie przerwania z f=50hz, regulacja 90kroków w kadym
@@ -70,6 +70,19 @@ void init_LED()
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+}
+
+void init_Servo()
+{
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE); //enable clock on serwo port
+
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_StructInit (& GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin =  SERWO1 | SERWO2 | SERWO3 | SERWO4 | SERWO5 | SERWO6| SERWO7 | SERWO8 | SERWO9 | SERWO10 | SERWO11 | SERWO12;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
 void init_ADC()
