@@ -23,7 +23,7 @@ void init_TIM2()
 
 	TIM_InitStruct.TIM_ClockDivision = TIM_CKD_DIV1; // dzielnik 1
 	TIM_InitStruct.TIM_CounterMode = TIM_CounterMode_Up; // licznik w górê
-	TIM_InitStruct.TIM_Period = 111; // okres licznika 222 us
+	TIM_InitStruct.TIM_Period = 50; // okres licznika 50 us
 	TIM_InitStruct.TIM_Prescaler = 7; // preskaler 8
 	TIM_TimeBaseInit(TIM2, &TIM_InitStruct); // inicjalizuje TIM2
 	//wywo³anie przerwania z f=50hz, regulacja 90kroków w kadym
