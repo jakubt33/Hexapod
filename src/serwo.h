@@ -8,6 +8,7 @@
 #ifndef SERWO_H_
 #define SERWO_H_
 
+#define MAX_SPEED 3
 #define TIME_TO_GET_50HZ 400
 
 #define PORT_SERWO GPIOB
@@ -53,19 +54,18 @@
 #define FALSE 0
 #define TRUE  1
 
-volatile unsigned int Leg1Lift = 30;
-volatile unsigned int Leg2Lift = 30;
-volatile unsigned int Leg3Lift = 30;
-volatile unsigned int Leg4Lift = 30;
-volatile unsigned int Leg5Lift = 30;
-volatile unsigned int Leg6Lift = 30;
+volatile  int Leg1Lift = 30;
+volatile  int Leg2Lift = 30;
+volatile  int Leg3Lift = 30;
+volatile  int Leg4Lift = 30;
+volatile  int Leg5Lift = 30;
+volatile  int Leg6Lift = 30;
 
 void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6);
-void liftDone();
 void legLift(int WhichLeg, int Position, int Speed);
 void TIM2_IRQHandler();
-void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
-
+void checkLiftLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
+void checkLiftSpeed(int Speed, int PostionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
 
 void TIM2_IRQHandler()
 {
@@ -107,31 +107,53 @@ void TIM2_IRQHandler()
 		Counter = 0;
 }
 
-void legLift(int WhichLeg, int Position, int Speed) //speed 1-10
+void legLift(int WhichLeg, int Position, int Speed) //speed 1-3
 {
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
-	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
+	checkLiftLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
-	if(Leg1)
-		Leg1Lift = Position;
-	if(Leg2)
-		Leg2Lift = Position;
-	if(Leg3)
-		Leg3Lift = Position;
 
-	Position -= 2*(Position-30); //mirror view
+	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
 
-	if(Leg4)
-		Leg4Lift = Position;
-	if(Leg5)
-		Leg5Lift = Position;
-	if(Leg6)
-		Leg6Lift = Position;
+	int PositionL = Position;
+	int PositionR = Position - 2*(Position-30); //mirror view
+
+	checkLiftSpeed(Speed, PositionL, PositionR, &Leg1Diff, &Leg2Diff, &Leg3Diff, &Leg4Diff, &Leg5Diff, &Leg6Diff);
+
+	int SpeedCounter=0;
+	for(SpeedCounter=Speed;SpeedCounter<=MAX_SPEED;SpeedCounter++)
+	{
+		if(Leg1)
+			Leg1Lift += Leg1Diff;
+		if(Leg2)
+			Leg2Lift += Leg2Diff;
+		if(Leg3)
+			Leg3Lift += Leg3Diff;
+		if(Leg4)
+			Leg4Lift += Leg4Diff;
+		if(Leg5)
+			Leg5Lift += Leg5Diff;
+		if(Leg6)
+			Leg6Lift += Leg6Diff;
+
+		delay_ms(50);
+	}
 
 }
 
-void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)
+void checkLiftSpeed(int Speed, int PositionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff)
+{
+	Speed = MAX_SPEED+1 - Speed;
+	*Leg1Diff = (PositionL - Leg1Lift)/Speed;
+	*Leg2Diff = (PositionL - Leg2Lift)/Speed;
+	*Leg3Diff = (PositionL - Leg3Lift)/Speed;
+	*Leg4Diff = (PositionR - Leg4Lift)/Speed;
+	*Leg5Diff = (PositionR - Leg5Lift)/Speed;
+	*Leg6Diff = (PositionR - Leg6Lift)/Speed;
+}
+
+void checkLiftLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)
 {
 	int x=0;
 	x = WhichLeg%10;
@@ -178,15 +200,6 @@ void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6
 	default:
 		break;
 	}
-}
-void liftDone()
-{
-	Leg1Lift = FALSE;
-	Leg2Lift = FALSE;
-	Leg3Lift = FALSE;
-	Leg4Lift = FALSE;
-	Leg5Lift = FALSE;
-	Leg6Lift = FALSE;
 }
 
 #endif /* SERWO_H_ */
