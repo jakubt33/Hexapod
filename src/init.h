@@ -39,7 +39,7 @@ void init_USART()
 
   USART_InitTypeDef USART_InitStructure;
   USART_InitStructure.USART_BaudRate=9600;                   	 //Prêdkoæ transmisji - 9600BAUD
-  USART_InitStructure.USART_Mode=USART_Mode_Tx | USART_Mode_Rx;  //Tryb pracy - w³¹czony odbiornik oraz nadajnik
+  USART_InitStructure.USART_Mode= USART_Mode_Tx | USART_Mode_Rx;  //Tryb pracy - w³¹czony odbiornik oraz nadajnik
   USART_InitStructure.USART_Parity=USART_Parity_No;              //Bity parzystosci - brak
   USART_InitStructure.USART_StopBits=USART_StopBits_1;           //Bity stopu - 1
   USART_InitStructure.USART_WordLength=USART_WordLength_8b;      //D³ugosc ramki - 8 bitów
