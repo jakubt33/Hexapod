@@ -87,6 +87,11 @@ Discarded input sections
  .bss           0x00000000        0x0 src\main.o
  .text.delay_us
                 0x00000000       0x12 src\main.o
+ .text.checkTurnSpeed
+                0x00000000       0x70 src\main.o
+ .text.legTurn  0x00000000       0xd4 src\main.o
+ .text.init_NVIC
+                0x00000000       0x24 src\main.o
  .bss.SerwoPosition
                 0x00000000        0x4 src\main.o
  .text          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_wwdg.o
@@ -116,18 +121,12 @@ Discarded input sections
  .bss           0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_DeInit
                 0x00000000       0x98 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
- .text.USART_Init
-                0x00000000       0xb0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_StructInit
                 0x00000000       0x16 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_ClockInit
                 0x00000000       0x20 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_ClockStructInit
                 0x00000000        0xc Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
- .text.USART_Cmd
-                0x00000000       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
- .text.USART_ITConfig
-                0x00000000       0x34 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_DMACmd
                 0x00000000       0x12 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_SetAddress
@@ -140,10 +139,6 @@ Discarded input sections
                 0x00000000       0x16 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_LINCmd
                 0x00000000       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
- .text.USART_SendData
-                0x00000000        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
- .text.USART_ReceiveData
-                0x00000000        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_SendBreak
                 0x00000000        0xc Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_SetGuardTime
@@ -172,9 +167,6 @@ Discarded input sections
                 0x00000000       0x40 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text.USART_ClearITPendingBit
                 0x00000000       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
- .comment       0x00000000       0x84 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
- .ARM.attributes
-                0x00000000       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .text          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
  .data          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
  .bss           0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
@@ -537,8 +529,6 @@ Discarded input sections
                 0x00000000       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
  .text.RCC_RTCCLKCmd
                 0x00000000        0xc Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
- .text.RCC_GetClocksFreq
-                0x00000000       0x94 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
  .text.RCC_AHBPeriphClockCmd
                 0x00000000       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
  .text.RCC_APB2PeriphResetCmd
@@ -561,10 +551,6 @@ Discarded input sections
                 0x00000000       0x14 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
  .text.RCC_ClearITPendingBit
                 0x00000000        0xc Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
- .data.ADCPrescTable
-                0x00000000        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
- .data.APBAHBPrescTable
-                0x00000000       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
  .text          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_pwr.o
  .data          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_pwr.o
  .bss           0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_pwr.o
@@ -1293,7 +1279,7 @@ LOAD d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gc
                 0x08000000                g_pfnVectors
                 0x080001d0                . = ALIGN (0x4)
 
-.text           0x080001d0     0x1b60
+.text           0x080001d0     0x1f10
                 0x080001d0                . = ALIGN (0x4)
  *(.text)
  .text          0x080001d0       0x54 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
@@ -1438,230 +1424,275 @@ LOAD d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gc
                 0x080011f8       0x40 src\main.o
                 0x080011f8                batt_critical
  .text.TIM2_IRQHandler
-                0x08001238      0x130 src\main.o
+                0x08001238      0x23c src\main.o
                 0x08001238                TIM2_IRQHandler
  .text.checkLiftSpeed
-                0x08001368       0x74 src\main.o
-                0x08001368                checkLiftSpeed
+                0x08001474       0x74 src\main.o
+                0x08001474                checkLiftSpeed
  .text.applyLegs
-                0x080013dc       0x36 src\main.o
-                0x080013dc                applyLegs
- *fill*         0x08001412        0x2 00
- .text.checkLiftLegs
-                0x08001414       0xe8 src\main.o
-                0x08001414                checkLiftLegs
- .text.legLift  0x080014fc       0xe0 src\main.o
-                0x080014fc                legLift
+                0x080014e8       0x36 src\main.o
+                0x080014e8                applyLegs
+ *fill*         0x0800151e        0x2 00
+ .text.checkLegs
+                0x08001520       0xe8 src\main.o
+                0x08001520                checkLegs
+ .text.legLift  0x08001608       0xe0 src\main.o
+                0x08001608                legLift
+ .text.init_USART
+                0x080016e8       0xa8 src\main.o
+                0x080016e8                init_USART
  .text.init_TIM2
-                0x080015dc       0x68 src\main.o
-                0x080015dc                init_TIM2
- *fill*         0x08001644        0x4 00
+                0x08001790       0x68 src\main.o
+                0x08001790                init_TIM2
  .text.set_SupplyVoltage
-                0x08001648      0x150 src\main.o
-                0x08001648                set_SupplyVoltage
+                0x080017f8      0x150 src\main.o
+                0x080017f8                set_SupplyVoltage
  .text.init_LED
-                0x08001798       0x34 src\main.o
-                0x08001798                init_LED
+                0x08001948       0x34 src\main.o
+                0x08001948                init_LED
  .text.init_Servo
-                0x080017cc       0x34 src\main.o
-                0x080017cc                init_Servo
+                0x0800197c       0x34 src\main.o
+                0x0800197c                init_Servo
  .text.init_ADC
-                0x08001800       0xa8 src\main.o
-                0x08001800                init_ADC
+                0x080019b0       0xa8 src\main.o
+                0x080019b0                init_ADC
+ .text.checkBattery
+                0x08001a58       0x7c src\main.o
+                0x08001a58                checkBattery
  .text.startup.main
-                0x080018a8       0xc0 src\main.o
-                0x080018a8                main
+                0x08001ad4       0xa4 src\main.o
+                0x08001ad4                main
+ .text.USART_Init
+                0x08001b78       0xb0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                0x08001b78                USART_Init
+ .text.USART_Cmd
+                0x08001c28       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                0x08001c28                USART_Cmd
+ .text.USART_ITConfig
+                0x08001c40       0x34 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                0x08001c40                USART_ITConfig
+ .text.USART_SendData
+                0x08001c74        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                0x08001c74                USART_SendData
+ .text.USART_ReceiveData
+                0x08001c7c        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                0x08001c7c                USART_ReceiveData
  .text.TIM_TimeBaseInit
-                0x08001968       0x94 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
-                0x08001968                TIM_TimeBaseInit
- .text.TIM_Cmd  0x080019fc       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
-                0x080019fc                TIM_Cmd
+                0x08001c84       0x94 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
+                0x08001c84                TIM_TimeBaseInit
+ .text.TIM_Cmd  0x08001d18       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
+                0x08001d18                TIM_Cmd
  .text.TIM_ITConfig
-                0x08001a14       0x12 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
-                0x08001a14                TIM_ITConfig
+                0x08001d30       0x12 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
+                0x08001d30                TIM_ITConfig
  .text.TIM_ClearFlag
-                0x08001a26        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
-                0x08001a26                TIM_ClearFlag
- *fill*         0x08001a2e        0x2 00
+                0x08001d42        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
+                0x08001d42                TIM_ClearFlag
+ *fill*         0x08001d4a        0x2 00
  .text.RCC_ADCCLKConfig
-                0x08001a30       0x14 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
-                0x08001a30                RCC_ADCCLKConfig
+                0x08001d4c       0x14 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+                0x08001d4c                RCC_ADCCLKConfig
+ .text.RCC_GetClocksFreq
+                0x08001d60       0x94 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+                0x08001d60                RCC_GetClocksFreq
  .text.RCC_APB2PeriphClockCmd
-                0x08001a44       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
-                0x08001a44                RCC_APB2PeriphClockCmd
+                0x08001df4       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+                0x08001df4                RCC_APB2PeriphClockCmd
  .text.RCC_APB1PeriphClockCmd
-                0x08001a5c       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
-                0x08001a5c                RCC_APB1PeriphClockCmd
+                0x08001e0c       0x18 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+                0x08001e0c                RCC_APB1PeriphClockCmd
  .text.GPIO_Init
-                0x08001a74       0xa0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x08001a74                GPIO_Init
+                0x08001e24       0xa0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08001e24                GPIO_Init
  .text.GPIO_StructInit
-                0x08001b14       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x08001b14                GPIO_StructInit
+                0x08001ec4       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08001ec4                GPIO_StructInit
  .text.GPIO_SetBits
-                0x08001b24        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x08001b24                GPIO_SetBits
+                0x08001ed4        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08001ed4                GPIO_SetBits
  .text.GPIO_ResetBits
-                0x08001b28        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x08001b28                GPIO_ResetBits
+                0x08001ed8        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08001ed8                GPIO_ResetBits
  .text.GPIO_WriteBit
-                0x08001b2c        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
-                0x08001b2c                GPIO_WriteBit
- *fill*         0x08001b36        0x2 00
+                0x08001edc        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x08001edc                GPIO_WriteBit
+ *fill*         0x08001ee6        0x2 00
  .text.ADC_Init
-                0x08001b38       0x48 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001b38                ADC_Init
- .text.ADC_Cmd  0x08001b80       0x12 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001b80                ADC_Cmd
+                0x08001ee8       0x48 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001ee8                ADC_Init
+ .text.ADC_Cmd  0x08001f30       0x12 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001f30                ADC_Cmd
  .text.ADC_ResetCalibration
-                0x08001b92        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001b92                ADC_ResetCalibration
+                0x08001f42        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001f42                ADC_ResetCalibration
  .text.ADC_GetResetCalibrationStatus
-                0x08001b9c        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001b9c                ADC_GetResetCalibrationStatus
+                0x08001f4c        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001f4c                ADC_GetResetCalibrationStatus
  .text.ADC_StartCalibration
-                0x08001ba4        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001ba4                ADC_StartCalibration
+                0x08001f54        0xa Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001f54                ADC_StartCalibration
  .text.ADC_GetCalibrationStatus
-                0x08001bae        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001bae                ADC_GetCalibrationStatus
+                0x08001f5e        0x8 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001f5e                ADC_GetCalibrationStatus
  .text.ADC_SoftwareStartConvCmd
-                0x08001bb6       0x12 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001bb6                ADC_SoftwareStartConvCmd
+                0x08001f66       0x12 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001f66                ADC_SoftwareStartConvCmd
  .text.ADC_RegularChannelConfig
-                0x08001bc8       0x9a Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
-                0x08001bc8                ADC_RegularChannelConfig
- *fill*         0x08001c62        0x2 00
+                0x08001f78       0x9a Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x08001f78                ADC_RegularChannelConfig
+ *fill*         0x08002012        0x2 00
  .text.NVIC_Init
-                0x08001c64       0x68 Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
-                0x08001c64                NVIC_Init
+                0x08002014       0x68 Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
+                0x08002014                NVIC_Init
  .text.__libc_init_array
-                0x08001ccc       0x4c d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-init.o)
-                0x08001ccc                __libc_init_array
+                0x0800207c       0x4c d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-init.o)
+                0x0800207c                __libc_init_array
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x08001d18        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+ .eh_frame      0x080020c8        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
  *(.init)
- .init          0x08001d18        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
-                0x08001d18                _init
- .init          0x08001d1c        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
+ .init          0x080020c8        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
+                0x080020c8                _init
+ .init          0x080020cc        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
  *(.fini)
- .fini          0x08001d24        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
-                0x08001d24                _fini
- .fini          0x08001d28        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
-                0x08001d30                . = ALIGN (0x4)
-                0x08001d30                _etext = .
+ .fini          0x080020d4        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crti.o
+                0x080020d4                _fini
+ .fini          0x080020d8        0x8 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
+                0x080020e0                . = ALIGN (0x4)
+                0x080020e0                _etext = .
 
-.vfp11_veneer   0x08001d30        0x0
+.vfp11_veneer   0x080020e0        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x08001d30        0x0
+.v4_bx          0x080020e0        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x08001d30        0x0
+.iplt           0x080020e0        0x0
  .iplt          0x00000000        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
 
-.rel.dyn        0x08001d30        0x0
+.rel.dyn        0x080020e0        0x0
  .rel.iplt      0x00000000        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
 
-.rodata         0x08001d30        0x0
-                0x08001d30                . = ALIGN (0x4)
+.rodata         0x080020e0        0x0
+                0x080020e0                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
-                0x08001d30                . = ALIGN (0x4)
+                0x080020e0                . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x08001d30        0x0
-                0x08001d30                __exidx_start = .
+.ARM            0x080020e0        0x0
+                0x080020e0                __exidx_start = .
  *(.ARM.exidx*)
-                0x08001d30                __exidx_end = .
+                0x080020e0                __exidx_end = .
 
-.preinit_array  0x08001d30        0x0
-                0x08001d30                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x080020e0        0x0
+                0x080020e0                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x08001d30                PROVIDE (__preinit_array_end, .)
+                0x080020e0                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x08001d30        0x4
-                0x08001d30                PROVIDE (__init_array_start, .)
+.init_array     0x080020e0        0x4
+                0x080020e0                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  *(.init_array*)
- .init_array    0x08001d30        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
-                0x08001d34                PROVIDE (__init_array_end, .)
+ .init_array    0x080020e0        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+                0x080020e4                PROVIDE (__init_array_end, .)
 
-.fini_array     0x08001d34        0x4
-                0x08001d34                PROVIDE (__fini_array_start, .)
+.fini_array     0x080020e4        0x4
+                0x080020e4                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x08001d34        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
-                0x08001d38                PROVIDE (__fini_array_end, .)
-                0x08001d38                _sidata = LOADADDR (.data)
+ .fini_array    0x080020e4        0x4 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+                0x080020e8                PROVIDE (__fini_array_end, .)
+                0x080020e8                _sidata = LOADADDR (.data)
 
-.data           0x20000000       0x18 load address 0x08001d38
+.data           0x20000000       0x44 load address 0x080020e8
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
  *(.data*)
- .data.Leg5Lift
+ .data.Leg4Turn
                 0x20000000        0x4 src\main.o
-                0x20000000                Leg5Lift
- .data.Leg6Lift
+                0x20000000                Leg4Turn
+ .data.Leg5Lift
                 0x20000004        0x4 src\main.o
-                0x20000004                Leg6Lift
- .data.Leg1Lift
+                0x20000004                Leg5Lift
+ .data.Leg1Turn
                 0x20000008        0x4 src\main.o
-                0x20000008                Leg1Lift
- .data.Leg2Lift
+                0x20000008                Leg1Turn
+ .data.Leg6Lift
                 0x2000000c        0x4 src\main.o
-                0x2000000c                Leg2Lift
- .data.Leg3Lift
+                0x2000000c                Leg6Lift
+ .data.Leg2Turn
                 0x20000010        0x4 src\main.o
-                0x20000010                Leg3Lift
- .data.Leg4Lift
+                0x20000010                Leg2Turn
+ .data.Leg1Lift
                 0x20000014        0x4 src\main.o
-                0x20000014                Leg4Lift
-                0x20000018                . = ALIGN (0x4)
-                0x20000018                _edata = .
+                0x20000014                Leg1Lift
+ .data.Leg2Lift
+                0x20000018        0x4 src\main.o
+                0x20000018                Leg2Lift
+ .data.Leg3Turn
+                0x2000001c        0x4 src\main.o
+                0x2000001c                Leg3Turn
+ .data.Leg3Lift
+                0x20000020        0x4 src\main.o
+                0x20000020                Leg3Lift
+ .data.Leg5Turn
+                0x20000024        0x4 src\main.o
+                0x20000024                Leg5Turn
+ .data.Leg6Turn
+                0x20000028        0x4 src\main.o
+                0x20000028                Leg6Turn
+ .data.Leg4Lift
+                0x2000002c        0x4 src\main.o
+                0x2000002c                Leg4Lift
+ .data.ADCPrescTable
+                0x20000030        0x4 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+ .data.APBAHBPrescTable
+                0x20000034       0x10 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+                0x20000044                . = ALIGN (0x4)
+                0x20000044                _edata = .
 
-.jcr            0x20000018        0x0 load address 0x08001d50
- .jcr           0x20000018        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+.jcr            0x20000044        0x0 load address 0x0800212c
+ .jcr           0x20000044        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
 
-.igot.plt       0x20000018        0x0 load address 0x08001d50
+.igot.plt       0x20000044        0x0 load address 0x0800212c
  .igot.plt      0x00000000        0x0 d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
-                0x20000018                . = ALIGN (0x4)
+                0x20000044                . = ALIGN (0x4)
 
-.bss            0x20000018       0x34 load address 0x08001d50
-                0x20000018                _sbss = .
-                0x20000018                __bss_start__ = _sbss
+.bss            0x20000044       0x34 load address 0x0800212c
+                0x20000044                _sbss = .
+                0x20000044                __bss_start__ = _sbss
  *(.bss)
- .bss           0x20000018       0x1c d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
+ .bss           0x20000044       0x1c d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtbegin.o
  *(.bss*)
- .bss.Counter   0x20000034        0x4 src\main.o
-                0x20000034                Counter
+ .bss.Counter   0x20000060        0x4 src\main.o
+                0x20000060                Counter
  *(COMMON)
- COMMON         0x20000038       0x14 src\main.o
-                0x20000038                Batt_3_5_value
-                0x2000003c                Batt_2_5_value
-                0x20000040                Batt_1_5_value
-                0x20000044                Batt_critical_value
-                0x20000048                Batt_4_5_value
-                0x2000004c                . = ALIGN (0x4)
-                0x2000004c                _ebss = .
-                0x2000004c                __bss_end__ = _ebss
+ COMMON         0x20000064       0x14 src\main.o
+                0x20000064                Batt_3_5_value
+                0x20000068                Batt_2_5_value
+                0x2000006c                Batt_1_5_value
+                0x20000070                Batt_critical_value
+                0x20000074                Batt_4_5_value
+                0x20000078                . = ALIGN (0x4)
+                0x20000078                _ebss = .
+                0x20000078                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000004c       0x80 load address 0x08001d50
-                0x2000004c                . = ALIGN (0x4)
-                0x2000004c                PROVIDE (end, .)
-                0x2000004c                PROVIDE (_end, .)
-                0x2000004c                . = (. + _Min_Heap_Size)
-                0x200000cc                . = (. + _Min_Stack_Size)
- *fill*         0x2000004c       0x80 00
-                0x200000cc                . = ALIGN (0x4)
+                0x20000078       0x80 load address 0x0800212c
+                0x20000078                . = ALIGN (0x4)
+                0x20000078                PROVIDE (end, .)
+                0x20000078                PROVIDE (_end, .)
+                0x20000078                . = (. + _Min_Heap_Size)
+                0x200000f8                . = (. + _Min_Stack_Size)
+ *fill*         0x20000078       0x80 00
+                0x200000f8                . = ALIGN (0x4)
 
 .memory_b1_text
  *(.mb1text)
@@ -1690,31 +1721,33 @@ LOAD d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gc
  .ARM.attributes
                 0x000000d1       0x33 src\main.o
  .ARM.attributes
-                0x00000104       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
+                0x00000104       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .ARM.attributes
-                0x00000137       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
+                0x00000137       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
  .ARM.attributes
-                0x0000016a       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
+                0x0000016a       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
  .ARM.attributes
-                0x0000019d       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
+                0x0000019d       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
  .ARM.attributes
-                0x000001d0       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
+                0x000001d0       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.o
  .ARM.attributes
-                0x00000203       0x2d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-init.o)
+                0x00000203       0x33 Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
  .ARM.attributes
-                0x00000230       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubdf3.o)
+                0x00000236       0x2d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-init.o)
  .ARM.attributes
-                0x0000024d       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_muldivdf3.o)
+                0x00000263       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubdf3.o)
  .ARM.attributes
-                0x0000026a       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_fixunsdfsi.o)
+                0x00000280       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_muldivdf3.o)
  .ARM.attributes
-                0x00000287       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_truncdfsf2.o)
+                0x0000029d       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_fixunsdfsi.o)
  .ARM.attributes
-                0x000002a4       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubsf3.o)
+                0x000002ba       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_truncdfsf2.o)
  .ARM.attributes
-                0x000002c1       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_muldivsf3.o)
+                0x000002d7       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubsf3.o)
  .ARM.attributes
-                0x000002de       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
+                0x000002f4       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m\libgcc.a(_arm_muldivsf3.o)
+ .ARM.attributes
+                0x00000311       0x1d d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/armv7-m/crtn.o
 OUTPUT(Hexapod.elf elf32-littlearm)
 
 .comment        0x00000000       0x83
@@ -1722,6 +1755,7 @@ OUTPUT(Hexapod.elf elf32-littlearm)
                                  0x84 (size before relaxing)
  .comment       0x00000000       0x84 src\stm32f1xx_it.o
  .comment       0x00000000       0x84 src\main.o
+ .comment       0x00000000       0x84 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
  .comment       0x00000000       0x84 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.o
  .comment       0x00000000       0x84 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.o
  .comment       0x00000000       0x84 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.o
@@ -2016,16 +2050,23 @@ IWDG_SetPrescaler                                 Libraries\STM32F10x_StdPeriph_
 IWDG_SetReload                                    Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_iwdg.o
 IWDG_WriteAccessCmd                               Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_iwdg.o
 Leg1Lift                                          src\main.o
+Leg1Turn                                          src\main.o
 Leg2Lift                                          src\main.o
+Leg2Turn                                          src\main.o
 Leg3Lift                                          src\main.o
+Leg3Turn                                          src\main.o
 Leg4Lift                                          src\main.o
+Leg4Turn                                          src\main.o
 Leg5Lift                                          src\main.o
+Leg5Turn                                          src\main.o
 Leg6Lift                                          src\main.o
+Leg6Turn                                          src\main.o
 MemManage_Handler                                 src\stm32f1xx_it.o
 NMI_Handler                                       src\stm32f1xx_it.o
 NVIC_Init                                         Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
                                                   src\main.o
 NVIC_PriorityGroupConfig                          Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
+                                                  src\main.o
 NVIC_SetVectorTable                               Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
 NVIC_SystemLPConfig                               Libraries\STM32F10x_StdPeriph_Driver\src\misc.o
 PVD_IRQHandler                                    src\startup_stm32f10x_ld_vl.o
@@ -2278,13 +2319,16 @@ USART_ClearITPendingBit                           Libraries\STM32F10x_StdPeriph_
 USART_ClockInit                                   Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_ClockStructInit                             Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_Cmd                                         Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                                                  src\main.o
 USART_DMACmd                                      Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_DeInit                                      Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_GetFlagStatus                               Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_GetITStatus                                 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_HalfDuplexCmd                               Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_ITConfig                                    Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                                                  src\main.o
 USART_Init                                        Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                                                  src\main.o
 USART_IrDACmd                                     Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_IrDAConfig                                  Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_LINBreakDetectLengthConfig                  Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
@@ -2292,9 +2336,11 @@ USART_LINCmd                                      Libraries\STM32F10x_StdPeriph_
 USART_OneBitMethodCmd                             Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_OverSampling8Cmd                            Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_ReceiveData                                 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                                                  src\main.o
 USART_ReceiverWakeUpCmd                           Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_SendBreak                                   Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_SendData                                    Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
+                                                  src\main.o
 USART_SetAddress                                  Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_SetGuardTime                                Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
 USART_SetPrescaler                                Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.o
@@ -2421,8 +2467,10 @@ batt_3_5                                          src\main.o
 batt_4_5                                          src\main.o
 batt_5_5                                          src\main.o
 batt_critical                                     src\main.o
-checkLiftLegs                                     src\main.o
+checkBattery                                      src\main.o
+checkLegs                                         src\main.o
 checkLiftSpeed                                    src\main.o
+checkTurnSpeed                                    src\main.o
 cleanup_glue                                      d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-reent.o)
 delay_ms                                          src\main.o
 delay_us                                          src\main.o
@@ -2438,11 +2486,14 @@ fwrite                                            src\tiny_printf.o
 g_pfnVectors                                      src\startup_stm32f10x_ld_vl.o
 init_ADC                                          src\main.o
 init_LED                                          src\main.o
+init_NVIC                                         src\main.o
 init_Servo                                        src\main.o
 init_TIM2                                         src\main.o
+init_USART                                        src\main.o
 initialise_monitor_handles                        d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-syscalls.o)
 iprintf                                           src\tiny_printf.o
 legLift                                           src\main.o
+legTurn                                           src\main.o
 main                                              src\main.o
                                                   src\startup_stm32f10x_ld_vl.o
 printf                                            src\tiny_printf.o

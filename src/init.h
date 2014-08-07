@@ -14,6 +14,60 @@ volatile unsigned int Batt_2_5_value;
 volatile unsigned int Batt_1_5_value;
 volatile unsigned int Batt_critical_value;
 
+void init_USART()
+{
+  //w³¹czenie zegara portu
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
+  //struktura inicjalizacyjna portu
+  GPIO_InitTypeDef  GPIO_InitStructure;
+
+  //Pin PB10 - linia nadawcza USART3
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 ;                   //piny które chcemy skonfigurowaæ
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;               //tryb wyjœæ portu - wyjœcie push-pull
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;             //szybkoœæ wyjœcia
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  //Pin PB11 - linia odbiorcza USART3
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 ;                   //piny które chcemy skonfigurowaæ
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;               	//tryb wyjœæ portu - wyjœcie push-pull
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;             //szybkoœæ wyjœcia
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  //w³¹czenie zegara USARTa
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+
+  USART_InitTypeDef USART_InitStructure;
+  USART_InitStructure.USART_BaudRate=9600;                   	 //Prêdkoæ transmisji - 9600BAUD
+  USART_InitStructure.USART_Mode=USART_Mode_Tx | USART_Mode_Rx;  //Tryb pracy - w³¹czony odbiornik oraz nadajnik
+  USART_InitStructure.USART_Parity=USART_Parity_No;              //Bity parzystosci - brak
+  USART_InitStructure.USART_StopBits=USART_StopBits_1;           //Bity stopu - 1
+  USART_InitStructure.USART_WordLength=USART_WordLength_8b;      //D³ugosc ramki - 8 bitów
+  USART_InitStructure.USART_HardwareFlowControl=USART_HardwareFlowControl_None; //Sprzêtowa kontrola przep³ywu - brak
+  USART_Init(USART3,&USART_InitStructure);
+
+  //uruchomienie przerwania od Usarta
+  USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);
+  USART_ITConfig(USART1,USART_IT_TXE,ENABLE);
+
+  //Uruchomienie USART1
+  USART_Cmd(USART3,ENABLE);
+}
+
+void init_NVIC(void)
+{
+ NVIC_InitTypeDef NVIC_InitStructure;
+
+ /* Ustawienie grupy priorytetów */
+ NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+
+ /* Uruchomienie przerwania od USART */
+ NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+ NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+ NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+ NVIC_Init(&NVIC_InitStructure);
+}
+
 void init_TIM2()
 {
 	NVIC_InitTypeDef NVIC_InitStruct;

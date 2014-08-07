@@ -2,7 +2,7 @@
  * serwo.h
  *
  *  Created on: Aug 1, 2014
- *      Author: Kuba
+ *      Author: Jakub Trzyna
  */
 
 #ifndef SERWO_H_
@@ -61,11 +61,22 @@ volatile  int Leg4Lift = 30;
 volatile  int Leg5Lift = 30;
 volatile  int Leg6Lift = 30;
 
+volatile  int Leg1Turn = 30;
+volatile  int Leg2Turn = 30;
+volatile  int Leg3Turn = 30;
+volatile  int Leg4Turn = 30;
+volatile  int Leg5Turn = 30;
+volatile  int Leg6Turn = 30;
+
+void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
 void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6);
-void legLift(int WhichLeg, int Position, int Speed);
 void TIM2_IRQHandler();
-void checkLiftLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
+
+void legLift(int WhichLeg, int Position, int Speed); //symetrically \||/
 void checkLiftSpeed(int Speed, int PostionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
+
+void legTurn(int WhichLeg, int Position, int Speed); //unsymetrically /||/
+void checkTurnSpeed(int Speed, int Position, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
 
 void TIM2_IRQHandler()
 {
@@ -103,15 +114,79 @@ void TIM2_IRQHandler()
 	else if(Counter<TIME_TO_GET_50HZ)
 		LEG6LIFT_OFF;
 
+
+	if(Counter<Leg1Turn)
+		LEG1TURN_ON;
+	else if(Counter<TIME_TO_GET_50HZ)
+		LEG1TURN_OFF;
+
+	if(Counter<Leg2Turn)
+		LEG2TURN_ON;
+	else if(Counter<TIME_TO_GET_50HZ)
+		LEG2TURN_OFF;
+
+	if(Counter<Leg3Turn)
+		LEG3TURN_ON;
+	else if(Counter<TIME_TO_GET_50HZ)
+		LEG3TURN_OFF;
+
+	if(Counter<Leg4Turn)
+		LEG4TURN_ON;
+	else if(Counter<TIME_TO_GET_50HZ)
+		LEG4TURN_OFF;
+
+	if(Counter<Leg5Turn)
+		LEG5TURN_ON;
+	else if(Counter<TIME_TO_GET_50HZ)
+		LEG5TURN_OFF;
+
+	if(Counter<Leg6Turn)
+		LEG6TURN_ON;
+	else if(Counter<TIME_TO_GET_50HZ)
+		LEG6TURN_OFF;
+
+
+
 	if(Counter >= TIME_TO_GET_50HZ)
 		Counter = 0;
+}
+
+void legTurn(int WhichLeg, int Position, int Speed)
+{
+	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
+
+	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
+
+
+	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
+
+	checkTurnSpeed(Speed, Position, &Leg1Diff, &Leg2Diff, &Leg3Diff, &Leg4Diff, &Leg5Diff, &Leg6Diff);
+
+	int SpeedCounter=0;
+	for(SpeedCounter=Speed;SpeedCounter<=MAX_SPEED;SpeedCounter++)
+	{
+		if(Leg1)
+			Leg1Turn += Leg1Diff;
+		if(Leg2)
+			Leg2Turn += Leg2Diff;
+		if(Leg3)
+			Leg3Turn += Leg3Diff;
+		if(Leg4)
+			Leg4Turn += Leg4Diff;
+		if(Leg5)
+			Leg5Turn += Leg5Diff;
+		if(Leg6)
+			Leg6Turn += Leg6Diff;
+
+		delay_ms(50);
+	}
 }
 
 void legLift(int WhichLeg, int Position, int Speed) //speed 1-3
 {
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
-	checkLiftLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
+	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
 
 	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
@@ -153,7 +228,18 @@ void checkLiftSpeed(int Speed, int PositionL, int PositionR, int *Leg1Diff, int 
 	*Leg6Diff = (PositionR - Leg6Lift)/Speed;
 }
 
-void checkLiftLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)
+void checkTurnSpeed(int Speed, int Position, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff)
+{
+	Speed = MAX_SPEED+1 - Speed;
+	*Leg1Diff = (Position - Leg1Turn)/Speed;
+	*Leg2Diff = (Position - Leg2Turn)/Speed;
+	*Leg3Diff = (Position - Leg3Turn)/Speed;
+	*Leg4Diff = (Position - Leg4Turn)/Speed;
+	*Leg5Diff = (Position - Leg5Turn)/Speed;
+	*Leg6Diff = (Position - Leg6Turn)/Speed;
+}
+
+void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)
 {
 	int x=0;
 	x = WhichLeg%10;

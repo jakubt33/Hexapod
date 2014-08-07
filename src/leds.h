@@ -2,7 +2,7 @@
  * leds.h
  *
  *  Created on: Jul 31, 2014
- *      Author: Kuba
+ *      Author: Jakub Trzyna
  */
 
 #ifndef LEDS_H_
