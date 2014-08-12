@@ -1,5 +1,4 @@
 volatile unsigned int Counter = 0;
-volatile unsigned int SerwoPosition = 0;
 
 void delay_ms(volatile unsigned LocalCounter)
 {
@@ -19,7 +18,7 @@ void checkBattery();
 #include "leds.h"
 #include "serwo.h"
 #include "init.h"
-//#include "bluetooth.h"
+#include "bluetooth.h"
 
 #define UP 34 //max = 40
 #define DOWN 30 //min = 20
@@ -28,7 +27,7 @@ void checkBattery();
 int main(void)
 {
 	init_LED();
-	init_Servo();
+	//init_Servo();
 	init_ADC();
 	init_TIM2();
 	init_USART();
@@ -44,9 +43,9 @@ int main(void)
 	char tmp;
 	while (1)
 	{
-		if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET)
+		if(USART_GetITStatus(USART3, USART_FLAG_RXNE) != RESET)
 		{
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			USART_ClearITPendingBit(USART3,USART_IT_RXNE);
 
 			tmp=USART_ReceiveData(USART3);
 			switch (tmp)
@@ -90,86 +89,6 @@ int main(void)
 			USART_SendData(USART3, tmp);
 
 		}
-
-
-		/*  Sending and receiving data so that diodes are respectively set, RX-TX short
-		int LocalCounter=0;
-		for(LocalCounter=1; LocalCounter<=6; LocalCounter++)
-		{
-			if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET)
-			{
-				USART_ClearFlag(USART3,USART_FLAG_RXNE);
-
-				tmp=USART_ReceiveData(USART3);
-				switch (tmp)
-				{
-				case 1:
-				{
-					GPIO_WriteBit(PORT_LED, LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);
-					break;
-				}
-				case 2:
-				{
-					GPIO_WriteBit(PORT_LED, LED_LEG2, Bit_SET);
-					break;
-				}
-				case 3:
-				{
-					GPIO_WriteBit(PORT_LED, LED_LEG3, Bit_SET);
-					break;
-				}
-				case 4:
-				{
-					GPIO_WriteBit(PORT_LED, LED_LEG4, Bit_SET);
-					break;
-				}
-				case 5:
-				{
-					GPIO_WriteBit(PORT_LED, LED_LEG5, Bit_SET);
-					break;
-				}
-				case 6:
-				{
-					GPIO_WriteBit(PORT_LED, LED_LEG6, Bit_SET);
-					break;
-				}
-				default:
-				{
-					GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
-					break;
-				}
-				}
-			}
-			tmp = LocalCounter;
-			USART_SendData(USART3, tmp);
-			delay_ms(300);
-
-		}
-		*/
-
-		/*
-	  uint16_t tmp;
-	  //Je¿eli jest to przerwanie od bufora odbiorczego
-	  if(USART_GetITStatus(USART3,USART_IT_RXNE) != RESET)
-	  {
-		  USART_ClearITPendingBit(USART3,USART_IT_RXNE);
-		  tmp=USART_ReceiveData(USART3);
-
-		  GPIO_WriteBit(PORT_LED, LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
-
-
-		  //do sth
-	 	 }
-
-		//Je¿eli jest to przerwanie od bufora nadawczego
-		if(USART_GetITStatus(USART3,USART_IT_TXE) != RESET)
-		{
-			USART_ClearITPendingBit(USART3,USART_IT_TXE);
-			USART_SendData(USART3, tmp);
-			//do sth
-		}
-	    */
-
 
 		/*
 		legTurn(132456, 25, 3);

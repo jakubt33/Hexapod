@@ -10,23 +10,53 @@
 
 void USART3_IRQHandler(void)
 {
-  uint16_t tmp;
-  //Je¿eli jest to przerwanie od bufora odbiorczego
-  if(USART_GetITStatus(USART3,USART_IT_RXNE) != RESET)
-  {
-      USART_ClearITPendingBit(USART3,USART_IT_RXNE);
-      tmp=USART_ReceiveData(USART3);
+	if(USART_GetITStatus(USART3, USART_FLAG_RXNE) != RESET)
+	{
+		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
 
-      //do sth
-  }
+		char tmp;
+		tmp=USART_ReceiveData(USART3);
+		switch (tmp)
+		{
+		case '1':
+		{
+			GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
+			break;
+		}
+		case '2':
+		{
+			GPIO_WriteBit(PORT_LED, LED_LEG2, Bit_SET);
+			break;
+		}
+		case '3':
+		{
+			GPIO_WriteBit(PORT_LED, LED_LEG3, Bit_SET);
+			break;
+		}
+		case '4':
+		{
+			GPIO_WriteBit(PORT_LED, LED_LEG4, Bit_SET);
+			break;
+		}
+		case '5':
+		{
+			GPIO_WriteBit(PORT_LED, LED_LEG5, Bit_SET);
+			break;
+		}
+		case '6':
+		{
+			GPIO_WriteBit(PORT_LED, LED_LEG6, Bit_SET);
+			break;
+		}
+		default:
+		{
+			GPIO_WriteBit(PORT_LED, LED_LEG2 | LED_LEG5, Bit_SET);
+			break;
+		}
+		}
+		USART_SendData(USART3, tmp);
 
-  //Je¿eli jest to przerwanie od bufora nadawczego
-  if(USART_GetITStatus(USART3,USART_IT_TXE) != RESET)
-  {
-      USART_ClearITPendingBit(USART3,USART_IT_TXE);
-
-      //do sth
-  }
+	}
 }
 
 

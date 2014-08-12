@@ -62,7 +62,7 @@ void init_NVIC(void)
  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
 
  /* Uruchomienie przerwania od USART */
- NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+ //NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
  NVIC_Init(&NVIC_InitStructure);
