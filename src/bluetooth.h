@@ -58,27 +58,27 @@ void checkBluetooth()
 			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
 
 			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			Lift += 10*USART_ReceiveData(USART3);
+			Lift += 10* ( USART_ReceiveData(USART3) - '0' );
 
 			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
 
 			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			Lift += USART_ReceiveData(USART3);
+			Lift += USART_ReceiveData(USART3) - '0';
 
-			if(Lift<14 || Lift>40)
-				Lift = 30;
+			//if(Lift<14 || Lift>40)
+				//Lift = 30;
 
 
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-				USART_ClearFlag(USART3,USART_FLAG_RXNE);
-				Turn += 10*USART_ReceiveData(USART3);
 
 			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
 
-				USART_ClearFlag(USART3,USART_FLAG_RXNE);
-				Turn += USART_ReceiveData(USART3);
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			Turn += 10* ( USART_ReceiveData(USART3) - '0' );
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			Turn += USART_ReceiveData(USART3) - '0';
 
 			if(Turn<20 || Turn>40)
 				Turn = 30;
@@ -87,22 +87,23 @@ void checkBluetooth()
 
 			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
 
-				USART_ClearFlag(USART3,USART_FLAG_RXNE);
-				Speed = USART_ReceiveData(USART3);
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			Speed = USART_ReceiveData(USART3) - '0';
 
 
 
 			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
 
-				USART_ClearFlag(USART3,USART_FLAG_RXNE);
-				Power = USART_ReceiveData(USART3);
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			Power = USART_ReceiveData(USART3) - '0';
+
 
 
 			legTurn(Legs, Turn, Speed);
 			legLift(Legs, Lift, Speed);
 
 		}
-		USART_SendData(USART3, '1');
+		USART_SendData(USART3, 0x31);
 	}
 }
 

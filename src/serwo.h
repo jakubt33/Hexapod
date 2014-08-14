@@ -153,6 +153,8 @@ void TIM2_IRQHandler()
 
 void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 {
+	if(Speed>3) Speed = 3;
+
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
@@ -212,6 +214,7 @@ void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 
 void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 1-3
 {
+	if(Speed>3) Speed = 3;
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
