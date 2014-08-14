@@ -243,6 +243,7 @@ typedef enum IRQn
   SPI1_IRQn                   = 35,     /*!< SPI1 global Interrupt                                */
   USART1_IRQn                 = 37,     /*!< USART1 global Interrupt                              */
   USART2_IRQn                 = 38,     /*!< USART2 global Interrupt                              */
+  USART3_IRQn                 = 39,     /*!< USART3 global Interrupt                              */
   EXTI15_10_IRQn              = 40,     /*!< External Line[15:10] Interrupts                      */
   RTCAlarm_IRQn               = 41,     /*!< RTC Alarm through EXTI Line Interrupt                */
   CEC_IRQn                    = 42,     /*!< HDMI-CEC Interrupt                                   */

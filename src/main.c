@@ -27,10 +27,11 @@ void checkBattery();
 int main(void)
 {
 	init_LED();
-	//init_Servo();
+	init_Servo();
 	init_ADC();
 	init_TIM2();
 	init_USART();
+
 
 	//GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
 	//GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
@@ -38,57 +39,11 @@ int main(void)
 	checkBattery();
 	delay_ms(1000);
 
-	legLift(132456, 40, 3);
-
-	char tmp;
+	//legLift(132456, 40, 3);
+	//char tmp;
 	while (1)
 	{
-		if(USART_GetITStatus(USART3, USART_FLAG_RXNE) != RESET)
-		{
-			USART_ClearITPendingBit(USART3,USART_IT_RXNE);
-
-			tmp=USART_ReceiveData(USART3);
-			switch (tmp)
-			{
-			case '1':
-			{
-				GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
-				break;
-			}
-			case '2':
-			{
-				GPIO_WriteBit(PORT_LED, LED_LEG2, Bit_SET);
-				break;
-			}
-			case '3':
-			{
-				GPIO_WriteBit(PORT_LED, LED_LEG3, Bit_SET);
-				break;
-			}
-			case '4':
-			{
-				GPIO_WriteBit(PORT_LED, LED_LEG4, Bit_SET);
-				break;
-			}
-			case '5':
-			{
-				GPIO_WriteBit(PORT_LED, LED_LEG5, Bit_SET);
-				break;
-			}
-			case '6':
-			{
-				GPIO_WriteBit(PORT_LED, LED_LEG6, Bit_SET);
-				break;
-			}
-			default:
-			{
-				GPIO_WriteBit(PORT_LED, LED_LEG2 | LED_LEG5, Bit_SET);
-				break;
-			}
-			}
-			USART_SendData(USART3, tmp);
-
-		}
+		checkBluetooth();
 
 		/*
 		legTurn(132456, 25, 3);

@@ -8,54 +8,101 @@
 #ifndef BLUETOOTH_H_
 #define BLUETOOTH_H_
 
-void USART3_IRQHandler(void)
+void checkBluetooth()
 {
-	if(USART_GetITStatus(USART3, USART_FLAG_RXNE) != RESET)
+	if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET)
 	{
-		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
+		USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
-		char tmp;
-		tmp=USART_ReceiveData(USART3);
-		switch (tmp)
+		if(USART_ReceiveData(USART3) == 'M')
 		{
-		case '1':
-		{
-			GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
-			break;
-		}
-		case '2':
-		{
-			GPIO_WriteBit(PORT_LED, LED_LEG2, Bit_SET);
-			break;
-		}
-		case '3':
-		{
-			GPIO_WriteBit(PORT_LED, LED_LEG3, Bit_SET);
-			break;
-		}
-		case '4':
-		{
-			GPIO_WriteBit(PORT_LED, LED_LEG4, Bit_SET);
-			break;
-		}
-		case '5':
-		{
-			GPIO_WriteBit(PORT_LED, LED_LEG5, Bit_SET);
-			break;
-		}
-		case '6':
-		{
-			GPIO_WriteBit(PORT_LED, LED_LEG6, Bit_SET);
-			break;
-		}
-		default:
-		{
-			GPIO_WriteBit(PORT_LED, LED_LEG2 | LED_LEG5, Bit_SET);
-			break;
-		}
-		}
-		USART_SendData(USART3, tmp);
+			long unsigned int Legs=0;
+			int Lift=0;
+			int Turn=0;
+			int Speed=0;
+			int Power=0;
 
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			if(USART_ReceiveData(USART3) != '0') Legs += 100000;
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			if(USART_ReceiveData(USART3) != '0') Legs += 20000;
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			if(USART_ReceiveData(USART3) != '0') Legs += 3000;
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			if(USART_ReceiveData(USART3) != '0') Legs += 400;
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			if(USART_ReceiveData(USART3) != '0') Legs += 50;
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			if(USART_ReceiveData(USART3) != '0') Legs += 6;
+
+
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			Lift += 10*USART_ReceiveData(USART3);
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+			Lift += USART_ReceiveData(USART3);
+
+			if(Lift<14 || Lift>40)
+				Lift = 30;
+
+
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+				USART_ClearFlag(USART3,USART_FLAG_RXNE);
+				Turn += 10*USART_ReceiveData(USART3);
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+				USART_ClearFlag(USART3,USART_FLAG_RXNE);
+				Turn += USART_ReceiveData(USART3);
+
+			if(Turn<20 || Turn>40)
+				Turn = 30;
+
+
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+				USART_ClearFlag(USART3,USART_FLAG_RXNE);
+				Speed = USART_ReceiveData(USART3);
+
+
+
+			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
+
+				USART_ClearFlag(USART3,USART_FLAG_RXNE);
+				Power = USART_ReceiveData(USART3);
+
+
+			legTurn(Legs, Turn, Speed);
+			legLift(Legs, Lift, Speed);
+
+		}
+		USART_SendData(USART3, '1');
 	}
 }
 

@@ -72,10 +72,10 @@ void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Le
 void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6);
 void TIM2_IRQHandler();
 
-void legLift(int WhichLeg, int Position, int Speed); //symetrically \||/
+void legLift(long unsigned int WhichLeg, int Position, int Speed); //symetrically \||/
 void checkLiftSpeed(int Speed, int PostionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
 
-void legTurn(int WhichLeg, int Position, int Speed); //unsymetrically /||/
+void legTurn(long unsigned int WhichLeg, int Position, int Speed); //unsymetrically /||/
 void checkTurnSpeed(int Speed, int Position, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
 
 void TIM2_IRQHandler()
@@ -151,7 +151,7 @@ void TIM2_IRQHandler()
 		Counter = 0;
 }
 
-void legTurn(int WhichLeg, int Position, int Speed)
+void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 {
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
@@ -161,6 +161,34 @@ void legTurn(int WhichLeg, int Position, int Speed)
 	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
 
 	checkTurnSpeed(Speed, Position, &Leg1Diff, &Leg2Diff, &Leg3Diff, &Leg4Diff, &Leg5Diff, &Leg6Diff);
+
+
+	if(Leg1)
+		LED_LEG1_ON;
+	else
+		LED_LEG1_OFF;
+	if(Leg2)
+		LED_LEG2_ON;
+	else
+		LED_LEG2_OFF;
+	if(Leg3)
+		LED_LEG3_ON;
+	else
+		LED_LEG3_OFF;
+	if(Leg4)
+		LED_LEG4_ON;
+	else
+		LED_LEG4_OFF;
+	if(Leg5)
+		LED_LEG5_ON;
+	else
+		LED_LEG5_OFF;
+	if(Leg6)
+		LED_LEG6_ON;
+	else
+		LED_LEG6_OFF;
+
+
 
 	int SpeedCounter=0;
 	for(SpeedCounter=Speed;SpeedCounter<=MAX_SPEED;SpeedCounter++)
@@ -182,7 +210,7 @@ void legTurn(int WhichLeg, int Position, int Speed)
 	}
 }
 
-void legLift(int WhichLeg, int Position, int Speed) //speed 1-3
+void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 1-3
 {
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 

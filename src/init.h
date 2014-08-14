@@ -46,27 +46,10 @@ void init_USART()
   USART_InitStructure.USART_HardwareFlowControl=USART_HardwareFlowControl_None; //Sprzêtowa kontrola przep³ywu - brak
   USART_Init(USART3,&USART_InitStructure);
 
-  //uruchomienie przerwania od Usarta
-  USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);
-  USART_ITConfig(USART1,USART_IT_TXE,ENABLE);
-
-  //Uruchomienie USART1
+  //Uruchomienie USART3
   USART_Cmd(USART3,ENABLE);
 }
 
-void init_NVIC(void)
-{
- NVIC_InitTypeDef NVIC_InitStructure;
-
- /* Ustawienie grupy priorytetów */
- NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-
- /* Uruchomienie przerwania od USART */
- //NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
- NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
- NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
- NVIC_Init(&NVIC_InitStructure);
-}
 
 void init_TIM2()
 {
@@ -141,7 +124,7 @@ void init_Servo()
 
 void init_ADC()
 {
-	set_SupplyVoltage(12.6);
+	set_SupplyVoltage(10);
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	GPIO_InitTypeDef GPIO_InitStructure;
