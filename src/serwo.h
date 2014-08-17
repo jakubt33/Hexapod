@@ -9,7 +9,7 @@
 #define SERWO_H_
 
 #define MAX_SPEED 3
-#define TIME_TO_GET_50HZ 400
+#define TIME_TO_GET_50HZ 2000
 
 #define PORT_SERWO GPIOB
 #define SERWO1 GPIO_Pin_0
@@ -27,56 +27,55 @@
 
 #define LEG1TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_0)
 #define LEG1LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_1)
-#define LEG2LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_2)
+#define LEG2TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_2)
 #define LEG4LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_5)
 #define LEG5LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_6)
 #define LEG5TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_7)
 #define LEG6LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_8)
 #define LEG6TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_9)
-#define LEG2TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_12)
-#define LEG3LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_13)
-#define LEG3TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_14)
+#define LEG2LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_12)
+#define LEG3TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_13)
+#define LEG3LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_14)
 #define LEG4TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_15)
 
 #define LEG1TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_0)
 #define LEG1LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_1)
-#define LEG2LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_2)
+#define LEG2TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_2)
 #define LEG4LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_5)
 #define LEG5LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_6)
 #define LEG5TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_7)
 #define LEG6LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_8)
 #define LEG6TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_9)
-#define LEG2TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_12)
-#define LEG3LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_13)
-#define LEG3TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_14)
+#define LEG2LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_12)
+#define LEG3TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_13)
+#define LEG3LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_14)
 #define LEG4TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_15)
 
-#define FALSE 0
-#define TRUE  1
+volatile long int Counter = 0;
 
-volatile  int Leg1Lift = 30;
-volatile  int Leg2Lift = 30;
-volatile  int Leg3Lift = 30;
-volatile  int Leg4Lift = 30;
-volatile  int Leg5Lift = 30;
-volatile  int Leg6Lift = 30;
+volatile  int Leg1Lift = 230;
+volatile  int Leg2Lift = 230;
+volatile  int Leg3Lift = 370;
+volatile  int Leg4Lift = 230;
+volatile  int Leg5Lift = 370;
+volatile  int Leg6Lift = 370;
 
-volatile  int Leg1Turn = 30;
-volatile  int Leg2Turn = 30;
-volatile  int Leg3Turn = 30;
-volatile  int Leg4Turn = 30;
-volatile  int Leg5Turn = 30;
-volatile  int Leg6Turn = 30;
+volatile  int Leg1Turn = 300;
+volatile  int Leg2Turn = 300;
+volatile  int Leg3Turn = 300;
+volatile  int Leg4Turn = 300;
+volatile  int Leg5Turn = 300;
+volatile  int Leg6Turn = 300;
 
 void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
-void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6);
+void applyLegs(int x, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
 void TIM2_IRQHandler();
 
 void legLift(long unsigned int WhichLeg, int Position, int Speed); //symetrically \||/
 void checkLiftSpeed(int Speed, int PostionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
 
 void legTurn(long unsigned int WhichLeg, int Position, int Speed); //unsymetrically /||/
-void checkTurnSpeed(int Speed, int Position, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
+void checkTurnSpeed(int Speed, int PositionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
 
 void TIM2_IRQHandler()
 {
@@ -154,7 +153,6 @@ void TIM2_IRQHandler()
 void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 {
 	if(Speed>3) Speed = 3;
-
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
@@ -162,7 +160,10 @@ void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 
 	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
 
-	checkTurnSpeed(Speed, Position, &Leg1Diff, &Leg2Diff, &Leg3Diff, &Leg4Diff, &Leg5Diff, &Leg6Diff);
+	int PositionL = Position;
+	int PositionR = Position - 2*(Position-30); //mirror view
+
+	checkTurnSpeed(Speed, PositionL, PositionR, &Leg1Diff, &Leg2Diff, &Leg3Diff, &Leg4Diff, &Leg5Diff, &Leg6Diff);
 
 
 	if(Leg1)
@@ -227,6 +228,33 @@ void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 1-3
 
 	checkLiftSpeed(Speed, PositionL, PositionR, &Leg1Diff, &Leg2Diff, &Leg3Diff, &Leg4Diff, &Leg5Diff, &Leg6Diff);
 
+
+	if(Leg1)
+		LED_LEG1_ON;
+	else
+		LED_LEG1_OFF;
+	if(Leg2)
+		LED_LEG2_ON;
+	else
+		LED_LEG2_OFF;
+	if(Leg3)
+		LED_LEG3_ON;
+	else
+		LED_LEG3_OFF;
+	if(Leg4)
+		LED_LEG4_ON;
+	else
+		LED_LEG4_OFF;
+	if(Leg5)
+		LED_LEG5_ON;
+	else
+		LED_LEG5_OFF;
+	if(Leg6)
+		LED_LEG6_ON;
+	else
+		LED_LEG6_OFF;
+
+
 	int SpeedCounter=0;
 	for(SpeedCounter=Speed;SpeedCounter<=MAX_SPEED;SpeedCounter++)
 	{
@@ -253,21 +281,21 @@ void checkLiftSpeed(int Speed, int PositionL, int PositionR, int *Leg1Diff, int 
 	Speed = MAX_SPEED+1 - Speed;
 	*Leg1Diff = (PositionL - Leg1Lift)/Speed;
 	*Leg2Diff = (PositionL - Leg2Lift)/Speed;
-	*Leg3Diff = (PositionL - Leg3Lift)/Speed;
-	*Leg4Diff = (PositionR - Leg4Lift)/Speed;
+	*Leg3Diff = (PositionR - Leg3Lift)/Speed;
+	*Leg4Diff = (PositionL - Leg4Lift)/Speed;
 	*Leg5Diff = (PositionR - Leg5Lift)/Speed;
 	*Leg6Diff = (PositionR - Leg6Lift)/Speed;
 }
 
-void checkTurnSpeed(int Speed, int Position, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff)
+void checkTurnSpeed(int Speed, int PositionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff)
 {
 	Speed = MAX_SPEED+1 - Speed;
-	*Leg1Diff = (Position - Leg1Turn)/Speed;
-	*Leg2Diff = (Position - Leg2Turn)/Speed;
-	*Leg3Diff = (Position - Leg3Turn)/Speed;
-	*Leg4Diff = (Position - Leg4Turn)/Speed;
-	*Leg5Diff = (Position - Leg5Turn)/Speed;
-	*Leg6Diff = (Position - Leg6Turn)/Speed;
+	*Leg1Diff = (PositionL - Leg1Turn)/Speed;
+	*Leg2Diff = (PositionL - Leg2Turn)/Speed;
+	*Leg3Diff = (PositionL - Leg3Turn)/Speed;
+	*Leg4Diff = (PositionR - Leg4Turn)/Speed;
+	*Leg5Diff = (PositionR - Leg5Turn)/Speed;
+	*Leg6Diff = (PositionR - Leg6Turn)/Speed;
 }
 
 void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)

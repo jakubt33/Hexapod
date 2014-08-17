@@ -8,6 +8,16 @@
 #ifndef BLUETOOTH_H_
 #define BLUETOOTH_H_
 
+#define BTPORT GPIOC
+#define CONNECTIONPIN GPIO_Pin_15
+
+
+void checkBluetooth();
+void checkConnection();
+void connectionEstablishedMessage();
+void connectionNotEstablished();
+
+
 void checkBluetooth()
 {
 	if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET)
@@ -65,8 +75,8 @@ void checkBluetooth()
 			USART_ClearFlag(USART3,USART_FLAG_RXNE);
 			Lift += USART_ReceiveData(USART3) - '0';
 
-			//if(Lift<14 || Lift>40)
-				//Lift = 30;
+			if(Lift<14 || Lift>40)
+				Lift = 23;
 
 
 
@@ -107,5 +117,48 @@ void checkBluetooth()
 	}
 }
 
+void connectionEstablishedMessage()
+{
+
+	ConnectionEstablished = TRUE;
+
+
+	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);
+
+	LED_LEG1_ON;
+	delay_ms(200);
+	LED_LEG2_ON;
+	delay_ms(200);
+	LED_LEG3_ON;
+	delay_ms(200);
+	LED_LEG4_ON;
+	delay_ms(200);
+	LED_LEG5_ON;
+	delay_ms(200);
+	LED_LEG6_ON;
+	delay_ms(200);
+
+	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);
+
+}
+
+void checkConnection()
+{
+
+	if( GPIO_ReadInputDataBit(BTPORT, CONNECTIONPIN  == 1) )
+	{
+		connectionEstablishedMessage();
+	}
+
+}
+
+void connectionNotEstablished()
+{
+	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
+	delay_ms(10);
+	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);
+	delay_ms(50);
+
+}
 
 #endif /* BLUETOOTH_H_ */

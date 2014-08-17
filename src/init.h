@@ -8,13 +8,15 @@
 #ifndef INIT_H_
 #define INIT_H_
 
+
 volatile unsigned int Batt_4_5_value;
 volatile unsigned int Batt_3_5_value;
 volatile unsigned int Batt_2_5_value;
 volatile unsigned int Batt_1_5_value;
 volatile unsigned int Batt_critical_value;
 
-void init_USART()
+
+void init_Bluetooth()
 {
   //w³¹czenie zegara portu
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
@@ -48,6 +50,18 @@ void init_USART()
 
   //Uruchomienie USART3
   USART_Cmd(USART3,ENABLE);
+
+
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+  //connection established indicator
+	GPIO_InitTypeDef GPIO_InitStructur;
+	GPIO_StructInit (& GPIO_InitStructur);
+	GPIO_InitStructur.GPIO_Pin = GPIO_Pin_15;
+	GPIO_InitStructur.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_InitStructur.GPIO_Speed = GPIO_Speed_2MHz;
+
+	GPIO_Init(GPIOC, &GPIO_InitStructur);
+
 }
 
 
@@ -60,10 +74,10 @@ void init_TIM2()
 
 	TIM_InitStruct.TIM_ClockDivision = TIM_CKD_DIV1; // dzielnik 1
 	TIM_InitStruct.TIM_CounterMode = TIM_CounterMode_Up; // licznik w górê
-	TIM_InitStruct.TIM_Period = 50; // okres licznika 50 us
-	TIM_InitStruct.TIM_Prescaler = 7; // preskaler 8
+	TIM_InitStruct.TIM_Period = 10; // okres licznika 10 us, 2stopnie serwo
+	TIM_InitStruct.TIM_Prescaler = 23; // preskaler 24
 	TIM_TimeBaseInit(TIM2, &TIM_InitStruct); // inicjalizuje TIM2
-	//wywo³anie przerwania z f=50hz, regulacja 90kroków w kadym
+	//wywo³anie przerwania z f=50hz, regulacja 1stoppien
 
 	TIM_ClearFlag( TIM2, TIM_FLAG_Update ); // czyœci flagê aktualizacji TIM2
 	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); // w³¹cza przerwanie aktualizacji TIM2
@@ -76,6 +90,41 @@ void init_TIM2()
 	NVIC_Init(&NVIC_InitStruct); // inicjalizacja linii przerwania
 }
 
+void init_Clock()
+{
+
+	  // Reset ustawien RCC
+	 //RCC_DeInit();
+
+
+	        FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
+	        // zwloka dla pamieci Flash
+	        FLASH_SetLatency(FLASH_Latency_2);
+
+	        // HCLK = SYSCLK
+	        RCC_HCLKConfig(RCC_SYSCLK_Div1);
+
+	        // PCLK2 = HCLK
+	        RCC_PCLK2Config(RCC_HCLK_Div1);
+
+	        // PCLK1 = HCLK/2
+	        RCC_PCLK1Config(RCC_HCLK_Div2);
+
+	        // PLLCLK = 4Hz * 14 = 56 MHz
+	        RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_14);
+
+	        // Wlacz PLL
+	        RCC_PLLCmd(ENABLE);
+	        // Czekaj az PLL poprawnie sie uruchomi
+	        while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
+	        // PLL bedzie zrodlem sygnalu zegarowego
+
+
+	        RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+	        // Czekaj az PLL bedzie sygnalem zegarowym systemu
+	        while(RCC_GetSYSCLKSource() != 0x08);
+
+}
 
 void set_SupplyVoltage(volatile float MaxVoltage)
 {
@@ -158,6 +207,17 @@ void init_ADC()
 	while(ADC_GetCalibrationStatus (ADC1) == SET);
 
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE); //start conversion
+}
+
+void delay_ms(volatile int LocalCounter)
+{
+	LocalCounter*=10;
+	while(LocalCounter--);
+}
+
+void delay_us(volatile int LocalCounter)
+{
+	while(LocalCounter--);
 }
 
 
