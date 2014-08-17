@@ -75,7 +75,7 @@ void init_TIM2()
 	TIM_InitStruct.TIM_ClockDivision = TIM_CKD_DIV1; // dzielnik 1
 	TIM_InitStruct.TIM_CounterMode = TIM_CounterMode_Up; // licznik w górê
 	TIM_InitStruct.TIM_Period = 10; // okres licznika 10 us, 2stopnie serwo
-	TIM_InitStruct.TIM_Prescaler = 23; // preskaler 24
+	TIM_InitStruct.TIM_Prescaler = 55; // preskaler 56
 	TIM_TimeBaseInit(TIM2, &TIM_InitStruct); // inicjalizuje TIM2
 	//wywo³anie przerwania z f=50hz, regulacja 1stoppien
 
@@ -211,7 +211,7 @@ void init_ADC()
 
 void delay_ms(volatile int LocalCounter)
 {
-	LocalCounter*=10;
+	LocalCounter*=5000;
 	while(LocalCounter--);
 }
 
