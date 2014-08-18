@@ -2,11 +2,17 @@
  * movement.h
  *
  *  Created on: Aug 18, 2014
- *      Author: Kuba
+ *      Author: Jakub Trzyna
  */
 
 #ifndef MOVEMENT_H_
 #define MOVEMENT_H_
+
+void basePosition(int Speed)
+{
+	legTurn(123456, 0, Speed);
+	legLift(123456, 0, Speed);
+}
 
 void goAhead(int Speed)
 {

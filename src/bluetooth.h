@@ -9,7 +9,7 @@
 #define BLUETOOTH_H_
 
 #define BTPORT GPIOC
-#define CONNECTIONPIN GPIO_Pin_15
+#define CONNECTIONPIN GPIO_Pin_13
 
 
 void checkBluetooth();
@@ -144,16 +144,28 @@ void connectionEstablishedMessage()
 
 void checkConnection()
 {
-
-	if( GPIO_ReadInputDataBit(BTPORT, CONNECTIONPIN  == 1) )
+	if( GPIO_ReadInputDataBit(BTPORT, CONNECTIONPIN) == SET )
 	{
 		connectionEstablishedMessage();
 	}
+	else
+	{
+		connectionNotEstablished();
+	}
+}
 
+void checkIfConnectionLost()
+{
+	if( GPIO_ReadInputDataBit(BTPORT, CONNECTIONPIN) == RESET )
+	{
+		connectionNotEstablished();
+	}
 }
 
 void connectionNotEstablished()
 {
+	ConnectionEstablished = FALSE;
+
 	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
 	delay_ms(500);
 	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);

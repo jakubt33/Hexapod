@@ -28,31 +28,26 @@ int main(void)
 	init_TIM2();
 	init_Bluetooth();
 
-
-	//delay_ms(1000);
 	checkBattery();
 
 	//GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
 	//GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
 
-	delay_ms(1000);
-
-	//step1
-	legTurn(123456, 0, 4);
-	legLift(123456, 0, 4);
-	delay_ms(500);
-
+	//basePosition(5);
+	//delay_ms(2000);
 
 	while (1)
 	{
-		goAhead(5);
+		//goAhead(5);
 
-		/*
+		checkBattery();
 		checkConnection();
-		//while(ConnectionEstablished == TRUE)
-			//checkBluetooth();
-		//connectionNotEstablished();
-		 */
+		while(ConnectionEstablished == TRUE)
+		{
+			checkBluetooth();
+			checkBattery();
+			checkIfConnectionLost();
+		}
 	}
 
 }

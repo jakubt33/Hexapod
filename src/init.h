@@ -48,20 +48,18 @@ void init_Bluetooth()
   USART_InitStructure.USART_HardwareFlowControl=USART_HardwareFlowControl_None; //Sprzêtowa kontrola przep³ywu - brak
   USART_Init(USART3,&USART_InitStructure);
 
-  //Uruchomienie USART3
-  USART_Cmd(USART3,ENABLE);
+    //Uruchomienie USART3
+    USART_Cmd(USART3,ENABLE);
 
-
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-  //connection established indicator
+  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+  	//connection established indicator
 	GPIO_InitTypeDef GPIO_InitStructur;
 	GPIO_StructInit (& GPIO_InitStructur);
-	GPIO_InitStructur.GPIO_Pin = GPIO_Pin_15;
+	GPIO_InitStructur.GPIO_Pin = CONNECTIONPIN ;
 	GPIO_InitStructur.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_InitStructur.GPIO_Speed = GPIO_Speed_2MHz;
 
-	GPIO_Init(GPIOC, &GPIO_InitStructur);
-
+	GPIO_Init(BTPORT, &GPIO_InitStructur);
 }
 
 
@@ -92,37 +90,32 @@ void init_TIM2()
 
 void init_Clock()
 {
+	FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
+	// zwloka dla pamieci Flash
+	FLASH_SetLatency(FLASH_Latency_2);
 
-	  // Reset ustawien RCC
-	 //RCC_DeInit();
+	// HCLK = SYSCLK
+	RCC_HCLKConfig(RCC_SYSCLK_Div1);
 
+	// PCLK2 = HCLK
+	RCC_PCLK2Config(RCC_HCLK_Div1);
 
-	        FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
-	        // zwloka dla pamieci Flash
-	        FLASH_SetLatency(FLASH_Latency_2);
+	// PCLK1 = HCLK/2
+	RCC_PCLK1Config(RCC_HCLK_Div2);
 
-	        // HCLK = SYSCLK
-	        RCC_HCLKConfig(RCC_SYSCLK_Div1);
+	// PLLCLK = 4Hz * 14 = 56 MHz
+	RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_14);
 
-	        // PCLK2 = HCLK
-	        RCC_PCLK2Config(RCC_HCLK_Div1);
-
-	        // PCLK1 = HCLK/2
-	        RCC_PCLK1Config(RCC_HCLK_Div2);
-
-	        // PLLCLK = 4Hz * 14 = 56 MHz
-	        RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_14);
-
-	        // Wlacz PLL
-	        RCC_PLLCmd(ENABLE);
-	        // Czekaj az PLL poprawnie sie uruchomi
-	        while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
-	        // PLL bedzie zrodlem sygnalu zegarowego
+	// Wlacz PLL
+	RCC_PLLCmd(ENABLE);
+	// Czekaj az PLL poprawnie sie uruchomi
+	while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
+	// PLL bedzie zrodlem sygnalu zegarowego
 
 
-	        RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-	        // Czekaj az PLL bedzie sygnalem zegarowym systemu
-	        while(RCC_GetSYSCLKSource() != 0x08);
+	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+	// Czekaj az PLL bedzie sygnalem zegarowym systemu
+	while(RCC_GetSYSCLKSource() != 0x08);
 
 }
 
