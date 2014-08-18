@@ -38,7 +38,12 @@ int main(void)
 
 	while (1)
 	{
-		connectionNotEstablished();
+
+		legLift(123456, -46, 5);
+		delay_ms(2000);
+
+		legLift(123456, -28, 5);
+		delay_ms(2000);
 		/*
 		//step1
 		legTurn(123456, 20, 3);

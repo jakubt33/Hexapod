@@ -155,9 +155,9 @@ void checkConnection()
 void connectionNotEstablished()
 {
 	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
-	delay_ms(10);
+	delay_ms(500);
 	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);
-	delay_ms(50);
+	delay_ms(500);
 
 }
 
