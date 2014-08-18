@@ -90,10 +90,7 @@ void applyLegs(int x, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int
 void TIM2_IRQHandler();
 
 void legLift(long unsigned int WhichLeg, int Position, int Speed); //symetrically \||/
-void checkLiftDiff(int PostionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
-
-void legTurn(long unsigned int WhichLeg, int Position, int Speed); //unsymetrically /||/
-void checkTurnSpeed(int Speed, int PositionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff);
+void legTurn(long unsigned int WhichLeg, int Position, int Speed); //symetrically \||/
 
 void TIM2_IRQHandler()
 {
@@ -164,64 +161,102 @@ void TIM2_IRQHandler()
 
 void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 {
-	if(Speed>3) Speed = 3;
+	if(Speed>9) Speed = MAX_SPEED;
+	if(Speed<0) Speed = 0;
+	Speed = 2*(MAX_SPEED - Speed);
+
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
 
+	int PositionL = Position;
+	int PositionR = -Position; //mirror view
+
 	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
 
-	int PositionL = Position;
-	int PositionR = Position - 2*(Position-30); //mirror view
-
-	checkTurnSpeed(Speed, PositionL, PositionR, &Leg1Diff, &Leg2Diff, &Leg3Diff, &Leg4Diff, &Leg5Diff, &Leg6Diff);
-
-
 	if(Leg1)
-		LED_LEG1_ON;
-	else
-		LED_LEG1_OFF;
+		Leg1Diff = (PositionL - (Leg1Turn-LEG1TURN_BASE));
 	if(Leg2)
-		LED_LEG2_ON;
-	else
-		LED_LEG2_OFF;
+		Leg2Diff = (PositionL - (Leg2Turn-LEG2TURN_BASE));
 	if(Leg3)
-		LED_LEG3_ON;
-	else
-		LED_LEG3_OFF;
+		Leg3Diff = (PositionL - (Leg3Turn-LEG3TURN_BASE));
 	if(Leg4)
-		LED_LEG4_ON;
-	else
-		LED_LEG4_OFF;
+		Leg4Diff = (PositionR - (Leg4Turn-LEG4TURN_BASE));
 	if(Leg5)
-		LED_LEG5_ON;
-	else
-		LED_LEG5_OFF;
+		Leg5Diff = (PositionR - (Leg5Turn-LEG5TURN_BASE));
 	if(Leg6)
-		LED_LEG6_ON;
-	else
-		LED_LEG6_OFF;
+		Leg6Diff = (PositionR - (Leg6Turn-LEG6TURN_BASE));
 
 
+	int MAXDiff=0;
+	if( (Leg1Diff > MAXDiff) && (Leg1Diff > 0) )
+		MAXDiff = Leg1Diff;
+	else if( (-Leg1Diff > MAXDiff) && (Leg1Diff < 0) )
+		MAXDiff = -Leg1Diff;
 
-	int SpeedCounter=0;
-	for(SpeedCounter=Speed;SpeedCounter<=MAX_SPEED;SpeedCounter++)
+	if( (Leg2Diff > MAXDiff) && (Leg2Diff > 0) )
+		MAXDiff = Leg2Diff;
+	else if( (-Leg2Diff > MAXDiff) && (Leg2Diff < 0) )
+		MAXDiff = -Leg2Diff;
+
+	if( (Leg3Diff > MAXDiff) && (Leg3Diff > 0) )
+		MAXDiff = Leg3Diff;
+	else if( (-Leg3Diff > MAXDiff) && (Leg3Diff < 0) )
+		MAXDiff = -Leg3Diff;
+
+	if( (Leg4Diff > MAXDiff) && (Leg4Diff > 0) )
+		MAXDiff = Leg4Diff;
+	else if( (-Leg4Diff > MAXDiff) && (Leg4Diff < 0) )
+		MAXDiff = -Leg4Diff;
+
+	if( (Leg5Diff > MAXDiff) && (Leg5Diff > 0) )
+		MAXDiff = Leg5Diff;
+	else if( (-Leg5Diff > MAXDiff) && (Leg5Diff < 0) )
+		MAXDiff = -Leg5Diff;
+
+	if( (Leg6Diff > MAXDiff) && (Leg6Diff > 0) )
+		MAXDiff = Leg6Diff;
+	else if( (-Leg6Diff > MAXDiff) && (Leg6Diff < 0) )
+		MAXDiff = -Leg6Diff;
+	//mamy +maxDiff
+
+
+	int LCounter=1;
+	for(LCounter=MAXDiff; LCounter>=1; LCounter--)
 	{
-		if(Leg1)
-			Leg1Turn += Leg1Diff;
-		if(Leg2)
-			Leg2Turn += Leg2Diff;
-		if(Leg3)
-			Leg3Turn += Leg3Diff;
-		if(Leg4)
-			Leg4Turn += Leg4Diff;
-		if(Leg5)
-			Leg5Turn += Leg5Diff;
-		if(Leg6)
-			Leg6Turn += Leg6Diff;
+		if( (Leg1Diff >= LCounter) && (Leg1Diff > 0) )
+			Leg1Turn++;
+		else if( (-Leg1Diff >= LCounter) && (Leg1Diff < 0) )
+			Leg1Turn--;
 
-		delay_ms(150);
+		if( (Leg2Diff >= LCounter) && (Leg2Diff > 0) )
+			Leg2Turn++;
+		else if( (-Leg2Diff >= LCounter) && (Leg2Diff < 0) )
+			Leg2Turn--;
+
+		if( (Leg3Diff >= LCounter) && (Leg3Diff > 0) )
+			Leg3Turn++;
+		else if( (-Leg3Diff >= LCounter) && (Leg3Diff < 0) )
+			Leg3Turn--;
+
+		if( (Leg4Diff >= LCounter) && (Leg4Diff > 0) )
+			Leg4Turn++;
+		else if( (-Leg4Diff >= LCounter) && (Leg4Diff < 0) )
+			Leg4Turn--;
+
+		if( (Leg5Diff >= LCounter) && (Leg5Diff > 0) )
+			Leg5Turn++;
+		else if( (-Leg5Diff >= LCounter) && (Leg5Diff < 0) )
+			Leg5Turn--;
+
+		if( (Leg6Diff >= LCounter) && (Leg6Diff > 0) )
+			Leg6Turn++;
+		else if( (-Leg6Diff >= LCounter) && (Leg6Diff < 0) )
+			Leg6Turn--;
+
+
+		delay_ms(Speed);
 	}
 }
 
@@ -235,30 +270,6 @@ void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 0-9, p
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
-	if(Leg1)
-		LED_LEG1_ON;
-	else
-		LED_LEG1_OFF;
-	if(Leg2)
-		LED_LEG2_ON;
-	else
-		LED_LEG2_OFF;
-	if(Leg3)
-		LED_LEG3_ON;
-	else
-		LED_LEG3_OFF;
-	if(Leg4)
-		LED_LEG4_ON;
-	else
-		LED_LEG4_OFF;
-	if(Leg5)
-		LED_LEG5_ON;
-	else
-		LED_LEG5_OFF;
-	if(Leg6)
-		LED_LEG6_ON;
-	else
-		LED_LEG6_OFF;
 
 
 	int PositionL = Position;
@@ -351,17 +362,6 @@ void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 0-9, p
 	}
 }
 
-void checkTurnSpeed(int Speed, int PositionL, int PositionR, int *Leg1Diff, int *Leg2Diff, int *Leg3Diff, int *Leg4Diff, int *Leg5Diff, int *Leg6Diff)
-{
-	Speed = MAX_SPEED+1 - Speed;
-	*Leg1Diff = (PositionL - Leg1Turn)/Speed;
-	*Leg2Diff = (PositionL - Leg2Turn)/Speed;
-	*Leg3Diff = (PositionL - Leg3Turn)/Speed;
-	*Leg4Diff = (PositionR - Leg4Turn)/Speed;
-	*Leg5Diff = (PositionR - Leg5Turn)/Speed;
-	*Leg6Diff = (PositionR - Leg6Turn)/Speed;
-}
-
 void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)
 {
 	int x=0;
@@ -382,6 +382,31 @@ void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Le
 
 	x = (WhichLeg%1000000)/100000;
 	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
+
+	if(Leg1)
+		LED_LEG1_ON;
+	else
+		LED_LEG1_OFF;
+	if(Leg2)
+		LED_LEG2_ON;
+	else
+		LED_LEG2_OFF;
+	if(Leg3)
+		LED_LEG3_ON;
+	else
+		LED_LEG3_OFF;
+	if(Leg4)
+		LED_LEG4_ON;
+	else
+		LED_LEG4_OFF;
+	if(Leg5)
+		LED_LEG5_ON;
+	else
+		LED_LEG5_OFF;
+	if(Leg6)
+		LED_LEG6_ON;
+	else
+		LED_LEG6_OFF;
 }
 
 void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6)

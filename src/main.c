@@ -35,14 +35,13 @@ int main(void)
 	//GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
 
 
-
+	legLift(2, -20, 5);
 	while (1)
 	{
-
-		legLift(123456, -46, 5);
+		legTurn(123456, 20, 5);
 		delay_ms(2000);
 
-		legLift(123456, -28, 5);
+		legTurn(123456, -20, 5);
 		delay_ms(2000);
 		/*
 		//step1
