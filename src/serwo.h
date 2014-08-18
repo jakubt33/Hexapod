@@ -260,7 +260,7 @@ void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 	}
 }
 
-void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 0-9, position -90 to +40
+void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 0-9, position -50 to +80
 {
 	if(Speed>9) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
@@ -270,10 +270,12 @@ void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 0-9, p
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
+	if(Position<-50) Position = -50;
+	if(Position>80) Position = 80;
 
-
+	Position -= 40;
 	int PositionL = Position;
-	int PositionR = -Position; //mirror view
+	int PositionR = -PositionL; //mirror view
 
 	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
 

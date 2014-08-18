@@ -34,48 +34,35 @@ int main(void)
 	//GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
 	//GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
 
+	delay_ms(1000);
 
-	legLift(2, -20, 5);
+	//step1
+	legTurn(123456, 0, 4);
+	legLift(123456, 0, 4);
+	delay_ms(500);
+
+
 	while (1)
 	{
-		legTurn(123456, 20, 5);
-		delay_ms(2000);
-
-		legTurn(123456, -20, 5);
-		delay_ms(2000);
 		/*
-		//step1
-		legTurn(123456, 20, 3);
+		 * walking sequence
+		 *
+		legLift(135, 25, 4);
+		delay_ms(1000);
+		legTurn(246, -25, 4);
+		legTurn(135, 25, 4);
+		delay_ms(1000);
+		legLift(135, 0, 4);
 		delay_ms(1000);
 
-		//step2
-		legLift(24, 30, 3);
+		legLift(246, 25, 4);
 		delay_ms(1000);
-		legTurn(24, 32, 3);
+		legTurn(135, -25, 4);
+		legTurn(246, 25, 4);
 		delay_ms(1000);
-		legLift(24, 23, 3);
-		delay_ms(1000);
-
-		//step3
-		legLift(15, 30, 3);
-		delay_ms(1000);
-		legTurn(15, 32, 3);
-		delay_ms(1000);
-		legLift(15, 23, 3);
-		delay_ms(1000);
-
-		//step4
-		legLift(36, 30, 3);
-		delay_ms(1000);
-		legTurn(36, 32, 3);
-		delay_ms(1000);
-		legLift(36, 23, 3);
-		delay_ms(1000);
-
-		//step5
-		legTurn(123456, 20, 3);
-		delay_ms(1000);
+		legLift(246, 0, 4);
 		*/
+
 
 		/*
 		checkConnection();
