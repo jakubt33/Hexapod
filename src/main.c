@@ -15,6 +15,7 @@ void delay_us(int LocalCounter);
 #include "serwo.h"
 #include "bluetooth.h"
 #include "init.h"
+#include "movement.h"
 
 void checkBattery();
 
@@ -44,25 +45,7 @@ int main(void)
 
 	while (1)
 	{
-		/*
-		 * walking sequence
-		 *
-		legLift(135, 25, 4);
-		delay_ms(1000);
-		legTurn(246, -25, 4);
-		legTurn(135, 25, 4);
-		delay_ms(1000);
-		legLift(135, 0, 4);
-		delay_ms(1000);
-
-		legLift(246, 25, 4);
-		delay_ms(1000);
-		legTurn(135, -25, 4);
-		legTurn(246, 25, 4);
-		delay_ms(1000);
-		legLift(246, 0, 4);
-		*/
-
+		goAhead(5);
 
 		/*
 		checkConnection();
