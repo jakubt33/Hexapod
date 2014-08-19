@@ -8,6 +8,8 @@
 #define TRUE  1
 
 volatile int ConnectionEstablished = FALSE;
+volatile u8 EmergencyStop = FALSE;
+
 void delay_ms(int LocalCounter);
 void delay_us(int LocalCounter);
 
@@ -45,7 +47,7 @@ int main(void)
 		while(ConnectionEstablished == TRUE)
 		{
 			checkBluetooth();
-			checkBattery();
+			//checkBattery();
 			checkIfConnectionLost();
 		}
 	}

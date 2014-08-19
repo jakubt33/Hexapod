@@ -51,7 +51,6 @@
 #define LEG3LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_14)
 #define LEG4TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_15)
 
-volatile long int Counter = 0;
 
 #define LEG1LIFT_BASE 150
 #define LEG2LIFT_BASE 150
@@ -67,6 +66,8 @@ volatile long int Counter = 0;
 #define LEG5TURN_BASE 150
 #define LEG6TURN_BASE 150
 
+
+volatile long int Counter = 0;
 
 //steering:
 //up: L1,L2,L4 +40, L3,L5,L6 -40
@@ -96,7 +97,7 @@ void TIM2_IRQHandler()
 {
 	TIM_ClearFlag(TIM2, TIM_FLAG_Update);
 
-	if(Counter==0)
+	if( (Counter == 0) && (EmergencyStop) )
 	{
 
 		LEG1LIFT_ON;
@@ -385,27 +386,27 @@ void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Le
 	x = (WhichLeg%1000000)/100000;
 	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
 
-	if(Leg1)
+	if(*Leg1)
 		LED_LEG1_ON;
 	else
 		LED_LEG1_OFF;
-	if(Leg2)
+	if(*Leg2)
 		LED_LEG2_ON;
 	else
 		LED_LEG2_OFF;
-	if(Leg3)
+	if(*Leg3)
 		LED_LEG3_ON;
 	else
 		LED_LEG3_OFF;
-	if(Leg4)
+	if(*Leg4)
 		LED_LEG4_ON;
 	else
 		LED_LEG4_OFF;
-	if(Leg5)
+	if(*Leg5)
 		LED_LEG5_ON;
 	else
 		LED_LEG5_OFF;
-	if(Leg6)
+	if(*Leg6)
 		LED_LEG6_ON;
 	else
 		LED_LEG6_OFF;
