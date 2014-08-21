@@ -20,122 +20,61 @@ void connectionNotEstablished();
 
 void checkBluetooth()
 {
-	if(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET)
+	if( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET )
 	{
-		USART_ClearFlag(USART3,USART_FLAG_RXNE);
-
-		if(USART_ReceiveData(USART3) == 'M')
+		//char Msg1=USART_ReceiveData(USART3);
+		if( (USART_ReceiveData(USART3) >> 6) == 0b00 ) //Manual mode
 		{
-			long unsigned int Legs=0;
-			int Lift=0;
-			int Turn=0;
-			int Speed=0;
-
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			//getting legs information
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			if(USART_ReceiveData(USART3) != '0') Legs += 100000;
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			if(USART_ReceiveData(USART3) != '0') Legs += 20000;
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			if(USART_ReceiveData(USART3) != '0') Legs += 3000;
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			if(USART_ReceiveData(USART3) != '0') Legs += 400;
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			if(USART_ReceiveData(USART3) != '0') Legs += 50;
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			if(USART_ReceiveData(USART3) != '0') Legs += 6;
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-			//getting legs information
-
-
-			//getting lift information
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			Lift += 10* ( USART_ReceiveData(USART3) - '0' );
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			Lift += USART_ReceiveData(USART3) - '0';
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			Lift -= 50;
-			if(Lift<-50 || Lift>80)
-				Lift = 0;
-			//getting lift information
-
-
-
-			//getting turn information
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			Turn += 10* ( USART_ReceiveData(USART3) - '0' );
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			Turn += USART_ReceiveData(USART3) - '0';
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-
-			Turn -= 30;
-			if(Turn<-30 || Turn>30)
-				Turn = 0;
-			//getting turn information
-
-
-
-			//getting speed information
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			Speed = USART_ReceiveData(USART3) - '0';
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-			//getting speed information
-
-
-			//getting power cut down information
-			while(USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET);
-
-			USART_ClearFlag(USART3,USART_FLAG_RXNE);
-			EmergencyStop = USART_ReceiveData(USART3) - '0';
-			USART_SendData(USART3, USART_ReceiveData(USART3));
-			//getting power cut down information
-
-
-
-			legTurn(Legs, Turn, Speed);
-			legLift(Legs, Lift, Speed);
 
 		}
+		else if( (USART_ReceiveData(USART3) >> 6) == 0b01 ) //Auto mode
+		{
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
+			int Command = USART_ReceiveData(USART3) & 0b00111111;
+
+			while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
+
+			if( (USART_ReceiveData(USART3) >> 6) == 0b11 ) // whole message received
+			{
+				EmergencyStop = USART_ReceiveData(USART3) & 0b00000001;
+
+				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;;
+
+				switch(Command)
+				{
+					case 1:
+					{
+						goAhead(Speed);
+						break;
+					}
+					case 2:
+					{
+						GPIO_WriteBit(PORT_LED, LED_LEG2, Bit_SET);
+						break;
+					}
+					case 3:
+					{
+						GPIO_WriteBit(PORT_LED, LED_LEG3, Bit_SET);
+						break;
+					}
+					case 4:
+					{
+						GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3, Bit_RESET);
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+
+			}
+			else
+				USART_ClearFlag(USART3,USART_FLAG_RXNE);
+		}
+		else
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
 	}
 }
 

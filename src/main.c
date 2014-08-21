@@ -8,16 +8,16 @@
 #define TRUE  1
 
 volatile int ConnectionEstablished = FALSE;
-volatile u8 EmergencyStop = FALSE;
+volatile u8 EmergencyStop = TRUE;
 
 void delay_ms(int LocalCounter);
 void delay_us(int LocalCounter);
 
 #include "leds.h"
 #include "serwo.h"
+#include "movement.h"
 #include "bluetooth.h"
 #include "init.h"
-#include "movement.h"
 
 void checkBattery();
 
@@ -41,6 +41,7 @@ int main(void)
 	while (1)
 	{
 		//goAhead(5);
+
 
 		checkBattery();
 		checkConnection();
