@@ -22,9 +22,57 @@ void checkBluetooth()
 {
 	if( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET )
 	{
-		//char Msg1=USART_ReceiveData(USART3);
 		if( (USART_ReceiveData(USART3) >> 6) == 0b00 ) //Manual mode
 		{
+			USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
+			unsigned long Legs = USART_ReceiveData(USART3) & 0b00111111;
+			convertLegs(&Legs);
+
+			while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
+
+			if( (USART_ReceiveData(USART3) >> 6) == 0b10 )
+			{
+				USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
+				int Lift = (USART_ReceiveData(USART3) & 0b00111111) << 2; //lift is a 7-bit number
+
+				while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
+
+				if( (USART_ReceiveData(USART3) >> 6) == 0b10 )
+				{
+					USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
+					Lift += (USART_ReceiveData(USART3) >> 5) & 0b00000001;
+
+					int Turn = USART_ReceiveData(USART3) & 0b00011111;
+
+					while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
+
+					if( (USART_ReceiveData(USART3) >> 6) == 0b11 )
+					{
+						USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
+						EmergencyStop = USART_ReceiveData(USART3) & 0b00000001;
+
+						int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
+
+
+						legTurn(Legs, Turn-30, Speed);
+						legLift(Legs, Lift-50, Speed);
+
+					}
+					else
+						USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
+				}
+				else
+					USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
+			}
+			else
+				USART_ClearFlag(USART3,USART_FLAG_RXNE);
+
 
 		}
 		else if( (USART_ReceiveData(USART3) >> 6) == 0b01 ) //Auto mode
@@ -39,7 +87,7 @@ void checkBluetooth()
 			{
 				EmergencyStop = USART_ReceiveData(USART3) & 0b00000001;
 
-				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;;
+				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
 
 				switch(Command)
 				{

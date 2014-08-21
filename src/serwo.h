@@ -439,4 +439,22 @@ void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6
 	}
 }
 
+void convertLegs(unsigned long *Legs)
+{
+	char TempLegs = *Legs;
+
+	if(TempLegs & 0b00100000)
+		*Legs += 100000;
+	if(TempLegs & 0b00010000)
+		*Legs += 20000;
+	if(TempLegs & 0b00001000)
+		*Legs += 3000;
+	if(TempLegs & 0b00000100)
+		*Legs += 400;
+	if(TempLegs & 0b00000010)
+		*Legs += 50;
+	if(TempLegs & 0b00000001)
+		*Legs += 6;
+
+}
 #endif /* SERWO_H_ */
