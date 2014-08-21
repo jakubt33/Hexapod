@@ -35,7 +35,8 @@ void checkBluetooth()
 			{
 				USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
-				int Lift = (USART_ReceiveData(USART3) & 0b00111111) << 2; //lift is a 7-bit number
+				unsigned int Lift = 0;
+				Lift = (USART_ReceiveData(USART3) & 0b00111111) << 1; //lift is a 7-bit number
 
 				while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
 
@@ -45,7 +46,8 @@ void checkBluetooth()
 
 					Lift += (USART_ReceiveData(USART3) >> 5) & 0b00000001;
 
-					int Turn = USART_ReceiveData(USART3) & 0b00011111;
+					unsigned int Turn = 0;
+					Turn = (USART_ReceiveData(USART3) & 0b00011111) << 1;
 
 					while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
 
@@ -55,7 +57,8 @@ void checkBluetooth()
 
 						EmergencyStop = USART_ReceiveData(USART3) & 0b00000001;
 
-						int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
+						int Speed = 0;
+						Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
 
 
 						legTurn(Legs, Turn-30, Speed);

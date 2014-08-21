@@ -442,6 +442,7 @@ void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6
 void convertLegs(unsigned long *Legs)
 {
 	char TempLegs = *Legs;
+	*Legs = 0;
 
 	if(TempLegs & 0b00100000)
 		*Legs += 100000;
