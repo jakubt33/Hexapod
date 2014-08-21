@@ -26,8 +26,7 @@ void checkBluetooth()
 		{
 			USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
-			unsigned long Legs = USART_ReceiveData(USART3) & 0b00111111;
-			convertLegs(&Legs);
+			char Legs = USART_ReceiveData(USART3) & 0b00111111;
 
 			while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
 
@@ -101,17 +100,32 @@ void checkBluetooth()
 					}
 					case 2:
 					{
-						GPIO_WriteBit(PORT_LED, LED_LEG2, Bit_SET);
+						goBack(Speed);
 						break;
 					}
 					case 3:
 					{
-						GPIO_WriteBit(PORT_LED, LED_LEG3, Bit_SET);
+						turnLeft(Speed);
 						break;
 					}
 					case 4:
 					{
-						GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3, Bit_RESET);
+						turnRight(Speed);
+						break;
+					}
+					case 5:
+					{
+						basePosition(Speed);
+						break;
+					}
+					case 6:
+					{
+						goLeft(Speed);
+						break;
+					}
+					case 7:
+					{
+						goRight(Speed);
 						break;
 					}
 					default:

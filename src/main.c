@@ -30,8 +30,6 @@ int main(void)
 	init_TIM2();
 	init_Bluetooth();
 
-	checkBattery();
-
 	//GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
 	//GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
 
@@ -48,7 +46,7 @@ int main(void)
 		while(ConnectionEstablished == TRUE)
 		{
 			checkBluetooth();
-			//checkBattery();
+			checkBattery();
 			checkIfConnectionLost();
 		}
 	}
@@ -72,4 +70,5 @@ void checkBattery()
 		batt_4_5();
 	else
 		batt_5_5();
+
 }

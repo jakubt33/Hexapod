@@ -10,8 +10,8 @@
 
 void basePosition(int Speed)
 {
-	legTurn(123456, 0, Speed);
-	legLift(123456, 0, Speed);
+	legTurn(0b00111111, 0, Speed);
+	legLift(0b00111111, 0, Speed);
 }
 
 void goAhead(int Speed)
@@ -31,6 +31,31 @@ void goAhead(int Speed)
 	delay_ms(100);
 	legLift(246, 0, Speed);
 	delay_ms(100);
+}
+
+void goBack(int Speed)
+{
+
+}
+
+void turnLeft(int Speed)
+{
+
+}
+
+void turnRight(int Speed)
+{
+
+}
+
+void goLeft(int Speed)
+{
+
+}
+
+void goRight(int Speed)
+{
+
 }
 
 #endif /* MOVEMENT_H_ */

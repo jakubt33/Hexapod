@@ -166,7 +166,7 @@ void init_Servo()
 
 void init_ADC()
 {
-	set_SupplyVoltage(10);
+	set_SupplyVoltage(9.5);
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	GPIO_InitTypeDef GPIO_InitStructure;

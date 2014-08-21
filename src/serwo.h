@@ -86,12 +86,12 @@ volatile  int Leg4Turn = LEG4TURN_BASE;
 volatile  int Leg5Turn = LEG5TURN_BASE;
 volatile  int Leg6Turn = LEG6TURN_BASE;
 
-void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
+void checkLegs(char WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
 void applyLegs(int x, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
 void TIM2_IRQHandler();
 
-void legLift(long unsigned int WhichLeg, int Position, int Speed); //symetrically \||/
-void legTurn(long unsigned int WhichLeg, int Position, int Speed); //symetrically \||/
+void legLift(char WhichLeg, int Position, int Speed); //symetrically \||/
+void legTurn(char WhichLeg, int Position, int Speed); //symetrically \||/
 
 void TIM2_IRQHandler()
 {
@@ -160,7 +160,7 @@ void TIM2_IRQHandler()
 		Counter = 0;
 }
 
-void legTurn(long unsigned int WhichLeg, int Position, int Speed)
+void legTurn(char WhichLeg, int Position, int Speed)
 {
 	if(Speed>9) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
@@ -261,7 +261,7 @@ void legTurn(long unsigned int WhichLeg, int Position, int Speed)
 	}
 }
 
-void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 0-9, position -50 to +80
+void legLift(char WhichLeg, int Position, int Speed) //speed 0-9, position -50 to +80
 {
 	if(Speed>9) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
@@ -365,26 +365,21 @@ void legLift(long unsigned int WhichLeg, int Position, int Speed) //speed 0-9, p
 	}
 }
 
-void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)
+void checkLegs(char WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)
 {
-	int x=0;
-	x = WhichLeg%10;
-	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
+	if(WhichLeg & 0b00100000)
+		*Leg1 = 1;
+	if(WhichLeg & 0b00010000)
+		*Leg2 = 1;
+	if(WhichLeg & 0b00001000)
+		*Leg3 = 1;
+	if(WhichLeg & 0b00000100)
+		*Leg4 = 1;
+	if(WhichLeg & 0b00000010)
+		*Leg5 = 1;
+	if(WhichLeg & 0b00000001)
+		*Leg6 = 1;
 
-	x = (WhichLeg%100)/10;
-	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
-
-	x = (WhichLeg%1000)/100;
-	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
-
-	x = (WhichLeg%10000)/1000;
-	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
-
-	x = (WhichLeg%100000)/10000;
-	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
-
-	x = (WhichLeg%1000000)/100000;
-	applyLegs(x,Leg1,Leg2,Leg3,Leg4,Leg5,Leg6);
 
 	if(*Leg1)
 		LED_LEG1_ON;
@@ -412,50 +407,5 @@ void checkLegs(int WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Le
 		LED_LEG6_OFF;
 }
 
-void applyLegs(int x,int *Leg1,int *Leg2,int *Leg3,int *Leg4,int *Leg5,int *Leg6)
-{
-	switch (x)
-	{
-	case 1:
-		*Leg1 = 1;
-		break;
-	case 2:
-		*Leg2 = 1;
-		break;
-	case 3:
-		*Leg3 = 1;
-		break;
-	case 4:
-		*Leg4 = 1;
-		break;
-	case 5:
-		*Leg5 = 1;
-		break;
-	case 6:
-		*Leg6 = 1;
-		break;
-	default:
-		break;
-	}
-}
 
-void convertLegs(unsigned long *Legs)
-{
-	char TempLegs = *Legs;
-	*Legs = 0;
-
-	if(TempLegs & 0b00100000)
-		*Legs += 100000;
-	if(TempLegs & 0b00010000)
-		*Legs += 20000;
-	if(TempLegs & 0b00001000)
-		*Legs += 3000;
-	if(TempLegs & 0b00000100)
-		*Legs += 400;
-	if(TempLegs & 0b00000010)
-		*Legs += 50;
-	if(TempLegs & 0b00000001)
-		*Legs += 6;
-
-}
 #endif /* SERWO_H_ */
