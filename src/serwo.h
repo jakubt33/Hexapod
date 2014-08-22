@@ -8,7 +8,7 @@
 #ifndef SERWO_H_
 #define SERWO_H_
 
-#define MAX_SPEED 9
+#define MAX_SPEED 15
 #define TIME_TO_GET_50HZ 2000 //2000
 
 #define PORT_SERWO GPIOB
@@ -162,7 +162,7 @@ void TIM2_IRQHandler()
 
 void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 {
-	if(Speed>9) Speed = MAX_SPEED;
+	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
 	Speed = 2*(MAX_SPEED - Speed);
 
@@ -174,7 +174,9 @@ void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 	int PositionL = Position;
 	int PositionR = -Position; //mirror view
 
+
 	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
+
 
 	if(ExtraCase == 0)
 	{
@@ -281,7 +283,7 @@ void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 
 void legLift(char WhichLeg, int Position, int Speed) //speed 0-9, position -50 to +80
 {
-	if(Speed>9) Speed = MAX_SPEED;
+	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
 	Speed = 2*(MAX_SPEED - Speed);
 
