@@ -10,8 +10,31 @@
 
 void basePosition(int Speed)
 {
-	legTurn(0b00111111, 0, Speed, 0);
-	legLift(0b00111111, 0, Speed);
+	if(Speed>9) Speed = 9;
+	legLift(0b000001, 25, Speed);
+	legTurn(0b000001, 0, Speed, 0);
+	legLift(0b000001, 0, Speed);
+
+	legLift(0b000010, 25, Speed);
+	legTurn(0b000010, 0, Speed, 0);
+	legLift(0b000010, 0, Speed);
+
+	legLift(0b000100, 25, Speed);
+	legTurn(0b000100, 0, Speed, 0);
+	legLift(0b000100, 0, Speed);
+
+	legLift(0b001000, 25, Speed);
+	legTurn(0b001000, 0, Speed, 0);
+	legLift(0b001000, 0, Speed);
+
+	legLift(0b010000, 25, Speed);
+	legTurn(0b010000, 0, Speed, 0);
+	legLift(0b010000, 0, Speed);
+
+	legLift(0b100000, 25, Speed);
+	legTurn(0b100000, 0, Speed, 0);
+	legLift(0b100000, 0, Speed);
+
 }
 
 void goAhead(int Speed)
