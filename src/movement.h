@@ -10,32 +10,31 @@
 
 void basePosition(int Speed)
 {
-	legTurn(0b00111111, 0, Speed);
+	legTurn(0b00111111, 0, Speed, 0);
 	legLift(0b00111111, 0, Speed);
 }
 
 void goAhead(int Speed)
 {
-	legLift(135, 25, Speed);
-	delay_ms(100);
-	legTurn(246, -25, Speed);
-	legTurn(135, 25, Speed);
-	delay_ms(100);
-	legLift(135, 0, Speed);
-	delay_ms(100);
+	if(Speed>8) Speed = 8;
+	legLift(0b101010, 25, Speed);  //135
+	legTurn(0b111111, -25, Speed, 1); //246
+	legLift(0b101010, 0, Speed);
 
-	legLift(246, 25, Speed);
-	delay_ms(100);
-	legTurn(135, -25, Speed);
-	legTurn(246, 25, Speed);
-	delay_ms(100);
-	legLift(246, 0, Speed);
-	delay_ms(100);
+	legLift(0b010101, 25, Speed);
+	legTurn(0b111111, 25, Speed, 1);
+	legLift(0b010101, 0, Speed);
 }
 
 void goBack(int Speed)
 {
+	legLift(0b101010, 25, Speed);  //135
+	legTurn(0b111111, 25, Speed, 1); //246
+	legLift(0b101010, 0, Speed);
 
+	legLift(0b010101, 25, Speed);
+	legTurn(0b111111, -25, Speed, 1);
+	legLift(0b010101, 0, Speed);
 }
 
 void turnLeft(int Speed)

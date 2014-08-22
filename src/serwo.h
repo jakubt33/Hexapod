@@ -91,7 +91,7 @@ void applyLegs(int x, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int
 void TIM2_IRQHandler();
 
 void legLift(char WhichLeg, int Position, int Speed); //symetrically \||/
-void legTurn(char WhichLeg, int Position, int Speed); //symetrically \||/
+void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase); //symetrically \||/
 
 void TIM2_IRQHandler()
 {
@@ -160,7 +160,7 @@ void TIM2_IRQHandler()
 		Counter = 0;
 }
 
-void legTurn(char WhichLeg, int Position, int Speed)
+void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 {
 	if(Speed>9) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
@@ -176,18 +176,36 @@ void legTurn(char WhichLeg, int Position, int Speed)
 
 	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
 
-	if(Leg1)
-		Leg1Diff = (PositionL - (Leg1Turn-LEG1TURN_BASE));
-	if(Leg2)
-		Leg2Diff = (PositionL - (Leg2Turn-LEG2TURN_BASE));
-	if(Leg3)
-		Leg3Diff = (PositionL - (Leg3Turn-LEG3TURN_BASE));
-	if(Leg4)
-		Leg4Diff = (PositionR - (Leg4Turn-LEG4TURN_BASE));
-	if(Leg5)
-		Leg5Diff = (PositionR - (Leg5Turn-LEG5TURN_BASE));
-	if(Leg6)
-		Leg6Diff = (PositionR - (Leg6Turn-LEG6TURN_BASE));
+	if(ExtraCase == 0)
+	{
+		if(Leg1)
+			Leg1Diff = (PositionL - (Leg1Turn-LEG1TURN_BASE));
+		if(Leg2)
+			Leg2Diff = (PositionL - (Leg2Turn-LEG2TURN_BASE));
+		if(Leg3)
+			Leg3Diff = (PositionL - (Leg3Turn-LEG3TURN_BASE));
+		if(Leg4)
+			Leg4Diff = (PositionR - (Leg4Turn-LEG4TURN_BASE));
+		if(Leg5)
+			Leg5Diff = (PositionR - (Leg5Turn-LEG5TURN_BASE));
+		if(Leg6)
+			Leg6Diff = (PositionR - (Leg6Turn-LEG6TURN_BASE));
+	}
+	else if(ExtraCase == 1)
+	{
+		if(Leg1)
+			Leg1Diff = (PositionR - (Leg1Turn-LEG1TURN_BASE));
+		if(Leg2)
+			Leg2Diff = (PositionL - (Leg2Turn-LEG2TURN_BASE));
+		if(Leg3)
+			Leg3Diff = (PositionR - (Leg3Turn-LEG3TURN_BASE));
+		if(Leg4)
+			Leg4Diff = (PositionR - (Leg4Turn-LEG4TURN_BASE));
+		if(Leg5)
+			Leg5Diff = (PositionL - (Leg5Turn-LEG5TURN_BASE));
+		if(Leg6)
+			Leg6Diff = (PositionR - (Leg6Turn-LEG6TURN_BASE));
+	}
 
 
 	int MAXDiff=0;
