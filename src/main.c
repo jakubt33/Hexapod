@@ -6,6 +6,7 @@
 
 #define FALSE 0
 #define TRUE  1
+#define DONE  1
 
 volatile int ConnectionEstablished = FALSE;
 volatile u8 EmergencyStop = TRUE;
@@ -35,12 +36,10 @@ int main(void)
 
 	//basePosition(5);
 	//delay_ms(2000);
+	//tiltDown(2);
 
 	while (1)
 	{
-		//goAhead(5);
-
-
 		checkBattery();
 		checkConnection();
 		while(ConnectionEstablished == TRUE)
