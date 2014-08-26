@@ -69,6 +69,8 @@
 
 volatile long int Counter = 0;
 
+volatile int Step = 0;
+
 //steering:
 //up: L1,L2,L4 +40, L3,L5,L6 -40
 //down: L1,L2,L4 -90, L3,L5,L6 +90
@@ -87,11 +89,10 @@ volatile  int Leg5Turn = LEG5TURN_BASE;
 volatile  int Leg6Turn = LEG6TURN_BASE;
 
 void checkLegs(char WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
-void applyLegs(int x, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
 void TIM2_IRQHandler();
 
-void legLift(char WhichLeg, int Position, int Speed); //symetrically \||/
-void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase); //symetrically \||/
+u8 legLift(char WhichLeg, int Position, int Speed); //symetrically \||/
+u8 legTurn(char WhichLeg, int Position, int Speed, int ExtraCase); //symetrically \||/
 
 void TIM2_IRQHandler()
 {
@@ -160,7 +161,7 @@ void TIM2_IRQHandler()
 		Counter = 0;
 }
 
-void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
+u8 legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 {
 	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
@@ -171,117 +172,110 @@ void legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
 
-	int PositionL = Position;
-	int PositionR = -Position; //mirror view
+	int Position1 = Position;
+	int Position2 = Position;
+	int Position3 = Position;
+	int Position4 = -Position;
+	int Position5 = -Position;
+	int Position6 = -Position;
 
-
-	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
-
-
-	if(ExtraCase == 0)
+	if(ExtraCase == 1)
 	{
-		if(Leg1)
-			Leg1Diff = (PositionL - (Leg1Turn-LEG1TURN_BASE));
-		if(Leg2)
-			Leg2Diff = (PositionL - (Leg2Turn-LEG2TURN_BASE));
-		if(Leg3)
-			Leg3Diff = (PositionL - (Leg3Turn-LEG3TURN_BASE));
-		if(Leg4)
-			Leg4Diff = (PositionR - (Leg4Turn-LEG4TURN_BASE));
-		if(Leg5)
-			Leg5Diff = (PositionR - (Leg5Turn-LEG5TURN_BASE));
-		if(Leg6)
-			Leg6Diff = (PositionR - (Leg6Turn-LEG6TURN_BASE));
-	}
-	else if(ExtraCase == 1)
-	{
-		if(Leg1)
-			Leg1Diff = (PositionR - (Leg1Turn-LEG1TURN_BASE));
-		if(Leg2)
-			Leg2Diff = (PositionL - (Leg2Turn-LEG2TURN_BASE));
-		if(Leg3)
-			Leg3Diff = (PositionR - (Leg3Turn-LEG3TURN_BASE));
-		if(Leg4)
-			Leg4Diff = (PositionR - (Leg4Turn-LEG4TURN_BASE));
-		if(Leg5)
-			Leg5Diff = (PositionL - (Leg5Turn-LEG5TURN_BASE));
-		if(Leg6)
-			Leg6Diff = (PositionR - (Leg6Turn-LEG6TURN_BASE));
+		Position1 = -Position;
+		Position2 = Position;
+		Position3 = -Position;
+		Position4 = -Position;
+		Position5 = Position;
+		Position6 = -Position;
 	}
 
+	delay_ms(Speed);
 
-	int MAXDiff=0;
-	if( (Leg1Diff > MAXDiff) && (Leg1Diff > 0) )
-		MAXDiff = Leg1Diff;
-	else if( (-Leg1Diff > MAXDiff) && (Leg1Diff < 0) )
-		MAXDiff = -Leg1Diff;
-
-	if( (Leg2Diff > MAXDiff) && (Leg2Diff > 0) )
-		MAXDiff = Leg2Diff;
-	else if( (-Leg2Diff > MAXDiff) && (Leg2Diff < 0) )
-		MAXDiff = -Leg2Diff;
-
-	if( (Leg3Diff > MAXDiff) && (Leg3Diff > 0) )
-		MAXDiff = Leg3Diff;
-	else if( (-Leg3Diff > MAXDiff) && (Leg3Diff < 0) )
-		MAXDiff = -Leg3Diff;
-
-	if( (Leg4Diff > MAXDiff) && (Leg4Diff > 0) )
-		MAXDiff = Leg4Diff;
-	else if( (-Leg4Diff > MAXDiff) && (Leg4Diff < 0) )
-		MAXDiff = -Leg4Diff;
-
-	if( (Leg5Diff > MAXDiff) && (Leg5Diff > 0) )
-		MAXDiff = Leg5Diff;
-	else if( (-Leg5Diff > MAXDiff) && (Leg5Diff < 0) )
-		MAXDiff = -Leg5Diff;
-
-	if( (Leg6Diff > MAXDiff) && (Leg6Diff > 0) )
-		MAXDiff = Leg6Diff;
-	else if( (-Leg6Diff > MAXDiff) && (Leg6Diff < 0) )
-		MAXDiff = -Leg6Diff;
-	//mamy +maxDiff
-
-
-	int LCounter=1;
-	for(LCounter=MAXDiff; LCounter>=1; LCounter--)
+	u8 Flag = DONE;
+	if(Leg1)
 	{
-		if( (Leg1Diff >= LCounter) && (Leg1Diff > 0) )
+		if(Position1+LEG1TURN_BASE>Leg1Turn)
+		{
 			Leg1Turn++;
-		else if( (-Leg1Diff >= LCounter) && (Leg1Diff < 0) )
+			Flag = 0;
+		}
+		else if(Position1+LEG1TURN_BASE<Leg1Turn)
+		{
 			Leg1Turn--;
-
-		if( (Leg2Diff >= LCounter) && (Leg2Diff > 0) )
-			Leg2Turn++;
-		else if( (-Leg2Diff >= LCounter) && (Leg2Diff < 0) )
-			Leg2Turn--;
-
-		if( (Leg3Diff >= LCounter) && (Leg3Diff > 0) )
-			Leg3Turn++;
-		else if( (-Leg3Diff >= LCounter) && (Leg3Diff < 0) )
-			Leg3Turn--;
-
-		if( (Leg4Diff >= LCounter) && (Leg4Diff > 0) )
-			Leg4Turn++;
-		else if( (-Leg4Diff >= LCounter) && (Leg4Diff < 0) )
-			Leg4Turn--;
-
-		if( (Leg5Diff >= LCounter) && (Leg5Diff > 0) )
-			Leg5Turn++;
-		else if( (-Leg5Diff >= LCounter) && (Leg5Diff < 0) )
-			Leg5Turn--;
-
-		if( (Leg6Diff >= LCounter) && (Leg6Diff > 0) )
-			Leg6Turn++;
-		else if( (-Leg6Diff >= LCounter) && (Leg6Diff < 0) )
-			Leg6Turn--;
-
-
-		delay_ms(Speed);
+			Flag = 0;
+		}
 	}
+	if(Leg2)
+	{
+		if(Position2+LEG2TURN_BASE>Leg2Turn)
+		{
+			Leg2Turn++;
+			Flag = 0;
+		}
+		else if(Position2+LEG2TURN_BASE<Leg2Turn)
+		{
+			Leg2Turn--;
+			Flag = 0;
+		}
+	}
+	if(Leg3)
+	{
+		if(Position3+LEG3TURN_BASE>Leg3Turn)
+		{
+			Leg3Turn++;
+			Flag = 0;
+		}
+		else if(Position3+LEG3TURN_BASE<Leg3Turn)
+		{
+			Leg3Turn--;
+			Flag = 0;
+		}
+	}
+	if(Leg4)
+	{
+		if(Position4+LEG4TURN_BASE>Leg4Turn)
+		{
+			Leg4Turn++;
+			Flag = 0;
+		}
+		else if(Position4+LEG4TURN_BASE<Leg4Turn)
+		{
+			Leg4Turn--;
+			Flag = 0;
+		}
+	}
+	if(Leg5)
+	{
+		if(Position5+LEG5TURN_BASE>Leg5Turn)
+		{
+			Leg5Turn++;
+			Flag = 0;
+		}
+		else if(Position5+LEG5TURN_BASE<Leg5Turn)
+		{
+			Leg5Turn--;
+			Flag = 0;
+		}
+	}
+	if(Leg6)
+	{
+		if(Position6+LEG6TURN_BASE>Leg6Turn)
+		{
+			Leg6Turn++;
+			Flag = 0;
+		}
+		else if(Position6+LEG6TURN_BASE<Leg6Turn)
+		{
+			Leg6Turn--;
+			Flag = 0;
+		}
+	}
+
+	return Flag;
+
 }
 
-void legLift(char WhichLeg, int Position, int Speed) //speed 0-9, position -50 to +80
+u8 legLift(char WhichLeg, int Position, int Speed)
 {
 	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
@@ -298,91 +292,89 @@ void legLift(char WhichLeg, int Position, int Speed) //speed 0-9, position -50 t
 	int PositionL = Position;
 	int PositionR = -PositionL; //mirror view
 
-	int Leg1Diff=0,Leg2Diff=0,Leg3Diff=0,Leg4Diff=0,Leg5Diff=0,Leg6Diff=0;
+	delay_ms(Speed);
 
+	u8 Flag = DONE;
 	if(Leg1)
-		Leg1Diff = (PositionL - (Leg1Lift-LEG1LIFT_BASE));
-	if(Leg2)
-		Leg2Diff = (PositionL - (Leg2Lift-LEG2LIFT_BASE));
-	if(Leg3)
-		Leg3Diff = (PositionR - (Leg3Lift-LEG3LIFT_BASE));
-	if(Leg4)
-		Leg4Diff = (PositionL - (Leg4Lift-LEG4LIFT_BASE));
-	if(Leg5)
-		Leg5Diff = (PositionR - (Leg5Lift-LEG5LIFT_BASE));
-	if(Leg6)
-		Leg6Diff = (PositionR - (Leg6Lift-LEG6LIFT_BASE));
-
-
-	int MAXDiff=0;
-	if( (Leg1Diff > MAXDiff) && (Leg1Diff > 0) )
-		MAXDiff = Leg1Diff;
-	else if( (-Leg1Diff > MAXDiff) && (Leg1Diff < 0) )
-		MAXDiff = -Leg1Diff;
-
-	if( (Leg2Diff > MAXDiff) && (Leg2Diff > 0) )
-		MAXDiff = Leg2Diff;
-	else if( (-Leg2Diff > MAXDiff) && (Leg2Diff < 0) )
-		MAXDiff = -Leg2Diff;
-
-	if( (Leg3Diff > MAXDiff) && (Leg3Diff > 0) )
-		MAXDiff = Leg3Diff;
-	else if( (-Leg3Diff > MAXDiff) && (Leg3Diff < 0) )
-		MAXDiff = -Leg3Diff;
-
-	if( (Leg4Diff > MAXDiff) && (Leg4Diff > 0) )
-		MAXDiff = Leg4Diff;
-	else if( (-Leg4Diff > MAXDiff) && (Leg4Diff < 0) )
-		MAXDiff = -Leg4Diff;
-
-	if( (Leg5Diff > MAXDiff) && (Leg5Diff > 0) )
-		MAXDiff = Leg5Diff;
-	else if( (-Leg5Diff > MAXDiff) && (Leg5Diff < 0) )
-		MAXDiff = -Leg5Diff;
-
-	if( (Leg6Diff > MAXDiff) && (Leg6Diff > 0) )
-		MAXDiff = Leg6Diff;
-	else if( (-Leg6Diff > MAXDiff) && (Leg6Diff < 0) )
-		MAXDiff = -Leg6Diff;
-	//mamy +maxDiff
-
-
-	int LCounter=1;
-	for(LCounter=MAXDiff; LCounter>=1; LCounter--)
 	{
-		if( (Leg1Diff >= LCounter) && (Leg1Diff > 0) )
+		if(PositionL+LEG1LIFT_BASE>Leg1Lift)
+		{
 			Leg1Lift++;
-		else if( (-Leg1Diff >= LCounter) && (Leg1Diff < 0) )
+			Flag = 0;
+		}
+		else if(PositionL+LEG1LIFT_BASE<Leg1Lift)
+		{
 			Leg1Lift--;
-
-		if( (Leg2Diff >= LCounter) && (Leg2Diff > 0) )
-			Leg2Lift++;
-		else if( (-Leg2Diff >= LCounter) && (Leg2Diff < 0) )
-			Leg2Lift--;
-
-		if( (Leg3Diff >= LCounter) && (Leg3Diff > 0) )
-			Leg3Lift++;
-		else if( (-Leg3Diff >= LCounter) && (Leg3Diff < 0) )
-			Leg3Lift--;
-
-		if( (Leg4Diff >= LCounter) && (Leg4Diff > 0) )
-			Leg4Lift++;
-		else if( (-Leg4Diff >= LCounter) && (Leg4Diff < 0) )
-			Leg4Lift--;
-
-		if( (Leg5Diff >= LCounter) && (Leg5Diff > 0) )
-			Leg5Lift++;
-		else if( (-Leg5Diff >= LCounter) && (Leg5Diff < 0) )
-			Leg5Lift--;
-
-		if( (Leg6Diff >= LCounter) && (Leg6Diff > 0) )
-			Leg6Lift++;
-		else if( (-Leg6Diff >= LCounter) && (Leg6Diff < 0) )
-			Leg6Lift--;
-
-
-		delay_ms(Speed);
+			Flag = 0;
+		}
 	}
+	if(Leg2)
+	{
+		if(PositionL+LEG2LIFT_BASE>Leg2Lift)
+		{
+			Leg2Lift++;
+			Flag = 0;
+		}
+		else if(PositionL+LEG2LIFT_BASE<Leg2Lift)
+		{
+			Leg2Lift--;
+			Flag = 0;
+		}
+	}
+	if(Leg3)
+	{
+		if(PositionR+LEG3LIFT_BASE>Leg3Lift)
+		{
+			Leg3Lift++;
+			Flag = 0;
+		}
+		else if(PositionR+LEG3LIFT_BASE<Leg3Lift)
+		{
+			Leg3Lift--;
+			Flag = 0;
+		}
+	}
+	if(Leg4)
+	{
+		if(PositionL+LEG4LIFT_BASE>Leg4Lift)
+		{
+			Leg4Lift++;
+			Flag = 0;
+		}
+		else if(PositionL+LEG4LIFT_BASE<Leg4Lift)
+		{
+			Leg4Lift--;
+			Flag = 0;
+		}
+	}
+	if(Leg5)
+	{
+		if(PositionR+LEG5LIFT_BASE>Leg5Lift)
+		{
+			Leg5Lift++;
+			Flag = 0;
+		}
+		else if(PositionR+LEG5LIFT_BASE<Leg5Lift)
+		{
+			Leg5Lift--;
+			Flag = 0;
+		}
+	}
+	if(Leg6)
+	{
+		if(PositionR+LEG6LIFT_BASE>Leg6Lift)
+		{
+			Leg6Lift++;
+			Flag = 0;
+		}
+		else if(PositionR+LEG6LIFT_BASE<Leg6Lift)
+		{
+			Leg6Lift--;
+			Flag = 0;
+		}
+	}
+
+	return Flag;
 }
 
 void checkLegs(char WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6)

@@ -8,34 +8,24 @@
 #ifndef MOVEMENT_H_
 #define MOVEMENT_H_
 
+
 void basePosition(int Speed)
 {
 	if(Speed<1) Speed = 8;
 	if(Speed>13) Speed = 13;
-	legLift(0b000001, 35, Speed);
-	legTurn(0b000001, 0, Speed, 0);
-	legLift(0b000001, 0, Speed);
 
-	legLift(0b000010, 35, Speed);
-	legTurn(0b000010, 0, Speed, 0);
-	legLift(0b000010, 0, Speed);
 
-	legLift(0b000100, 35, Speed);
-	legTurn(0b000100, 0, Speed, 0);
-	legLift(0b000100, 0, Speed);
+	char Leg=0;
 
-	legLift(0b001000, 35, Speed);
-	legTurn(0b001000, 0, Speed, 0);
-	legLift(0b001000, 0, Speed);
-
-	legLift(0b010000, 35, Speed);
-	legTurn(0b010000, 0, Speed, 0);
-	legLift(0b010000, 0, Speed);
-
-	legLift(0b100000, 35, Speed);
-	legTurn(0b100000, 0, Speed, 0);
-	legLift(0b100000, 0, Speed);
-
+	for(Leg=0b00000001; Leg<=0b00100000; Leg*=2)
+	{
+		if( (legLift(Leg, 0, MAX_SPEED) != DONE) || (legTurn(Leg, 0, MAX_SPEED, 0) != DONE) )
+		{
+			while( legLift(Leg, 35, Speed) != DONE );
+			while( legTurn(Leg, 0, Speed, 0) != DONE );
+			while( legLift(Leg, 0, Speed) != DONE );
+		}
+	}
 }
 
 
@@ -49,7 +39,7 @@ void goAhead(int Speed)
 
 	if(Step == 10)
 	{
-		basePosition(8);
+		//basePosition(8);
 		Step = 11;
 	}
 
@@ -78,13 +68,35 @@ void goBack(int Speed)
 {
 	if(Speed>14) Speed = 14;
 
-	legLift(0b101010, 25, Speed);  //135
-	legTurn(0b111111, 25, Speed, 1); //246
-	legLift(0b101010, 0, Speed);
+	if( (Step < 21) || (Step > 26) ) //it means that different action was previously done
+		Step = 20;
 
-	legLift(0b010101, 25, Speed);
-	legTurn(0b111111, -25, Speed, 1);
-	legLift(0b010101, 0, Speed);
+
+	if(Step == 20)
+	{
+		//basePosition(8);
+		Step = 21;
+	}
+
+	if(Step == 21)
+		if( legLift(0b101010, 25, Speed) == DONE )
+			Step = 22;
+	if(Step == 22)
+		if( legTurn(0b111111, 25, Speed, 1) == DONE )
+			Step = 23;
+	if(Step == 23)
+		if( legLift(0b101010, 0, Speed) == DONE )
+			Step = 24;
+
+	if(Step == 24)
+		if( legLift(0b010101, 25, Speed) == DONE )
+			Step = 25;
+	if(Step == 25)
+		if( legTurn(0b111111, -25, Speed, 1) == DONE )
+			Step = 26;
+	if(Step == 26)
+		if( legLift(0b010101, 0, Speed) == DONE )
+			Step = 21;
 }
 
 void turnLeft(int Speed)
