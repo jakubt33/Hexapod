@@ -11,7 +11,7 @@
 
 void basePosition(int Speed)
 {
-	if(Speed != 14) Speed = 10;
+	Speed = 13;
 
 	char Leg=0;
 
