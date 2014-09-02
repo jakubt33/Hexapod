@@ -115,7 +115,7 @@ void turnLeft(int Speed)
 		if( legLift(0b010101, 25, Speed) == DONE )
 			Step = 32;
 	if(Step == 32)
-		if( legTurn(0b111111, 25, Speed, 0) == DONE )
+		if( legTurn(0b111111, 25, Speed, 2) == DONE )
 			Step = 33;
 	if(Step == 33)
 		if( legLift(0b010101, 0, Speed) == DONE )
@@ -125,7 +125,7 @@ void turnLeft(int Speed)
 		if( legLift(0b101010, 25, Speed) == DONE )
 			Step = 35;
 	if(Step == 35)
-		if( legTurn(0b111111, -25, Speed, 0) == DONE )
+		if( legTurn(0b111111, -25, Speed, 2) == DONE )
 			Step = 36;
 	if(Step == 36)
 		if( legLift(0b101010, 0, Speed) == DONE )
@@ -150,7 +150,7 @@ void turnRight(int Speed)
 		if( legLift(0b101010, 25, Speed) == DONE )
 			Step = 42;
 	if(Step == 42)
-		if( legTurn(0b111111, 25, Speed, 0) == DONE )
+		if( legTurn(0b111111, 25, Speed, 2) == DONE )
 			Step = 43;
 	if(Step == 43)
 		if( legLift(0b101010, 0, Speed) == DONE )
@@ -160,7 +160,7 @@ void turnRight(int Speed)
 		if( legLift(0b010101, 25, Speed) == DONE )
 			Step = 45;
 	if(Step == 45)
-		if( legTurn(0b111111, -25, Speed, 0) == DONE )
+		if( legTurn(0b111111, -25, Speed, 2) == DONE )
 			Step = 46;
 	if(Step == 46)
 		if( legLift(0b010101, 0, Speed) == DONE )

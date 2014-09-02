@@ -9,7 +9,7 @@
 #define DONE  1
 
 volatile int ConnectionEstablished = FALSE;
-volatile u8 EmergencyStop = TRUE;
+volatile u8 EmergencyStop = FALSE;
 
 void delay_ms(int LocalCounter);
 void delay_us(int LocalCounter);

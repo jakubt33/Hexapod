@@ -171,9 +171,10 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
+	//serwo 2 has got electric motor connected inversely!!! thats why "-" has to be before Position 2
 
 	int Position1 = Position;
-	int Position2 = Position;
+	int Position2 = -Position;
 	int Position3 = Position;
 	int Position4 = -Position;
 	int Position5 = -Position;
@@ -182,8 +183,17 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 	if(ExtraCase == 1)
 	{
 		Position1 = -Position;
-		Position2 = Position;
+		Position2 = -Position;
 		Position3 = -Position;
+		Position4 = -Position;
+		Position5 = Position;
+		Position6 = -Position;
+	}
+	else if(ExtraCase == 2)
+	{
+		Position1 = Position;
+		Position2 = Position;
+		Position3 = Position;
 		Position4 = -Position;
 		Position5 = Position;
 		Position6 = -Position;
