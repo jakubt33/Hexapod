@@ -60,7 +60,7 @@ void checkBluetooth()
 						Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
 
 
-						legTurn(Legs, Turn-30, Speed, 0);
+						legTurn(Legs, Turn-30, Speed, -1);
 						legLift(Legs, Lift-50, Speed);
 
 					}
@@ -82,6 +82,7 @@ void checkBluetooth()
 			USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
 			int Command = USART_ReceiveData(USART3) & 0b00111111;
+			int Curve = ((Command >> 2) & 0b000001111) << 1;
 
 			while( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) == RESET );
 
@@ -89,13 +90,16 @@ void checkBluetooth()
 			{
 				EmergencyStop = USART_ReceiveData(USART3) & 0b00000001;
 
-				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
+				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00001111;
 
-				switch(Command)
+				Curve += (USART_ReceiveData(USART3) >> 5) & 0b00000001;
+				Curve -= 14;
+
+				switch(Command & 0b00000011)
 				{
 					case 1:
 					{
-						goAhead(Speed);
+						goAhead(Speed, Curve);
 						break;
 					}
 					case 2:
@@ -105,34 +109,17 @@ void checkBluetooth()
 					}
 					case 3:
 					{
-						turnLeft(Speed);
-						break;
-					}
-					case 4:
-					{
-						turnRight(Speed);
-						break;
-					}
-					case 5:
-					{
 						basePosition(Speed);
-						break;
-					}
-					case 6:
-					{
-						goLeft(Speed);
-						break;
-					}
-					case 7:
-					{
-						goRight(Speed);
 						break;
 					}
 					default:
 					{
+						if(Curve != 0)
+							goAhead(Speed, Curve);
 						break;
 					}
 				}
+
 
 			}
 			else

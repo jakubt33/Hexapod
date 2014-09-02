@@ -161,7 +161,7 @@ void TIM2_IRQHandler()
 		Counter = 0;
 }
 
-u8 legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
+u8 legTurn(char WhichLeg, int Position, int Speed, int Curve)
 {
 	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
@@ -180,20 +180,14 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int ExtraCase)
 	int Position5 = -Position;
 	int Position6 = -Position;
 
-	if(ExtraCase == 1)
+	Curve *= 4;
+	if(Curve != -100) //Curve from 0 to +Positon
 	{
-		Position1 = -Position;
-		Position2 = -Position;
-		Position3 = -Position;
-		Position4 = -Position;
-		Position5 = Position;
-		Position6 = -Position;
-	}
-	else if(ExtraCase == 2)
-	{
-		Position1 = Position;
-		Position2 = Position;
-		Position3 = Position;
+		if((Position>0) && (Curve<0)) Curve = -Curve;
+		if((Position<0) && (Curve>0)) Curve = -Curve;
+		Position1 = -Position+Curve;//+Position: Turning
+		Position2 = -Position+Curve;//+
+		Position3 = -Position+Curve;//+
 		Position4 = -Position;
 		Position5 = Position;
 		Position6 = -Position;
