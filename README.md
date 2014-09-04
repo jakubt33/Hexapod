@@ -13,12 +13,13 @@ Manual:
 0b11|S S S S S P
 
 Auto:
-0b01|C C C C C C
-0b11|S S S S S P
+0b01|C C C C C c
+0b11|c S S S S P
 
 x - wchich leg is to be activated (1-6)
 L - lift position
 T - turn position
 S - speed
 P - power on(1)/power off(0)
-C - command
+c - command
+C - Curve
