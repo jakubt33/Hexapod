@@ -104,7 +104,7 @@ void checkBluetooth()
 					}
 					case 2:
 					{
-						goBack(Speed);
+						goBack(Speed, Curve);
 						break;
 					}
 					case 3:

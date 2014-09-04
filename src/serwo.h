@@ -92,7 +92,7 @@ void checkLegs(char WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *L
 void TIM2_IRQHandler();
 
 u8 legLift(char WhichLeg, int Position, int Speed); //symetrically \||/
-u8 legTurn(char WhichLeg, int Position, int Speed, int ExtraCase); //symetrically \||/
+u8 legTurn(char WhichLeg, int Position, int Speed, int Curve); //symetrically \||/
 
 void TIM2_IRQHandler()
 {
@@ -183,14 +183,29 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve)
 	Curve *= 4;
 	if(Curve != -100) //Curve from 0 to +Positon
 	{
-		if((Position>0) && (Curve<0)) Curve = -Curve;
-		if((Position<0) && (Curve>0)) Curve = -Curve;
-		Position1 = -Position+Curve;//+Position: Turning
-		Position2 = -Position+Curve;//+
-		Position3 = -Position+Curve;//+
-		Position4 = -Position;
-		Position5 = Position;
-		Position6 = -Position;
+		if(Curve<=0)
+		{
+			if(Position>0) Curve = -Curve;
+			Position1 = -Position+Curve;//+Position: Turning
+			Position2 = -Position+Curve;//+
+			Position3 = -Position+Curve;//+
+			Position4 = -Position;
+			Position5 = Position;
+			Position6 = -Position;
+
+		}
+		else if(Curve>0)
+		{
+			if(Position<0) Curve = -Curve;
+			Position1 = -Position;
+			Position2 = -Position;
+			Position3 = -Position;
+			Position4 = -Position+Curve;
+			Position5 = Position-Curve;
+			Position6 = -Position+Curve;
+
+		}
+
 	}
 
 	delay_ms(Speed);

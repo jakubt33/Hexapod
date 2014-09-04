@@ -37,7 +37,7 @@ void goAhead(int Speed, int Curve)
 
 	if(Step == 10)
 	{
-		basePosition(14);
+		//basePosition(14);
 		Step = 11;
 	}
 
@@ -62,7 +62,7 @@ void goAhead(int Speed, int Curve)
 			Step = 11;
 }
 
-void goBack(int Speed)
+void goBack(int Speed, int Curve)
 {
 	if(Speed>14) Speed = 14;
 
@@ -72,7 +72,7 @@ void goBack(int Speed)
 
 	if(Step == 20)
 	{
-		basePosition(14);
+		//basePosition(14);
 		Step = 21;
 	}
 
@@ -80,7 +80,7 @@ void goBack(int Speed)
 		if( legLift(0b101010, 25, Speed) == DONE )
 			Step = 22;
 	if(Step == 22)
-		if( legTurn(0b111111, 25, Speed, 0) == DONE )
+		if( legTurn(0b111111, 28, Speed, Curve) == DONE )
 			Step = 23;
 	if(Step == 23)
 		if( legLift(0b101010, 0, Speed) == DONE )
@@ -90,7 +90,7 @@ void goBack(int Speed)
 		if( legLift(0b010101, 25, Speed) == DONE )
 			Step = 25;
 	if(Step == 25)
-		if( legTurn(0b111111, -25, Speed, 0) == DONE )
+		if( legTurn(0b111111, -28, Speed, Curve) == DONE )
 			Step = 26;
 	if(Step == 26)
 		if( legLift(0b010101, 0, Speed) == DONE )
