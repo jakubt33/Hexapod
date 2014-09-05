@@ -181,14 +181,14 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve)
 	int Position6 = -Position;
 
 	Curve *= 4;
-	if(Curve != NO_CURVE) //Curve from 0 to +Position
+	if(Curve != -100) //Curve from 0 to +Positon
 	{
 		if(Curve<=0)
 		{
 			if(Position>0) Curve = -Curve;
 			Position1 = -Position+Curve;//+Position: Turning
-			Position2 = -Position+Curve;
-			Position3 = -Position+Curve;
+			Position2 = -Position+Curve;//+
+			Position3 = -Position+Curve;//+
 			Position4 = -Position;
 			Position5 = Position;
 			Position6 = -Position;
