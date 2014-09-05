@@ -60,7 +60,7 @@ void checkBluetooth()
 						Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
 
 
-						legTurn(Legs, Turn-30, Speed, -1);
+						legTurn(Legs, Turn-30, Speed, 0, 1);
 						legLift(Legs, Lift-50, Speed);
 
 					}
