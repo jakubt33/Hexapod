@@ -111,7 +111,7 @@ void batt_1_5()
 }
 void batt_critical()
 {
-	EmergencyStop = TRUE; //power cut of flag
+	//EmergencyStop = TRUE; //power cut of flag
 
 	USART_SendData(USART3, '0');
 	USART_ClearFlag(USART3,USART_FLAG_TXE);

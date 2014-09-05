@@ -26,15 +26,142 @@ void basePosition(int Speed)
 	}
 }
 
-
-void goAhead(int Speed, int Curve)
+void curveAdjust(int *Curve) // 0 to 28
 {
-	if(Speed>15) Speed = 15;
+	*Curve -= 14;
+
+	switch(*Curve)
+	{
+	case -14: {
+		*Curve = -56;
+		break;
+	}
+	case -13: {
+		*Curve = -28;
+		break;
+	}
+	case -12: {
+		*Curve = -28;
+		break;
+	}
+	case -11: {
+		*Curve = -24;
+		break;
+	}
+	case -10: {
+		*Curve = -22;
+		break;
+	}
+	case -9: {
+		*Curve = -18;
+		break;
+	}
+	case -8: {
+		*Curve = -16;
+		break;
+	}
+	case -7: {
+		*Curve = -14;
+		break;
+	}
+	case -6: {
+		*Curve = -12;
+		break;
+	}
+	case -5: {
+		*Curve = -9;
+		break;
+	}
+	case -4: {
+		*Curve = -6;
+		break;
+	}
+	case -3: {
+		*Curve = -4;
+		break;
+	}
+	case -2: {
+		*Curve = -2;
+		break;
+	}
+	case -1: {
+		*Curve = -1;
+		break;
+	}
+	case 0: {
+		*Curve = 0;
+		break;
+	}
+	case 1: {
+		*Curve = 1;
+		break;
+	}
+	case 2: {
+		*Curve = 2;
+		break;
+	}
+	case 3: {
+		*Curve = 4;
+		break;
+	}
+	case 4: {
+		*Curve = 6;
+		break;
+	}
+	case 5: {
+		*Curve = 9;
+		break;
+	}
+	case 6: {
+		*Curve = 12;
+		break;
+	}
+	case 7: {
+		*Curve = 14;
+		break;
+	}
+	case 8: {
+		*Curve = 16;
+		break;
+	}
+	case 9: {
+		*Curve = 18;
+		break;
+	}
+	case 10: {
+		*Curve = 22;
+		break;
+	}
+	case 11: {
+		*Curve = 24;
+		break;
+	}
+	case 12: {
+		*Curve = 28;
+		break;
+	}
+	case 13: {
+		*Curve = 28;
+		break;
+	}
+	case 14: {
+		*Curve = 56;
+		break;
+	}
+	default: {
+		*Curve = 0;
+		break;
+	}
+	}
+}
+
+void go(int Speed, int Curve, int Direction)
+{
+	if(Speed>14) Speed = 14;
 
 	if( (Step < 11) || (Step > 16) ) //it means that different action was previously done
 		Step = 11;
 
-	u8 Direction = 1;
 
 	if(Step == 11)
 		if( legLift(0b101010, 25, Speed) == DONE )
@@ -59,7 +186,7 @@ void goAhead(int Speed, int Curve)
 
 void goBack(int Speed, int Curve)
 {
-	if(Speed>15) Speed = 15;
+	if(Speed>14) Speed = 14;
 
 	if( (Step < 21) || (Step > 26) ) //it means that different action was previously done
 		Step = 21;

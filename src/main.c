@@ -31,12 +31,6 @@ int main(void)
 	init_TIM2();
 	init_Bluetooth();
 
-	//GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_SET);
-	//GPIO_WriteBit(PORT_LED, LED_LEG1, Bit_SET);
-
-	//basePosition(5);
-	//delay_ms(2000);
-	//tiltDown(2);
 
 	while (1)
 	{

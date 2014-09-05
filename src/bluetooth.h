@@ -93,13 +93,14 @@ void checkBluetooth()
 				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00001111;
 
 				Curve += (USART_ReceiveData(USART3) >> 5) & 0b00000001;
-				Curve -= 14;
+
+				curveAdjust(&Curve);
 
 				switch(Command & 0b00000011)
 				{
 					case 1:
 					{
-						goAhead(Speed, Curve);
+						go(Speed, Curve, 1);
 						break;
 					}
 					case 2:
@@ -115,7 +116,7 @@ void checkBluetooth()
 					default:
 					{
 						if(Curve != 0)
-							goAhead(Speed, Curve);
+							go(Speed, Curve, 1);
 						break;
 					}
 				}

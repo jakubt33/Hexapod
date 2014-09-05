@@ -172,7 +172,6 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
 	//serwo 2 has got electric motor connected inversely!!! thats why "-" has to be before Position 2
-
 	int Position1 = Position;
 	int Position2 = -Position;
 	int Position3 = Position;
@@ -180,7 +179,6 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 	int Position5 = -Position;
 	int Position6 = -Position;
 
-	Curve *= 4;
 	if(Curve != -100) //Curve from 0 to +Positon
 	{
 		if( ((Curve<=0) && (Direction == 1)) || ((Curve>=0) && (Direction == 2)) )
