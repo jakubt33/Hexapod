@@ -179,32 +179,29 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 	int Position5 = -Position;
 	int Position6 = -Position;
 
-	if(Curve != -100) //Curve from 0 to +Positon
+	if( ((Curve<=0) && (Direction == 1)) || ((Curve>=0) && (Direction == 2)) )
 	{
-		if( ((Curve<=0) && (Direction == 1)) || ((Curve>=0) && (Direction == 2)) )
-		{
-			if((Position>0) && (Direction == 1)) Curve = -Curve;
-			Position1 = -Position+Curve;//+Position: Turning
-			Position2 = -Position+Curve;//+
-			Position3 = -Position+Curve;//+
-			Position4 = -Position;
-			Position5 = Position;
-			Position6 = -Position;
-
-		}
-		else if( ((Curve>0) && (Direction == 1)) || ((Curve<0) && (Direction == 2)) )
-		{
-			if((Position<0) && (Direction == 1)) Curve = -Curve;
-			Position1 = -Position;
-			Position2 = -Position;
-			Position3 = -Position;
-			Position4 = -Position+Curve;
-			Position5 = Position-Curve;
-			Position6 = -Position+Curve;
-
-		}
+		if((Position>0) && (Direction == 1)) Curve = -Curve;
+		Position1 = -Position+Curve;//+Position: Turning
+		Position2 = -Position+Curve;//+
+		Position3 = -Position+Curve;//+
+		Position4 = -Position;
+		Position5 = Position;
+		Position6 = -Position;
 
 	}
+	else if( ((Curve>0) && (Direction == 1)) || ((Curve<0) && (Direction == 2)) )
+	{
+		if((Position<0) && (Direction == 1)) Curve = -Curve;
+		Position1 = -Position;
+		Position2 = -Position;
+		Position3 = -Position;
+		Position4 = -Position+Curve;
+		Position5 = Position-Curve;
+		Position6 = -Position+Curve;
+
+	}
+
 
 	delay_ms(Speed);
 

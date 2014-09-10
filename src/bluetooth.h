@@ -98,16 +98,6 @@ void checkBluetooth()
 
 				switch(Command & 0b00000011)
 				{
-					case 1:
-					{
-						go(Speed, Curve, 1);
-						break;
-					}
-					case 2:
-					{
-						goBack(Speed, Curve);
-						break;
-					}
 					case 3:
 					{
 						basePosition(Speed);
@@ -115,10 +105,14 @@ void checkBluetooth()
 					}
 					default:
 					{
-						if(Curve != 0)
+						if(Command & 0b00000011)
+							go(Speed, Curve, Command & 0b00000011);
+						else if(Curve)
 							go(Speed, Curve, 1);
+
 						break;
 					}
+
 				}
 
 
