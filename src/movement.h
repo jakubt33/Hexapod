@@ -195,35 +195,4 @@ void go(int Speed, int Curve, int Direction)
 			Step = 11;
 }
 
-void goBack(int Speed, int Curve)
-{
-	if(Speed>14) Speed = 14;
-
-	if( (Step < 21) || (Step > 26) ) //it means that different action was previously done
-		Step = 21;
-
-	u8 Direction = 2;
-
-	if(Step == 21)
-		if( legLift(0b101010, 25, Speed) == DONE )
-			Step = 22;
-	if(Step == 22)
-		if( legTurn(0b111111, 28, Speed, Curve, Direction) == DONE )
-			Step = 23;
-	if(Step == 23)
-		if( legLift(0b101010, 0, Speed) == DONE )
-			Step = 24;
-
-	if(Step == 24)
-		if( legLift(0b010101, 25, Speed) == DONE )
-			Step = 25;
-	if(Step == 25)
-		if( legTurn(0b111111, -28, Speed, Curve, Direction) == DONE )
-			Step = 26;
-	if(Step == 26)
-		if( legLift(0b010101, 0, Speed) == DONE )
-			Step = 21;
-}
-
-
 #endif /* MOVEMENT_H_ */
