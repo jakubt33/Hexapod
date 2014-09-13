@@ -196,6 +196,7 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 	{
 		if( ((Position<0) && (Direction == 1)) || ((Position>0) && (Direction == 2)) )
 			Curve = -Curve;
+
 		Position1 = -Position;
 		Position2 = -Position;
 		Position3 = -Position;
