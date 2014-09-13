@@ -131,11 +131,11 @@ void set_SupplyVoltage(volatile float MaxVoltage)
 	float x1_5 = x2_5 - ADC_Diffrence;
 	float xCritical = x1_5 - ADC_Diffrence;
 
-	Batt_4_5_value = x4_5*4096/3.3;
-	Batt_3_5_value = x3_5*4096/3.3;
-	Batt_2_5_value = x2_5*4096/3.3;
-	Batt_1_5_value = x1_5*4096/3.3;
-	Batt_critical_value = xCritical*4096/3.3;
+	Batt_4_5_value = x4_5*256/3.3;
+	Batt_3_5_value = x3_5*256/3.3;
+	Batt_2_5_value = x2_5*256/3.3;
+	Batt_1_5_value = x1_5*256/3.3;
+	Batt_critical_value = xCritical*256/3.3;
 }
 
 void init_LED()

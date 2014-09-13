@@ -98,7 +98,7 @@ void TIM2_IRQHandler()
 {
 	TIM_ClearFlag(TIM2, TIM_FLAG_Update);
 
-	if( (Counter == 0) && (EmergencyStop) )
+	if( (!Counter) && (PowerON) && (!BatteryDischarged) )
 	{
 
 		LEG1LIFT_ON;

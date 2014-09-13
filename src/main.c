@@ -9,7 +9,8 @@
 #define DONE  1
 
 volatile int ConnectionEstablished = FALSE;
-volatile u8 EmergencyStop = FALSE;
+volatile u8 BatteryDischarged = FALSE;
+volatile u8 PowerON = FALSE;
 
 void delay_ms(int LocalCounter);
 void delay_us(int LocalCounter);
@@ -38,8 +39,8 @@ int main(void)
 		checkConnection();
 		while(ConnectionEstablished == TRUE)
 		{
-			checkBluetooth();
 			checkBattery();
+			checkBluetooth();
 			checkIfConnectionLost();
 		}
 	}
@@ -48,9 +49,10 @@ int main(void)
 
 void checkBattery()
 {
-	volatile unsigned ADC_value = 0;
+	volatile unsigned  ADC_value = (ADC1->DR) >> 4;
 
-	ADC_value = ADC1->DR;
+	USART_SendData(USART3, ADC_value);
+
 	if(ADC_value<Batt_critical_value)
 		batt_critical();
 	else if(ADC_value<Batt_1_5_value)

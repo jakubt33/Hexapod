@@ -54,12 +54,12 @@ void checkBluetooth()
 					{
 						USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
-						EmergencyStop = USART_ReceiveData(USART3) & 0b00000001;
+						PowerON = USART_ReceiveData(USART3) & 0b00000001;
 
 						int Speed = 0;
 						Speed = (USART_ReceiveData(USART3) >> 1) & 0b00011111;
 
-
+						Step = 0;
 						legTurn(Legs, Turn-30, Speed, 0, 1);
 						legLift(Legs, Lift-50, Speed);
 
@@ -88,7 +88,7 @@ void checkBluetooth()
 
 			if( (USART_ReceiveData(USART3) >> 6) == 0b11 ) // whole message received
 			{
-				EmergencyStop = USART_ReceiveData(USART3) & 0b00000001;
+				PowerON = USART_ReceiveData(USART3) & 0b00000001;
 
 				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00001111;
 

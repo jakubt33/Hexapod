@@ -51,8 +51,7 @@
 
 void batt_5_5()
 {
-	USART_SendData(USART3, '5');
-	USART_ClearFlag(USART3,USART_FLAG_TXE);
+	BatteryDischarged = FALSE;
 
 	LED_BAT_G1_ON;
 	LED_BAT_G2_ON;
@@ -61,10 +60,10 @@ void batt_5_5()
 	LED_BAT_R1_OFF;
 	LED_BAT_R2_OFF;
 }
+
 void batt_4_5()
 {
-	USART_SendData(USART3, '4');
-	USART_ClearFlag(USART3,USART_FLAG_TXE);
+	BatteryDischarged = FALSE;
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_ON;
@@ -73,10 +72,10 @@ void batt_4_5()
 	LED_BAT_R1_OFF;
 	LED_BAT_R2_OFF;
 }
+
 void batt_3_5()
 {
-	USART_SendData(USART3, '3');
-	USART_ClearFlag(USART3,USART_FLAG_TXE);
+	BatteryDischarged = FALSE;
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
@@ -85,11 +84,10 @@ void batt_3_5()
 	LED_BAT_R1_OFF;
 	LED_BAT_R2_OFF;
 }
+
 void batt_2_5()
 {
-	USART_SendData(USART3, '2');
-	USART_ClearFlag(USART3,USART_FLAG_TXE);
-
+	BatteryDischarged = FALSE;
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
 	LED_BAT_G3_ON;
@@ -97,10 +95,10 @@ void batt_2_5()
 	LED_BAT_R1_ON;
 	LED_BAT_R2_OFF;
 }
+
 void batt_1_5()
 {
-	USART_SendData(USART3, '1');
-	USART_ClearFlag(USART3,USART_FLAG_TXE);
+	BatteryDischarged = FALSE;
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
@@ -109,12 +107,10 @@ void batt_1_5()
 	LED_BAT_R1_ON;
 	LED_BAT_R2_ON;
 }
+
 void batt_critical()
 {
-	//EmergencyStop = TRUE; //power cut of flag
-
-	USART_SendData(USART3, '0');
-	USART_ClearFlag(USART3,USART_FLAG_TXE);
+	BatteryDischarged = TRUE;
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
