@@ -53,39 +53,39 @@ void curveAdjust(int *Curve) // 0 to 28
 		break;
 	}
 	case -9: {
-		*Curve = -17;
+		*Curve = -18;
 		break;
 	}
 	case -8: {
-		*Curve = -15;
+		*Curve = -16;
 		break;
 	}
 	case -7: {
-		*Curve = -13;
+		*Curve = -14;
 		break;
 	}
 	case -6: {
-		*Curve = -10;
+		*Curve = -12;
 		break;
 	}
 	case -5: {
-		*Curve = -8;
+		*Curve = -10;
 		break;
 	}
 	case -4: {
-		*Curve = -6;
+		*Curve = -8;
 		break;
 	}
 	case -3: {
-		*Curve = -4;
+		*Curve = -6;
 		break;
 	}
 	case -2: {
-		*Curve = -2;
+		*Curve = -4;
 		break;
 	}
 	case -1: {
-		*Curve = -1;
+		*Curve = -2;
 		break;
 	}
 	case 0: {
@@ -93,39 +93,39 @@ void curveAdjust(int *Curve) // 0 to 28
 		break;
 	}
 	case 1: {
-		*Curve = 1;
-		break;
-	}
-	case 2: {
 		*Curve = 2;
 		break;
 	}
-	case 3: {
+	case 2: {
 		*Curve = 4;
 		break;
 	}
-	case 4: {
+	case 3: {
 		*Curve = 6;
 		break;
 	}
-	case 5: {
+	case 4: {
 		*Curve = 8;
 		break;
 	}
-	case 6: {
+	case 5: {
 		*Curve = 10;
 		break;
 	}
+	case 6: {
+		*Curve = 12;
+		break;
+	}
 	case 7: {
-		*Curve = 13;
+		*Curve = 14;
 		break;
 	}
 	case 8: {
-		*Curve = 15;
+		*Curve = 16;
 		break;
 	}
 	case 9: {
-		*Curve = 17;
+		*Curve = 18;
 		break;
 	}
 	case 10: {
