@@ -91,8 +91,8 @@ volatile  int Leg6Turn = LEG6TURN_BASE;
 void checkLegs(char WhichLeg, int *Leg1, int *Leg2, int *Leg3, int *Leg4, int *Leg5, int *Leg6);
 void TIM2_IRQHandler();
 
-u8 legLift(char WhichLeg, int Position, int Speed); //symetrically \||/
-u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction); //symetrically \||/
+u8 legLift(char WhichLeg, int Position, int Speed);
+u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction);
 
 void TIM2_IRQHandler()
 {
@@ -166,6 +166,9 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
 	Speed = 2*(MAX_SPEED - Speed);
+
+	if(Position<-32) Position = -32;
+	else if(Position>32) Position = 32;
 
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
@@ -304,7 +307,7 @@ u8 legLift(char WhichLeg, int Position, int Speed)
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
 	if(Position<-50) Position = -50;
-	if(Position>80) Position = 80;
+	else if(Position>80) Position = 80;
 
 	Position -= 40;
 	int PositionL = Position;
