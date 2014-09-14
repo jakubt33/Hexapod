@@ -24,6 +24,7 @@ void checkBluetooth()
 	{
 		if( (USART_ReceiveData(USART3) >> 6) == 0b00 ) //Manual mode
 		{
+
 			USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
 			char Legs = USART_ReceiveData(USART3) & 0b00111111;
@@ -32,6 +33,7 @@ void checkBluetooth()
 
 			if( (USART_ReceiveData(USART3) >> 6) == 0b10 )
 			{
+
 				USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
 				unsigned int Lift = 0;
@@ -41,6 +43,7 @@ void checkBluetooth()
 
 				if( (USART_ReceiveData(USART3) >> 6) == 0b10 )
 				{
+
 					USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
 					Lift += (USART_ReceiveData(USART3) >> 5) & 0b00000001;
@@ -52,6 +55,7 @@ void checkBluetooth()
 
 					if( (USART_ReceiveData(USART3) >> 6) == 0b11 )
 					{
+
 						USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
 						PowerON = USART_ReceiveData(USART3) & 0b00000001;
@@ -75,10 +79,10 @@ void checkBluetooth()
 			else
 				USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
-
 		}
 		else if( (USART_ReceiveData(USART3) >> 6) == 0b01 ) //Auto mode
 		{
+
 			USART_ClearFlag(USART3,USART_FLAG_RXNE);
 
 			int Command = USART_ReceiveData(USART3) & 0b00111111;
@@ -88,6 +92,7 @@ void checkBluetooth()
 
 			if( (USART_ReceiveData(USART3) >> 6) == 0b11 ) // whole message received
 			{
+
 				PowerON = USART_ReceiveData(USART3) & 0b00000001;
 
 				int Speed = (USART_ReceiveData(USART3) >> 1) & 0b00001111;
