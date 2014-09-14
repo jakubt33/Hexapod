@@ -49,9 +49,9 @@ int main(void)
 
 void checkBattery()
 {
-	volatile unsigned  ADC_value = (ADC1->DR) >> 4;
+	volatile u8  ADC_value = (ADC1->DR) >> 4;
 
-	USART_SendData(USART3, Step);
+	USART_SendData(USART3, ADC_value);
 
 	if(ADC_value<Batt_critical_value)
 		batt_critical();
