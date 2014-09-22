@@ -3,7 +3,10 @@ package com.jtrzyna.hexapod;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,6 +81,9 @@ public class ConnectionActivity extends Activity implements AdapterView.OnItemCl
 
     public void onShowPairedDevicesClicked(View V){
         showPairedDevices();
+    }
+    public void onRescanClicked(View V){
+
     }
 
     protected void onActivityResult(int RequestCode, int ResultCode, Intent Data){

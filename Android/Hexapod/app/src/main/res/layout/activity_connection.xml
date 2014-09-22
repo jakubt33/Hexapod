@@ -13,27 +13,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_below="@+id/Rescan"
+        android:layout_below="@+id/ShowPairedDevices"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show paired devices"
-        android:id="@+id/ShowPairedDevices"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="onShowPairedDevicesClicked" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rescan"
-        android:id="@+id/Rescan"
+        android:id="@+id/ShowPairedDevices"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:onClick="onShowPairedDevicesClicked" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:id="@+id/editText"
+        android:layout_above="@+id/listView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Paired devices:" />
 
 </RelativeLayout>
