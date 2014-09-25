@@ -35,6 +35,8 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
     ListView listView;
     BluetoothAdapter btAdapter;
     ArrayList<BluetoothDevice> devices;
+    Set<BluetoothDevice> devicesArray;
+    ArrayList<String> pairedDevices;
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
         listView.setAdapter(devicesInfo);
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         devices = new ArrayList<BluetoothDevice>();
+        pairedDevices = new ArrayList<String>();
 
         BroadcastReceiver mReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
@@ -72,8 +75,18 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
                     // Get the BluetoothDevice object from the Intent
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     devices.add(device);
-                    // Add the name and address to an array adapter to show in a ListView
-                    devicesInfo.add(device.getName() + "\n" + device.getAddress());
+
+                    getPairedDevices();
+                    String s = "";
+                    for(int a = 0; a < pairedDevices.size(); a++){
+                        if(device.getName().equals(pairedDevices.get(a))){
+                            //append
+                            s = "(Paired)";
+                            break;
+                        }
+                    }
+
+                    devicesInfo.add(device.getName()+" "+s+" "+"\n"+device.getAddress());
                 }
 
                 else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
@@ -101,6 +114,17 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
 
     }
 
+    private void getPairedDevices() {
+        pairedDevices.clear();
+        devicesArray = btAdapter.getBondedDevices();
+        if(devicesArray.size()>0){
+            for(BluetoothDevice device:devicesArray){
+                pairedDevices.add(device.getName());
+
+            }
+        }
+    }
+
     public void onScanClicked(View V){
         startDiscovery();
     }
@@ -126,7 +150,70 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
         }
     }
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+        if(btAdapter.isDiscovering()){
+            btAdapter.cancelDiscovery();
+        }
+        if(devicesInfo.getItem(arg2).contains("Paired")){
+
+            Toast.makeText(getApplicationContext(), "device is paired", Toast.LENGTH_SHORT).show();
+
+            BluetoothDevice selectedDevice = devices.get(arg2);
+            ConnectThread connect = new ConnectThread(selectedDevice);
+            connect.start();
+            //Log.i(tag, "in click listener");
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "device is not paired", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    private class ConnectThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final BluetoothDevice mmDevice;
+
+        public ConnectThread(BluetoothDevice device) {
+            // Use a temporary object that is later assigned to mmSocket,
+            // because mmSocket is final
+            BluetoothSocket tmp = null;
+            mmDevice = device;
+
+            // Get a BluetoothSocket to connect with the given BluetoothDevice
+            try {
+                // MY_UUID is the app's UUID string, also used by the server code
+                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+            } catch (IOException e) { }
+            mmSocket = tmp;
+        }
+
+        public void run() {
+            // Cancel discovery because it will slow down the connection
+            btAdapter.cancelDiscovery();
+
+            try {
+                // Connect the device through the socket. This will block
+                // until it succeeds or throws an exception
+                mmSocket.connect();
+            } catch (IOException connectException) {
+                // Unable to connect; close the socket and get out
+                try {
+                    mmSocket.close();
+                } catch (IOException closeException) { }
+                return;
+            }
+
+            // Do work to manage the connection (in a separate thread)
+            //manageConnectedSocket(mmSocket);
+        }
+
+        /** Will cancel an in-progress connection, and close the socket */
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) { }
+        }
+    }
+
 
 
 }
