@@ -23,14 +23,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
 
 public class ConnectionActivity extends Activity implements OnItemClickListener {
 
-    Button Scan;
+    TextView receivedData;
     ArrayAdapter<String> devicesInfo;
     ListView listView;
     BluetoothAdapter btAdapter;
@@ -48,16 +50,14 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
             super.handleMessage(msg);
             switch(msg.what){
                 case SUCCESS_CONNECT:
-                    // DO something
+                    receivedData.setText("connected");
                     connectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
-                    Toast.makeText(getApplicationContext(), "CONNECT", Toast.LENGTH_SHORT).show();
-                    String s = "successfully connected";
-                    connectedThread.write(s.getBytes());
                     break;
+
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[])msg.obj;
                     String string = new String(readBuf);
-                    Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
+                    receivedData.setText(string);
                     break;
             }
         }
@@ -82,7 +82,7 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
 
     private void init() {
 
-        Scan = (Button) findViewById(R.id.bScan);
+        receivedData = (TextView) findViewById(R.id.ReceivedData);
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(this);
         devicesInfo = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, 0);
@@ -91,13 +91,13 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
         devices = new ArrayList<BluetoothDevice>();
         pairedDevices = new ArrayList<String>();
 
-
         BroadcastReceiver mReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
                 // When discovery finds a device
                 if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                     Toast.makeText(getApplicationContext(), "found", Toast.LENGTH_SHORT).show();
+                    receivedData.setText("found...");
                     // Get the BluetoothDevice object from the Intent
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     devices.add(device);
@@ -158,15 +158,21 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
     }
 
     public void onSentDataClicked(View V){
-        String s = "dupa";
+        String s = "cdcd";
         connectedThread.write(s.getBytes());
+        connectedThread.run();
+    }
+
+    public void onSentOtherDataClicked(View V){
+        String s = "abab";
+        connectedThread.write(s.getBytes());
+        connectedThread.run();
     }
 
     private void startDiscovery() {
         btAdapter.cancelDiscovery();
         btAdapter.startDiscovery();
     }
-
 
     private void turnOnBT() {
         Intent intent =new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -189,8 +195,6 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
             btAdapter.cancelDiscovery();
         }
         if(devicesInfo.getItem(arg2).contains("Paired")){
-
-            Toast.makeText(getApplicationContext(), "device is paired", Toast.LENGTH_SHORT).show();
 
             BluetoothDevice selectedDevice = devices.get(arg2);
             ConnectThread connect = new ConnectThread(selectedDevice);
@@ -272,21 +276,23 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
 
 
         public void run() {
-            byte[] buffer = new byte[4];  // buffer store for the stream
+            byte[] buffer;  // buffer store for the stream
             int bytes; // bytes returned from read()
 
-            // Keep listening to the InputStream until an exception occurs
-            while (true) {
-                try {
-                    // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
-                    // Send the obtained bytes to the UI activity
-                    mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
-                } catch (IOException e) {
-                    break;
-                }
+            try {
+                // Read from the InputStream
+                buffer = new byte[1024];
+                bytes = mmInStream.read(buffer);
+                // Send the obtained bytes to the UI activity
+                mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
+                        .sendToTarget();
+
+            } catch (IOException e) {
+                //break;
             }
+
         }
+
 
         /* Call this from the main activity to send data to the remote device */
         public void write(byte[] bytes) {
