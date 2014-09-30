@@ -58,8 +58,8 @@ public class SteeringActivity extends Activity {
 
         Intent myIntent = getIntent();
         Bundle b = myIntent.getExtras();
-        if(myIntent.hasExtra("connect")) {
-            getData = myIntent.getStringExtra("connect");
+        if(b.containsKey("connect")) {
+            getData = b.getString("connect");
             state.setText(getData);
         }
         //connect = (ConnectThread) myIntent.getSerializableExtra("connectThread");

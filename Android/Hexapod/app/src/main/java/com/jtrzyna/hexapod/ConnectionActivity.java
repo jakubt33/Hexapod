@@ -164,10 +164,10 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
             //connect.start();
 
             Intent myIntent = new Intent(ConnectionActivity.this, SteeringActivity.class);
-            //Bundle b = new Bundle();
+            Bundle b = new Bundle();
             String s = "go";
-            //b.putString("connect", s);
-            myIntent.putExtra("connect", s);
+            b.putString("connect", s);
+            myIntent.putExtras(b);
             startActivity(myIntent);
 
         } else {
