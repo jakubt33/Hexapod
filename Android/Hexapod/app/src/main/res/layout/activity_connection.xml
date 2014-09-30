@@ -33,26 +33,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="fg"
         android:id="@+id/ReceivedData"
-        android:layout_above="@+id/bMsg"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send data"
-        android:id="@+id/bMsg"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:onClick="onSentDataClicked" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Other data"
-        android:id="@+id/bOtherMsg"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:onClick="onSentOtherDataClicked" />
 
 
 </RelativeLayout>
