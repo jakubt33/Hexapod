@@ -15,11 +15,14 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -29,17 +32,27 @@ public class SteeringActivity extends Activity {
     ConnectedThread connectedThread;
     ConnectThread connect;
     BluetoothAdapter btAdapter;
+    ArrayList<BluetoothDevice> devices;
+    Set<BluetoothDevice> devicesArray;
+    BluetoothDevice selectedDevice;
     TextView state;
 
     RadioButton StartStopButton;
     TextView xPosition;
     TextView yPosition;
     protected static final int MESSAGE_READ = 1;
+    protected static final int SUCCESS_CONNECT = 2;
+
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             // TODO Auto-generated method stub
             super.handleMessage(msg);
             switch (msg.what) {
+                case SUCCESS_CONNECT:
+                    state.setText("connected");
+                    connectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
+                    break;
+
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String string = new String(readBuf);
@@ -52,30 +65,41 @@ public class SteeringActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steering);
-        state = (TextView)findViewById(R.id.textState);
+        init();
+
         String getData = "start";
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
+        devicesArray = btAdapter.getBondedDevices();
+        devices.addAll(devicesArray);
+
         Intent myIntent = getIntent();
         Bundle b = myIntent.getExtras();
-        if(b.containsKey("connect")) {
-            getData = b.getString("connect");
-            state.setText(getData);
+        if(b.containsKey("deviceName") ) {
+            getData = b.getString("deviceName");
+            for (int i=0; i<devices.size(); i++) {
+                if(devices.get(i).getName().equals(getData)){
+                    selectedDevice = devices.get(i);
+                    state.setText(selectedDevice.getName());
+                    break;
+                }
+            }
+
+            connect = new ConnectThread(selectedDevice);
+            connect.start();
+
         }
-        //connect = (ConnectThread) myIntent.getSerializableExtra("connectThread");
-        //connect.start();
-        //connectedThread = new ConnectedThread(connect.mmSocket);
-
-
-        init();
     }
 
     private void init(){
 
+        devices = new ArrayList<BluetoothDevice>();
         StartStopButton = (RadioButton) findViewById(R.id.radioStartStop);
         xPosition = (TextView)findViewById(R.id.xPosition);
         yPosition = (TextView)findViewById(R.id.yPosition);
+        state = (TextView)findViewById(R.id.textState);
     }
+
 
     public void onSentDataClicked(View V) {
         String s = "cdcd";
@@ -172,7 +196,7 @@ public class SteeringActivity extends Activity {
         }
     }
 
-    private class ConnectThread extends Thread implements Serializable {
+    private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
 
@@ -208,7 +232,7 @@ public class SteeringActivity extends Activity {
                 return;
             }
 
-            state.setText("connected");
+            mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
         }
 
         /**
@@ -221,4 +245,5 @@ public class SteeringActivity extends Activity {
             }
         }
     }
+
 }

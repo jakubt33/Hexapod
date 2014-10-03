@@ -41,8 +41,6 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
     ArrayList<BluetoothDevice> devices;
     Set<BluetoothDevice> devicesArray;
     ArrayList<String> pairedDevices;
-    public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -97,10 +95,6 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
                     Toast.makeText(getApplicationContext(), "Discovery started", Toast.LENGTH_SHORT).show();
                 } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                     Toast.makeText(getApplicationContext(), "Discovery finished", Toast.LENGTH_SHORT).show();
-                } else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
-                    if (btAdapter.getState() == btAdapter.STATE_OFF) {
-                        turnOnBT();
-                    }
                 }
             }
         };
@@ -159,69 +153,15 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
         }
         if (devicesInfo.getItem(arg2).contains("Paired")) {
 
-            BluetoothDevice selectedDevice = devices.get(arg2);
-            ConnectThread connect = new ConnectThread(selectedDevice);
-            //connect.start();
-
             Intent myIntent = new Intent(ConnectionActivity.this, SteeringActivity.class);
             Bundle b = new Bundle();
-            String s = "go";
-            b.putString("connect", s);
+            String s = devices.get(arg2).getName();
+            b.putString("deviceName", s);
             myIntent.putExtras(b);
             startActivity(myIntent);
 
         } else {
             Toast.makeText(getApplicationContext(), "device is not paired", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    private class ConnectThread extends Thread implements Serializable {
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-
-        public ConnectThread(BluetoothDevice device) {
-            // Use a temporary object that is later assigned to mmSocket,
-            // because mmSocket is final
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            // Get a BluetoothSocket to connect with the given BluetoothDevice
-            try {
-                // MY_UUID is the app's UUID string, also used by the server code
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {
-            }
-            mmSocket = tmp;
-        }
-
-        public void run() {
-            // Cancel discovery because it will slow down the connection
-            btAdapter.cancelDiscovery();
-
-            try {
-                // Connect the device through the socket. This will block
-                // until it succeeds or throws an exception
-                mmSocket.connect();
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and get out
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {
-                }
-                return;
-            }
-            receivedData.setText("connected");
-        }
-
-        /**
-         * Will cancel an in-progress connection, and close the socket
-         */
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-            }
         }
     }
 }
