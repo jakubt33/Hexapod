@@ -145,7 +145,9 @@ public class SteeringActivity extends Activity {
 
             public void onFinish() {
                 y++;
-                messageReceived.setText(Integer.toString(y));
+                connectedThread.write(Integer.toString(y).getBytes());
+                connectedThread.run();
+                //messageReceived.setText(Integer.toString(y));
                 start();
             }
         };
