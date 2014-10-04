@@ -31,7 +31,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="connected to:"
         android:id="@+id/textState"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -48,6 +49,7 @@
         android:text="no msg"
         android:id="@+id/textReceived"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textState" />
 
     <ToggleButton
