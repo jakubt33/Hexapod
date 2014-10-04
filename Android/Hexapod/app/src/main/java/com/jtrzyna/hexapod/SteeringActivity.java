@@ -12,21 +12,27 @@ import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
 
 public class SteeringActivity extends Activity {
+
+    private Thread messageHandler;
 
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     ConnectedThread connectedThread;
@@ -35,11 +41,15 @@ public class SteeringActivity extends Activity {
     ArrayList<BluetoothDevice> devices;
     Set<BluetoothDevice> devicesArray;
     BluetoothDevice selectedDevice;
-    TextView state;
 
-    RadioButton StartStopButton;
+    String state;
+    ToggleButton power;
     TextView xPosition;
     TextView yPosition;
+    EditText messageToSend;
+    TextView btTargetName;
+    TextView messageReceived;
+
     protected static final int MESSAGE_READ = 1;
     protected static final int SUCCESS_CONNECT = 2;
 
@@ -49,14 +59,15 @@ public class SteeringActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case SUCCESS_CONNECT:
-                    state.setText("connected");
                     connectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
+                    messageReceived.setText("waiting for instructions");
+                    mainLoop();
                     break;
 
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String string = new String(readBuf);
-                    state.setText(string);
+                    messageReceived.setText(string);
                     break;
             }
         }
@@ -65,6 +76,7 @@ public class SteeringActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steering);
+
         init();
 
         String getData = "start";
@@ -77,49 +89,70 @@ public class SteeringActivity extends Activity {
         Bundle b = myIntent.getExtras();
         if(b.containsKey("deviceName") ) {
             getData = b.getString("deviceName");
+            int foundFlag = 0;
             for (int i=0; i<devices.size(); i++) {
                 if(devices.get(i).getName().equals(getData)){
                     selectedDevice = devices.get(i);
-                    state.setText(selectedDevice.getName());
+                    btTargetName.setText("connected to: " + selectedDevice.getName());
+                    foundFlag = 1;
+
                     break;
                 }
             }
-
-            connect = new ConnectThread(selectedDevice);
-            connect.start();
+            if(foundFlag == 1) {
+                connect = new ConnectThread(selectedDevice);
+                connect.start();
+            }
+            else {
+                finish();
+            }
 
         }
     }
 
     private void init(){
 
+
         devices = new ArrayList<BluetoothDevice>();
-        StartStopButton = (RadioButton) findViewById(R.id.radioStartStop);
+        messageToSend = (EditText) findViewById(R.id.editText);
+        messageToSend.setText("abcd");
         xPosition = (TextView)findViewById(R.id.xPosition);
         yPosition = (TextView)findViewById(R.id.yPosition);
-        state = (TextView)findViewById(R.id.textState);
+        btTargetName = (TextView)findViewById(R.id.textState);
+        messageReceived = (TextView)findViewById(R.id.textReceived);
+        power = (ToggleButton)findViewById(R.id.bPower);
+
+        messageHandler = new Thread(){
+            public void run(){
+                try{
+                    sleep(10);
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }finally{
+                    messageReceived.setText("handler");
+                    //connectedThread.write(messageReceived.toString().getBytes());
+                    //connectedThread.run();
+                }
+            }
+        };
     }
 
+    public void onPowerClicked(View V){
 
-    public void onSentDataClicked(View V) {
-        String s = "cdcd";
-        connectedThread.write(s.getBytes());
-        connectedThread.run();
     }
-
-    public void onSentOtherDataClicked(View V) {
-        String s = "abab";
-        connectedThread.write(s.getBytes());
-        connectedThread.run();
-    }
-
-    public void onStartStopChecked(View V){
-        if(StartStopButton.isChecked()){
-
+    private void mainLoop() {
+        boolean x = true;
+        int y = 0;
+        while (x) {
+            y++;
+            if(y>100){
+                x = false;
+            }
+            //state.setText(Integer.toString(i));
+            //messageHandler.start();
+            //i++;
         }
-        else{
-
-        }
+        messageReceived.setText("loop done");
     }
 
     @Override
@@ -228,6 +261,7 @@ public class SteeringActivity extends Activity {
                 try {
                     mmSocket.close();
                 } catch (IOException closeException) {
+                    closeException.printStackTrace();
                 }
                 return;
             }

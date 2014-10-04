@@ -15,8 +15,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="x:"
         android:id="@+id/xPosition"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,44 +23,44 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="y:"
         android:id="@+id/yPosition"
-        android:layout_below="@+id/xPosition"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/xPosition" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="state"
+        android:text="connected to:"
         android:id="@+id/textState"
-        android:layout_below="@+id/yPosition"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true" />
 
-    <RadioButton
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start/Stop"
-        android:id="@+id/radioStartStop"
-        android:layout_above="@+id/bMsg"
-        android:layout_centerHorizontal="true"
-        android:checked="false"
-        android:clickable="true"
-        android:onClick="onStartStopChecked" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send data"
-        android:id="@+id/bMsg"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/editText"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:onClick="onSentDataClicked" />
+        android:layout_alignParentStart="true" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Other data"
-        android:id="@+id/bOtherMsg"
-        android:layout_alignParentBottom="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="no msg"
+        android:id="@+id/textReceived"
         android:layout_alignParentRight="true"
-        android:onClick="onSentOtherDataClicked" />
+        android:layout_below="@+id/textState" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="Power"
+        android:textOn="Power"
+        android:id="@+id/bPower"
+        android:onClick="onPowerClicked"
+        android:layout_below="@+id/textReceived"
+        android:layout_alignRight="@+id/textReceived"
+        android:layout_alignEnd="@+id/textReceived"
+        android:layout_marginTop="25dp" />
+
+
 </RelativeLayout>
