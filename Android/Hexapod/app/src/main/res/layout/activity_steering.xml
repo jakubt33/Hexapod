@@ -53,7 +53,7 @@
         android:layout_below="@+id/textState" />
 
     <ToggleButton
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:textOff="Power"
         android:textOn="Power"
@@ -64,6 +64,28 @@
         android:layout_alignEnd="@+id/textReceived"
         android:layout_marginTop="25dp" />
 
+    <ToggleButton
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textOff="Single Leg"
+        android:textOn="Single Leg"
+        android:id="@+id/bSingleLeg"
+        android:onClick="onSingleLegClicked"
+        android:layout_below="@+id/textReceived"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+    <ToggleButton
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textOff="Base Position"
+        android:textOn="Base Position"
+        android:id="@+id/bBasePosition"
+        android:onClick="onBasePositionClicked"
+        android:layout_below="@+id/textReceived"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="25dp" />
+
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
@@ -71,6 +93,23 @@
         android:id="@+id/progressBar"
         android:layout_below="@+id/textReceived"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/steering_wheel"
+        android:layout_below="@id/bPower"
+        android:layout_above="@+id/batteryBar"
+        android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:id="@+id/batteryBar"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

@@ -44,6 +44,8 @@ public class SteeringActivity extends Activity {
 
     int y= 0;
     ToggleButton power;
+    ToggleButton singleLegMode;
+    ToggleButton basePosition;
     TextView xPosition;
     TextView yPosition;
     EditText messageToSend;
@@ -124,6 +126,8 @@ public class SteeringActivity extends Activity {
         btTargetName = (TextView)findViewById(R.id.textState);
         messageReceived = (TextView)findViewById(R.id.textReceived);
         power = (ToggleButton)findViewById(R.id.bPower);
+        singleLegMode = (ToggleButton)findViewById(R.id.bSingleLeg);
+        basePosition = (ToggleButton)findViewById(R.id.bBasePosition);
 
 
         waitForConnection = new CountDownTimer(3000, 30) {
@@ -147,7 +151,6 @@ public class SteeringActivity extends Activity {
                 y++;
                 connectedThread.write(Integer.toString(y).getBytes());
                 connectedThread.run();
-                //messageReceived.setText(Integer.toString(y));
                 start();
             }
         };
@@ -155,6 +158,16 @@ public class SteeringActivity extends Activity {
 
     private void mainLoop(){
         waitForConnection.start();
+    }
+
+    public void onBasePositionClicked(View v){
+
+    }
+    public void onPowerClicked(View v){
+
+    }
+    public void onSingleLegClicked(View v){
+
     }
 
     @Override
