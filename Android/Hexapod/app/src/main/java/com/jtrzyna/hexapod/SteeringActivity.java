@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ public class SteeringActivity extends Activity {
     EditText messageToSend;
     TextView btTargetName;
     TextView messageReceived;
+    ProgressBar progressBar;
 
     CountDownTimer messageHandler;
     CountDownTimer waitForConnection;
@@ -113,6 +115,7 @@ public class SteeringActivity extends Activity {
 
     private void init(){
 
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         devices = new ArrayList<BluetoothDevice>();
         messageToSend = (EditText) findViewById(R.id.editText);
         messageToSend.setText("abcd");
@@ -122,12 +125,15 @@ public class SteeringActivity extends Activity {
         messageReceived = (TextView)findViewById(R.id.textReceived);
         power = (ToggleButton)findViewById(R.id.bPower);
 
+
         waitForConnection = new CountDownTimer(3000, 30) {
             public void onTick(long millisUntilFinished) {
-                messageReceived.setText("remaining: " + millisUntilFinished / 30);
+                progressBar.setProgress(100-(int)millisUntilFinished/30);
             }
 
             public void onFinish() {
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), "Connection ready!", Toast.LENGTH_SHORT).show();
                 messageHandler.start();
             }
         };
