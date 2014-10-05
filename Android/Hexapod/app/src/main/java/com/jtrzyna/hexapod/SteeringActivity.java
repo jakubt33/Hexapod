@@ -12,9 +12,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -32,7 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 
 
-public class SteeringActivity extends Activity {
+public class SteeringActivity extends Activity implements View.OnTouchListener {
 
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     ConnectedThread connectedThread;
@@ -48,10 +50,10 @@ public class SteeringActivity extends Activity {
     ToggleButton basePosition;
     TextView xPosition;
     TextView yPosition;
-    EditText messageToSend;
     TextView btTargetName;
     TextView messageReceived;
     ProgressBar progressBar;
+    ImageView steeringWheel;
 
     CountDownTimer messageHandler;
     CountDownTimer waitForConnection;
@@ -66,7 +68,7 @@ public class SteeringActivity extends Activity {
             switch (msg.what) {
                 case SUCCESS_CONNECT:
                     connectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
-                    mainLoop();
+                    mainLoop();//works,
                     break;
 
                 case MESSAGE_READ:
@@ -105,8 +107,8 @@ public class SteeringActivity extends Activity {
                 }
             }
             if(foundFlag == 1) {
-                connect = new ConnectThread(selectedDevice);
-                connect.start();
+                //connect = new ConnectThread(selectedDevice);
+                //connect.start();
             }
             else {
                 finish();
@@ -119,8 +121,6 @@ public class SteeringActivity extends Activity {
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         devices = new ArrayList<BluetoothDevice>();
-        messageToSend = (EditText) findViewById(R.id.editText);
-        messageToSend.setText("abcd");
         xPosition = (TextView)findViewById(R.id.xPosition);
         yPosition = (TextView)findViewById(R.id.yPosition);
         btTargetName = (TextView)findViewById(R.id.textState);
@@ -128,6 +128,8 @@ public class SteeringActivity extends Activity {
         power = (ToggleButton)findViewById(R.id.bPower);
         singleLegMode = (ToggleButton)findViewById(R.id.bSingleLeg);
         basePosition = (ToggleButton)findViewById(R.id.bBasePosition);
+        steeringWheel = (ImageView)findViewById(R.id.imageView);
+        steeringWheel.setOnTouchListener(this);
 
 
         waitForConnection = new CountDownTimer(3000, 30) {
@@ -144,7 +146,6 @@ public class SteeringActivity extends Activity {
 
         messageHandler = new CountDownTimer(1000, 10) {
             public void onTick(long millisUntilFinished) {
-                btTargetName.setText("remaining: " + millisUntilFinished/10);
             }
 
             public void onFinish() {
@@ -187,6 +188,30 @@ public class SteeringActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    boolean moving = false;
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                messageReceived.setText("touched");
+                moving = true;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if(moving) {
+                    xPosition.setText(Float.toString(view.getX()));
+                    yPosition.setText(Float.toString(view.getY()));
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                messageReceived.setText("untouched");
+                moving = false;
+                break;
+        }
+
+        return true;
     }
 
     private class ConnectedThread extends Thread {
