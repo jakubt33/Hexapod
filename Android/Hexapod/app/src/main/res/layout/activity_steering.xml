@@ -95,8 +95,7 @@
         android:layout_below="@id/bPower"
         android:layout_above="@+id/batteryBar"
         android:layout_centerHorizontal="true"
-
-        android:adjustViewBounds="false" />
+        android:contentDescription="steeringWheel" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"

@@ -201,8 +201,10 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if(moving) {
-                    xPosition.setText(Float.toString(view.getX()));
-                    yPosition.setText(Float.toString(view.getY()));
+                    int[] img_coordinates = new int[2];
+                    steeringWheel.getLocationOnScreen(img_coordinates);
+                    xPosition.setText(Float.toString( motionEvent.getRawX() - (steeringWheel.getX()+steeringWheel.getWidth()/2) ));
+                    yPosition.setText(Float.toString( img_coordinates[1] + steeringWheel.getHeight()/2 - motionEvent.getRawY()  ) );
                 }
                 break;
             case MotionEvent.ACTION_UP:
