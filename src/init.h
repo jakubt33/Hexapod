@@ -73,9 +73,8 @@ void init_TIM2()
 	TIM_InitStruct.TIM_ClockDivision = TIM_CKD_DIV1; // dzielnik 1
 	TIM_InitStruct.TIM_CounterMode = TIM_CounterMode_Up; // licznik w górê
 	TIM_InitStruct.TIM_Period = 10; // okres licznika 10 us, 2stopnie serwo
-	TIM_InitStruct.TIM_Prescaler = 55; // preskaler 56
+	TIM_InitStruct.TIM_Prescaler = 56; // preskaler 56  = 46Hz
 	TIM_TimeBaseInit(TIM2, &TIM_InitStruct); // inicjalizuje TIM2
-	//wywo³anie przerwania z f=50hz, regulacja 1stoppien
 
 	TIM_ClearFlag( TIM2, TIM_FLAG_Update ); // czyœci flagê aktualizacji TIM2
 	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); // w³¹cza przerwanie aktualizacji TIM2
@@ -166,7 +165,7 @@ void init_Servo()
 
 void init_ADC()
 {
-	set_SupplyVoltage(9.5);
+	set_SupplyVoltage(7.4);
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	GPIO_InitTypeDef GPIO_InitStructure;

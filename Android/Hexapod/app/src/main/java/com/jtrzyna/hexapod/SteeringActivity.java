@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.gesture.GesturePoint;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
@@ -44,7 +46,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     Set<BluetoothDevice> devicesArray;
     BluetoothDevice selectedDevice;
 
-    int y= 0;
     ToggleButton power;
     ToggleButton singleLegMode;
     ToggleButton basePosition;
@@ -54,6 +55,13 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     TextView messageReceived;
     ProgressBar progressBar;
     ImageView steeringWheel;
+
+    boolean startGatheringData = false;
+    int tempCommand[] = new int[2];
+    byte[] command = new byte[2];
+    int Curve, Direction;
+    //Curve - left, right, 0-15
+    //Direction, forth, back, 0-15
 
     CountDownTimer messageHandler;
     CountDownTimer waitForConnection;
@@ -74,7 +82,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String string = new String(readBuf);
-                    messageReceived.setText(string);
+                    messageReceived.setText("MR: " + string);
                     break;
             }
         }
@@ -107,8 +115,8 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                 }
             }
             if(foundFlag == 1) {
-                //connect = new ConnectThread(selectedDevice);
-                //connect.start();
+                connect = new ConnectThread(selectedDevice);
+                connect.start();
             }
             else {
                 finish();
@@ -144,14 +152,29 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             }
         };
 
-        messageHandler = new CountDownTimer(1000, 10) {
+        messageHandler = new CountDownTimer(1,1) {
             public void onTick(long millisUntilFinished) {
             }
 
             public void onFinish() {
-                y++;
-                connectedThread.write(Integer.toString(y).getBytes());
-                connectedThread.run();
+                startGatheringData = false;
+
+                if(power.isChecked()){
+                    tempCommand[1] += 1;
+                }
+                command[0] = (byte) tempCommand[0];
+                command[1] = (byte) tempCommand[1];
+
+                xPosition.setText("x: " +Integer.toString(Curve) + " y: " +Integer.toString(Direction));
+                yPosition.setText("comm: " + command[0] + " " + command[1] );
+
+                connectedThread.write(command);
+                //connectedThread.run();
+
+                tempCommand[0] = 0;
+                tempCommand[1] = 0;
+                startGatheringData = true;
+
                 start();
             }
         };
@@ -193,22 +216,63 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     boolean moving = false;
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        float maxX, maxY = 0;
+        maxX = steeringWheel.getWidth()/2;
+        maxY = steeringWheel.getHeight()/2;
+
+        int Speed;
+
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                messageReceived.setText("touched");
                 moving = true;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(moving) {
+                if( moving && startGatheringData ) {
                     int[] img_coordinates = new int[2];
                     steeringWheel.getLocationOnScreen(img_coordinates);
-                    xPosition.setText(Float.toString( motionEvent.getRawX() - (steeringWheel.getX()+steeringWheel.getWidth()/2) ));
-                    yPosition.setText(Float.toString( img_coordinates[1] + steeringWheel.getHeight()/2 - motionEvent.getRawY()  ) );
+
+                    Curve = (int) ((motionEvent.getRawX() - (img_coordinates[0] + steeringWheel.getWidth() / 2)) / maxX * 21);
+                    Direction = (int) ((img_coordinates[1] + steeringWheel.getHeight() / 2 - motionEvent.getRawY()) / maxY * 21);
+
+                    //dead zone-------------------------
+                    if (Curve > 0) Curve--;
+                    else if (Curve < 0) Curve++;
+                    if (Direction > 0) Direction--;
+                    else if (Direction < 0) Direction++;
+
+                    if (Direction == 16) Direction = 15;
+                    if (Direction == -16) Direction = -15;
+                    if (Curve == 16) Curve = 15;
+                    if (Curve == -16) Curve = -15;
+                    //----------------------------------
+
+
+                    if ((Curve <= 15 && Curve >= -15) && (Direction <= 15 && Direction >= -15)) {
+
+                        //first bit--------------------------
+                        tempCommand[0] = 64; //start message
+
+                        if (Direction > 0) {
+                            tempCommand[0] += 1;
+                        } else if (Direction < 0) {
+                            tempCommand[0] += 2;
+                        }
+                        tempCommand[0] += 4 * ((Curve + 14) / 2);
+                        //-----------------------------------
+                        //second bit-------------------------
+                        tempCommand[1] =  192; //message indicator
+                        tempCommand[1] += Math.sqrt(Curve * Curve + Direction * Direction) * 2; //speed
+                        tempCommand[1] += (Curve % 2) * 32;
+                        //-----------------------------------
+
+                        //free char[]
+                        break;
+                    }
                 }
-                break;
             case MotionEvent.ACTION_UP:
-                messageReceived.setText("untouched");
+                tempCommand[0] = 0;
+                tempCommand[1] = 0;
                 moving = false;
                 break;
         }
@@ -231,7 +295,9 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
@@ -260,14 +326,18 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         public void write(byte[] bytes) {
             try {
                 mmOutStream.write(bytes);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
         }
 
         /* Call this from the main activity to shutdown the connection */
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
         }
     }
 
@@ -286,6 +356,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                 // MY_UUID is the app's UUID string, also used by the server code
                 tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
             } catch (IOException e) {
+                e.printStackTrace();
             }
             mmSocket = tmp;
         }
@@ -317,6 +388,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             try {
                 mmSocket.close();
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
