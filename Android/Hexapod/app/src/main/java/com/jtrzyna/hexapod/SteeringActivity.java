@@ -54,11 +54,14 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     TextView btTargetName;
     TextView messageReceived;
     ProgressBar progressBar;
+    ProgressBar batteryBar;
     ImageView steeringWheel;
 
+    byte[] buffer = new byte[1];
     boolean startGatheringData = false;
     int tempCommand[] = new int[2];
     byte[] command = new byte[2];
+    int[] img_coordinates = new int[2];
     int Curve, Direction;
     //Curve - left, right, 0-15
     //Direction, forth, back, 0-15
@@ -81,8 +84,10 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
-                    String string = new String(readBuf);
-                    messageReceived.setText("MR: " + string);
+
+                    if(readBuf[0] != 0) {
+                        batteryBar.setProgress( (readBuf[0]+128) / 3);
+                    }
                     break;
             }
         }
@@ -128,6 +133,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     private void init(){
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        batteryBar = (ProgressBar)findViewById(R.id.batteryBar);
         devices = new ArrayList<BluetoothDevice>();
         xPosition = (TextView)findViewById(R.id.xPosition);
         yPosition = (TextView)findViewById(R.id.yPosition);
@@ -152,11 +158,8 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             }
         };
 
-        messageHandler = new CountDownTimer(1,1) {
+        messageHandler = new CountDownTimer(1000,10) {
             public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
                 startGatheringData = false;
 
                 if(power.isChecked()){
@@ -165,15 +168,19 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                 command[0] = (byte) tempCommand[0];
                 command[1] = (byte) tempCommand[1];
 
-                xPosition.setText("x: " +Integer.toString(Curve) + " y: " +Integer.toString(Direction));
+                xPosition.setText(Integer.toString((int)millisUntilFinished));
                 yPosition.setText("comm: " + command[0] + " " + command[1] );
 
                 connectedThread.write(command);
                 //connectedThread.run();
 
+
                 tempCommand[0] = 0;
                 tempCommand[1] = 0;
                 startGatheringData = true;
+            }
+
+            public void onFinish() {
 
                 start();
             }
@@ -202,6 +209,11 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     }
 
     @Override
+    protected void onPause(){
+        connectedThread.cancel();
+        connect.cancel();
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -220,8 +232,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         maxX = steeringWheel.getWidth()/2;
         maxY = steeringWheel.getHeight()/2;
 
-        int Speed;
-
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -229,7 +239,9 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if( moving && startGatheringData ) {
-                    int[] img_coordinates = new int[2];
+                    img_coordinates[0] = 0;
+                    img_coordinates[1] = 0;
+
                     steeringWheel.getLocationOnScreen(img_coordinates);
 
                     Curve = (int) ((motionEvent.getRawX() - (img_coordinates[0] + steeringWheel.getWidth() / 2)) / maxX * 21);
@@ -243,12 +255,12 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
                     if (Direction == 16) Direction = 15;
                     if (Direction == -16) Direction = -15;
-                    if (Curve == 16) Curve = 15;
-                    if (Curve == -16) Curve = -15;
+                    if (Curve >= 15) Curve = 14;
+                    if (Curve <= -15) Curve = -14;
                     //----------------------------------
 
 
-                    if ((Curve <= 15 && Curve >= -15) && (Direction <= 15 && Direction >= -15)) {
+                    if ((Curve <= 14 && Curve >= -14) && (Direction <= 15 && Direction >= -15)) {
 
                         //first bit--------------------------
                         tempCommand[0] = 64; //start message
@@ -258,11 +270,13 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                         } else if (Direction < 0) {
                             tempCommand[0] += 2;
                         }
-                        tempCommand[0] += 4 * ((Curve + 14) / 2);
+                        tempCommand[0] += 4 * (int)((Curve + 14)/2);
                         //-----------------------------------
                         //second bit-------------------------
                         tempCommand[1] =  192; //message indicator
-                        tempCommand[1] += Math.sqrt(Curve * Curve + Direction * Direction) * 2; //speed
+                        int speed = (int) Math.sqrt(Curve * Curve + Direction * Direction);
+                        tempCommand[1] += speed*2; //speed
+                        messageReceived.setText("speed" + Integer.toString(speed));
                         tempCommand[1] += (Curve % 2) * 32;
                         //-----------------------------------
 
@@ -305,19 +319,19 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
 
         public void run() {
-            byte[] buffer;  // buffer store for the stream
+            //byte buffer[];  // buffer store for the stream
             int bytes; // bytes returned from read()
 
             try {
                 // Read from the InputStream
-                buffer = new byte[1024];
+                buffer[0] = 0;
                 bytes = mmInStream.read(buffer);
                 // Send the obtained bytes to the UI activity
                 mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
                         .sendToTarget();
 
             } catch (IOException e) {
-                //break;
+                e.printStackTrace();
             }
 
         }
