@@ -10,7 +10,7 @@
 
 volatile int ConnectionEstablished = FALSE;
 volatile u8 BatteryDischarged = FALSE;
-volatile u8 PowerON = TRUE; //zmienic na false
+volatile u8 PowerON = FALSE;
 
 void delay_ms(int LocalCounter);
 void delay_us(int LocalCounter);

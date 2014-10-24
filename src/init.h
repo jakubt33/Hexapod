@@ -89,32 +89,43 @@ void init_TIM2()
 
 void init_Clock()
 {
-	FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
-	// zwloka dla pamieci Flash
-	FLASH_SetLatency(FLASH_Latency_2);
+	ErrorStatus HSEStartUpStatus;
+	// Reset ustawien RCC
+	RCC_DeInit();
+	// Wlacz HSE
+	RCC_HSEConfig(RCC_HSE_ON);
+	// Czekaj za HSE bedzie gotowy
+	HSEStartUpStatus = RCC_WaitForHSEStartUp();
 
-	// HCLK = SYSCLK
-	RCC_HCLKConfig(RCC_SYSCLK_Div1);
+	if(HSEStartUpStatus == SUCCESS)
+	{
+		FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
+	 	// zwloka dla pamieci Flash
+		FLASH_SetLatency(FLASH_Latency_2);
 
-	// PCLK2 = HCLK
-	RCC_PCLK2Config(RCC_HCLK_Div1);
+		// HCLK = SYSCLK
+		RCC_HCLKConfig(RCC_SYSCLK_Div1);
 
-	// PCLK1 = HCLK/2
-	RCC_PCLK1Config(RCC_HCLK_Div2);
+		  // PCLK2 = HCLK
+		  RCC_PCLK2Config(RCC_HCLK_Div1);
 
-	// PLLCLK = 4Hz * 14 = 56 MHz
-	RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_14);
+		  // PCLK1 = HCLK/2
+		  RCC_PCLK1Config(RCC_HCLK_Div2);
 
-	// Wlacz PLL
-	RCC_PLLCmd(ENABLE);
-	// Czekaj az PLL poprawnie sie uruchomi
-	while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
-	// PLL bedzie zrodlem sygnalu zegarowego
+		  // PLLCLK = 8Hz *  = 72 MHz
+		  RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_7);
+
+		  // Wlacz PLL
+		  RCC_PLLCmd(ENABLE);
+		  // Czekaj az PLL poprawnie sie uruchomi
+		  while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
+		  // PLL bedzie zrodlem sygnalu zegarowego
 
 
-	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-	// Czekaj az PLL bedzie sygnalem zegarowym systemu
-	while(RCC_GetSYSCLKSource() != 0x08);
+		  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+		  // Czekaj az PLL bedzie sygnalem zegarowym systemu
+		  while(RCC_GetSYSCLKSource() != 0x08);
+	  }
 
 }
 
