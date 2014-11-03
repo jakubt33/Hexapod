@@ -322,17 +322,16 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             //byte buffer[];  // buffer store for the stream
             int bytes; // bytes returned from read()
 
-            try {
+            /*try {
                 // Read from the InputStream
-                buffer[0] = 0;
+                 buffer[0] = 0;
                 bytes = mmInStream.read(buffer);
                 // Send the obtained bytes to the UI activity
-                mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
-                        .sendToTarget();
+                mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
 
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 
@@ -340,6 +339,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         public void write(byte[] bytes) {
             try {
                 mmOutStream.write(bytes);
+                //mmOutStream.flush();
             } catch (IOException e) {
             e.printStackTrace();
             }

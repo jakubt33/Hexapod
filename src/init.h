@@ -131,8 +131,8 @@ void init_Clock()
 
 void set_SupplyVoltage(volatile float MaxVoltage)
 {
-	float ADC_MaxVoltage = MaxVoltage/4.2;
-	float ADC_MinVoltage = 0.71*ADC_MaxVoltage;
+	float ADC_MaxVoltage = MaxVoltage/4.42;
+	float ADC_MinVoltage = 1.81; //maxvoltage 8,4
 
 	float ADC_Diffrence = (ADC_MaxVoltage - ADC_MinVoltage)*0.2;
 	float x4_5 = ADC_MaxVoltage - ADC_Diffrence;
