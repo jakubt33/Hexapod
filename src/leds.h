@@ -110,7 +110,7 @@ void batt_1_5()
 
 void batt_critical()
 {
-	BatteryDischarged = TRUE;
+	BatteryDischarged = FALSE; //for emergency purpose set TRUE
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;

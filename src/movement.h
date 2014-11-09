@@ -167,7 +167,7 @@ void go(int Speed, int Curve, int Direction)
 
 
 	if(Step == 11) {
-		if( legLift(0b101010, 25, Speed) == DONE )
+		if( legLift(0b101010, 45, Speed) == DONE )
 			Step = 12;
 	}
 
@@ -181,13 +181,13 @@ void go(int Speed, int Curve, int Direction)
 	}
 
 	else if(Step == 13) {
-		if( legLift(0b101010, 0, Speed) == DONE )
+		if( legLift(0b101010, 15, Speed) == DONE )
 			Step = 14;
 	}
 
 
 	else if(Step == 14) {
-		if(	legLift(0b010101, 25, Speed) == DONE )
+		if(	legLift(0b010101, 45, Speed) == DONE )
 			Step = 15;
 	}
 
@@ -201,7 +201,7 @@ void go(int Speed, int Curve, int Direction)
 	}
 
 	else if(Step == 16) {
-		if( legLift(0b010101, 0, Speed) == DONE )
+		if( legLift(0b010101, 15, Speed) == DONE )
 			Step = 11;
 	}
 }
