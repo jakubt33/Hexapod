@@ -25,31 +25,31 @@
 #define SERWO11 GPIO_Pin_14
 #define SERWO12 GPIO_Pin_15
 
-#define LEG1TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_0)
-#define LEG1LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_1)
-#define LEG2TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_2)
-#define LEG4LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_5)
-#define LEG5LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_6)
-#define LEG5TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_7)
-#define LEG6LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_8)
-#define LEG6TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_9)
-#define LEG2LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_12)
-#define LEG3TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_13)
-#define LEG3LIFT_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_14)
-#define LEG4TURN_OFF GPIO_ResetBits(GPIOB, GPIO_Pin_15)
+#define LEG1TURN_OFF GPIO_ResetBits(GPIOB, SERWO1)
+#define LEG1LIFT_OFF GPIO_ResetBits(GPIOB, SERWO2)
+#define LEG2TURN_OFF GPIO_ResetBits(GPIOB, SERWO3)
+#define LEG4LIFT_OFF GPIO_ResetBits(GPIOB, SERWO4)
+#define LEG5LIFT_OFF GPIO_ResetBits(GPIOB, SERWO5)
+#define LEG5TURN_OFF GPIO_ResetBits(GPIOB, SERWO6)
+#define LEG6LIFT_OFF GPIO_ResetBits(GPIOB, SERWO7)
+#define LEG6TURN_OFF GPIO_ResetBits(GPIOB, SERWO8)
+#define LEG2LIFT_OFF GPIO_ResetBits(GPIOB, SERWO9)
+#define LEG3TURN_OFF GPIO_ResetBits(GPIOB, SERWO10)
+#define LEG3LIFT_OFF GPIO_ResetBits(GPIOB, SERWO11)
+#define LEG4TURN_OFF GPIO_ResetBits(GPIOB, SERWO12)
 
-#define LEG1TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_0)
-#define LEG1LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_1)
-#define LEG2TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_2)
-#define LEG4LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_5)
-#define LEG5LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_6)
-#define LEG5TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_7)
-#define LEG6LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_8)
-#define LEG6TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_9)
-#define LEG2LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_12)
-#define LEG3TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_13)
-#define LEG3LIFT_ON GPIO_SetBits(GPIOB, GPIO_Pin_14)
-#define LEG4TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_15)
+#define LEG1TURN_ON GPIO_SetBits(GPIOB, SERWO1)
+#define LEG1LIFT_ON GPIO_SetBits(GPIOB, SERWO2)
+#define LEG2TURN_ON GPIO_SetBits(GPIOB, SERWO3)
+#define LEG4LIFT_ON GPIO_SetBits(GPIOB, SERWO4)
+#define LEG5LIFT_ON GPIO_SetBits(GPIOB, SERWO5)
+#define LEG5TURN_ON GPIO_SetBits(GPIOB, SERWO6)
+#define LEG6LIFT_ON GPIO_SetBits(GPIOB, SERWO7)
+#define LEG6TURN_ON GPIO_SetBits(GPIOB, SERWO8)
+#define LEG2LIFT_ON GPIO_SetBits(GPIOB, SERWO9)
+#define LEG3TURN_ON GPIO_SetBits(GPIOB, SERWO10)
+#define LEG3LIFT_ON GPIO_SetBits(GPIOB, SERWO11)
+#define LEG4TURN_ON GPIO_SetBits(GPIOB, SERWO12)
 
 
 #define LEG1LIFT_BASE 48 //145   //   !! prievious x*2 !!
@@ -60,10 +60,10 @@
 #define LEG6LIFT_BASE 50 //150
 
 #define LEG1TURN_BASE 50 //150
-#define LEG2TURN_BASE 50 //160
-#define LEG3TURN_BASE 60 //170
-#define LEG4TURN_BASE 44 //150
-#define LEG5TURN_BASE 50 //165
+#define LEG2TURN_BASE 62 //160
+#define LEG3TURN_BASE 58 //170
+#define LEG4TURN_BASE 46 //150
+#define LEG5TURN_BASE 62 //165
 #define LEG6TURN_BASE 50 //165
 
 
@@ -177,10 +177,10 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 
 	//serwo 2 has got electric motor connected inversely!!! thats why "-" has to be before Position 2
 	int Position1 = Position;
-	int Position2 = -Position;
+	int Position2 = Position;
 	int Position3 = Position;
 	int Position4 = -Position;
-	int Position5 = -Position;
+	int Position5 = Position;
 	int Position6 = -Position;
 
 	if( ((Curve<=0) && (Direction == 1)) || ((Curve>=0) && (Direction == 2)) )
@@ -189,10 +189,10 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 				Curve = -Curve;
 
 		Position1 = -Position+Curve;//+Position: Turning
-		Position2 = -Position+Curve;//+
+		Position2 = Position-Curve;//+
 		Position3 = -Position+Curve;//+
 		Position4 = -Position;
-		Position5 = Position;
+		Position5 = -Position;
 		Position6 = -Position;
 
 	}
@@ -202,10 +202,10 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 			Curve = -Curve;
 
 		Position1 = -Position;
-		Position2 = -Position;
+		Position2 = Position;
 		Position3 = -Position;
 		Position4 = -Position+Curve;
-		Position5 = Position-Curve;
+		Position5 = -Position+Curve;
 		Position6 = -Position+Curve;
 
 	}
@@ -331,12 +331,12 @@ u8 legLift(char WhichLeg, int Position, int Speed)
 	}
 	if(Leg2)
 	{
-		if(PositionL+LEG2LIFT_BASE>Leg2Lift)
+		if(PositionR+LEG2LIFT_BASE>Leg2Lift)
 		{
 			Leg2Lift++;
 			Flag = 0;
 		}
-		else if(PositionL+LEG2LIFT_BASE<Leg2Lift)
+		else if(PositionR+LEG2LIFT_BASE<Leg2Lift)
 		{
 			Leg2Lift--;
 			Flag = 0;
@@ -370,12 +370,12 @@ u8 legLift(char WhichLeg, int Position, int Speed)
 	}
 	if(Leg5)
 	{
-		if(PositionR+LEG5LIFT_BASE>Leg5Lift)
+		if(PositionL+LEG5LIFT_BASE>Leg5Lift)
 		{
 			Leg5Lift++;
 			Flag = 0;
 		}
-		else if(PositionR+LEG5LIFT_BASE<Leg5Lift)
+		else if(PositionL+LEG5LIFT_BASE<Leg5Lift)
 		{
 			Leg5Lift--;
 			Flag = 0;
