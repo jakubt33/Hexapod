@@ -9,7 +9,7 @@
 #define SERWO_H_
 
 #define MAX_SPEED 15
-#define TIME_TO_GET_50HZ 2000 //2000
+#define TIME_TO_GET_50HZ 630 //2000
 
 #define PORT_SERWO GPIOB
 #define SERWO1 GPIO_Pin_0
@@ -52,19 +52,19 @@
 #define LEG4TURN_ON GPIO_SetBits(GPIOB, GPIO_Pin_15)
 
 
-#define LEG1LIFT_BASE 145
-#define LEG2LIFT_BASE 150
-#define LEG3LIFT_BASE 150
-#define LEG4LIFT_BASE 140
-#define LEG5LIFT_BASE 140
-#define LEG6LIFT_BASE 150
+#define LEG1LIFT_BASE 48 //145   //   !! prievious x*2 !!
+#define LEG2LIFT_BASE 50 //150
+#define LEG3LIFT_BASE 44 //150
+#define LEG4LIFT_BASE 47 //140
+#define LEG5LIFT_BASE 47 //140
+#define LEG6LIFT_BASE 50 //150
 
-#define LEG1TURN_BASE 150
-#define LEG2TURN_BASE 160
-#define LEG3TURN_BASE 170
-#define LEG4TURN_BASE 150
-#define LEG5TURN_BASE 165
-#define LEG6TURN_BASE 165
+#define LEG1TURN_BASE 50 //150
+#define LEG2TURN_BASE 50 //160
+#define LEG3TURN_BASE 60 //170
+#define LEG4TURN_BASE 44 //150
+#define LEG5TURN_BASE 50 //165
+#define LEG6TURN_BASE 50 //165
 
 
 volatile long int Counter = 0;
@@ -74,12 +74,12 @@ volatile int Step = 0;
 //steering:
 //up: L1,L2,L4 +40, L3,L5,L6 -40
 //down: L1,L2,L4 -90, L3,L5,L6 +90
-volatile  int Leg1Lift = LEG1LIFT_BASE-40;
-volatile  int Leg2Lift = LEG2LIFT_BASE-40;
-volatile  int Leg3Lift = LEG3LIFT_BASE+40;
-volatile  int Leg4Lift = LEG4LIFT_BASE-40;
-volatile  int Leg5Lift = LEG5LIFT_BASE+40;
-volatile  int Leg6Lift = LEG6LIFT_BASE+40;
+volatile  int Leg1Lift = LEG1LIFT_BASE-13; // !!previous: +- 40 !!
+volatile  int Leg2Lift = LEG2LIFT_BASE-13;
+volatile  int Leg3Lift = LEG3LIFT_BASE+13;
+volatile  int Leg4Lift = LEG4LIFT_BASE-13;
+volatile  int Leg5Lift = LEG5LIFT_BASE+13;
+volatile  int Leg6Lift = LEG6LIFT_BASE+13;
 
 volatile  int Leg1Turn = LEG1TURN_BASE;
 volatile  int Leg2Turn = LEG2TURN_BASE;
@@ -165,10 +165,11 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 {
 	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
-	Speed = 2*(MAX_SPEED - Speed);
+	Speed = (MAX_SPEED - Speed);
+	delay_ms(Speed);
 
-	if(Position<-32) Position = -32;
-	else if(Position>32) Position = 32;
+	if(Position<-11) Position = -11;  //32
+	else if(Position>11) Position = 11;
 
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
@@ -210,7 +211,6 @@ u8 legTurn(char WhichLeg, int Position, int Speed, int Curve, u8 Direction)
 	}
 
 
-	delay_ms(Speed);
 
 	u8 Flag = DONE;
 	if(Leg1)
@@ -300,20 +300,20 @@ u8 legLift(char WhichLeg, int Position, int Speed)
 {
 	if(Speed>15) Speed = MAX_SPEED;
 	if(Speed<0) Speed = 0;
-	Speed = 2*(MAX_SPEED - Speed);
+	Speed = (MAX_SPEED - Speed); //try without this multiplication by 2, change maxspeed to 16
+	delay_ms(Speed);
 
 	int Leg1=0,Leg2=0,Leg3=0,Leg4=0,Leg5=0,Leg6=0;
 
 	checkLegs(WhichLeg, &Leg1, &Leg2, &Leg3, &Leg4, &Leg5, &Leg6);
 
-	if(Position<-50) Position = -50;
-	else if(Position>80) Position = 80;
+	if(Position<-17) Position = -17; //50
+	else if(Position>27) Position = 27; //80
 
-	Position -= 40;
+	Position -= 13; //40
 	int PositionL = Position;
 	int PositionR = -PositionL; //mirror view
 
-	delay_ms(Speed);
 
 	u8 Flag = DONE;
 	if(Leg1)

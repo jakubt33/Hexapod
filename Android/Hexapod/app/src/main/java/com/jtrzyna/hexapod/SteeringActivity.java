@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     ProgressBar batteryBar;
     ImageView steeringWheel;
 
-    byte[] buffer = new byte[1];
+    //byte[] buffer = new byte[2];
     boolean startGatheringData = false;
     int tempCommand[] = new int[2];
     byte[] command = new byte[2];
@@ -86,7 +87,8 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                     byte[] readBuf = (byte[]) msg.obj;
 
                     if(readBuf[0] != 0) {
-                        batteryBar.setProgress( (readBuf[0]+128) / 3);
+                        xPosition.setText(readBuf[0]);
+                        //batteryBar.setProgress((readBuf[0] + 128) / 3);
                     }
                     break;
             }
@@ -158,7 +160,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             }
         };
 
-        messageHandler = new CountDownTimer(1000,10) {
+        messageHandler = new CountDownTimer(1000,25) {
             public void onTick(long millisUntilFinished) {
                 startGatheringData = false;
 
@@ -168,12 +170,10 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                 command[0] = (byte) tempCommand[0];
                 command[1] = (byte) tempCommand[1];
 
-                xPosition.setText(Integer.toString((int)millisUntilFinished));
-                yPosition.setText("comm: " + command[0] + " " + command[1] );
+                //xPosition.setText(Integer.toString((int)millisUntilFinished));
+               // yPosition.setText("comm: " + command[0] + " " + command[1] );
 
                 connectedThread.write(command);
-                //connectedThread.run();
-
 
                 tempCommand[0] = 0;
                 tempCommand[1] = 0;
@@ -281,9 +281,9 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                         //-----------------------------------
 
                         //free char[]
-                        break;
                     }
                 }
+                break;
             case MotionEvent.ACTION_UP:
                 tempCommand[0] = 0;
                 tempCommand[1] = 0;
@@ -319,19 +319,19 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
 
         public void run() {
-            //byte buffer[];  // buffer store for the stream
+            byte buffer[] = new byte[1000];  // buffer store for the stream
             int bytes; // bytes returned from read()
 
-            /*try {
+            try {
                 // Read from the InputStream
-                 buffer[0] = 0;
+                //buffer[0] = 0;
                 bytes = mmInStream.read(buffer);
                 // Send the obtained bytes to the UI activity
                 mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
 
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
         }
 

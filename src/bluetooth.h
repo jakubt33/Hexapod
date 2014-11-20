@@ -18,9 +18,9 @@ void connectionEstablishedMessage();
 void connectionNotEstablished();
 
 
-void checkBluetooth()
+void checkBluetooth() //add watchdog
 {
-	if( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET )
+	if( USART_GetFlagStatus(USART3, USART_FLAG_RXNE) != RESET ) //waiting for data
 	{
 		if( (USART_ReceiveData(USART3) >> 6) == 0b00 ) //Manual mode
 		{
@@ -105,7 +105,7 @@ void checkBluetooth()
 				{
 					case 3:
 					{
-						basePosition(Speed);
+						basePosition();
 						break;
 					}
 					default:
@@ -139,17 +139,17 @@ void connectionEstablishedMessage()
 	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);
 
 	LED_LEG1_ON;
-	delay_ms(200);
+	delay_ms(100);
 	LED_LEG2_ON;
-	delay_ms(200);
+	delay_ms(100);
 	LED_LEG3_ON;
-	delay_ms(200);
+	delay_ms(100);
 	LED_LEG4_ON;
-	delay_ms(200);
+	delay_ms(100);
 	LED_LEG5_ON;
-	delay_ms(200);
+	delay_ms(100);
 	LED_LEG6_ON;
-	delay_ms(200);
+	delay_ms(100);
 
 	GPIO_WriteBit(PORT_LED, LED_LEG1 | LED_LEG2 | LED_LEG3 | LED_LEG4 | LED_LEG5 | LED_LEG6, Bit_RESET);
 

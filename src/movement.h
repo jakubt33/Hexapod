@@ -17,9 +17,9 @@ void basePosition()
 	{
 		if( (legLift(Leg, 0, MAX_SPEED) != DONE) || (legTurn(Leg, 0, MAX_SPEED, 0, 1) != DONE) )
 		{
-			while( legLift(Leg, 35, 13) != DONE );
-			while( legTurn(Leg, 0, 13, 0, 1) != DONE );
-			while( legLift(Leg, 0, 13) != DONE );
+			while( legLift(Leg, 13, 11) != DONE ); //(Leg, 38, 11)
+			while( legTurn(Leg, 0, 11, 0, 1) != DONE );
+			while( legLift(Leg, 0, 11) != DONE );
 		}
 	}
 
@@ -33,123 +33,46 @@ void curveAdjust(int *Curve) // 0 to 28
 	switch(*Curve)
 	{
 	case -14: {
-		*Curve = -56;
+		*Curve = -19;//-56;
 		break;
 	}
 	case -13: {
-		*Curve = -28;
+		*Curve = -19;//-28;
 		break;
 	}
 	case -12: {
-		*Curve = -28;
+		*Curve = -10;//-28;
 		break;
 	}
 	case -11: {
-		*Curve = -24;
+		*Curve = -10; //-24;
 		break;
 	}
 	case -10: {
-		*Curve = -20;
-		break;
-	}
-	case -9: {
-		*Curve = -18;
-		break;
-	}
-	case -8: {
-		*Curve = -16;
-		break;
-	}
-	case -7: {
-		*Curve = -14;
-		break;
-	}
-	case -6: {
-		*Curve = -12;
-		break;
-	}
-	case -5: {
-		*Curve = -10;
-		break;
-	}
-	case -4: {
-		*Curve = -8;
-		break;
-	}
-	case -3: {
-		*Curve = -6;
-		break;
-	}
-	case -2: {
-		*Curve = -4;
-		break;
-	}
-	case -1: {
-		*Curve = -2;
-		break;
-	}
-	case 0: {
-		*Curve = 0;
-		break;
-	}
-	case 1: {
-		*Curve = 2;
-		break;
-	}
-	case 2: {
-		*Curve = 4;
-		break;
-	}
-	case 3: {
-		*Curve = 6;
-		break;
-	}
-	case 4: {
-		*Curve = 8;
-		break;
-	}
-	case 5: {
-		*Curve = 10;
-		break;
-	}
-	case 6: {
-		*Curve = 12;
-		break;
-	}
-	case 7: {
-		*Curve = 14;
-		break;
-	}
-	case 8: {
-		*Curve = 16;
-		break;
-	}
-	case 9: {
-		*Curve = 18;
+		*Curve = -9; //-24;
 		break;
 	}
 	case 10: {
-		*Curve = 20;
+		*Curve = 9; //-24;
 		break;
 	}
 	case 11: {
-		*Curve = 24;
+		*Curve = 10;//24;
 		break;
 	}
 	case 12: {
-		*Curve = 28;
+		*Curve = 10;//28;
 		break;
 	}
 	case 13: {
-		*Curve = 28;
+		*Curve = 19;//28;
 		break;
 	}
 	case 14: {
-		*Curve = 56;
+		*Curve = 19;//56;
 		break;
 	}
 	default: {
-		*Curve = 0;
 		break;
 	}
 	}
@@ -167,41 +90,41 @@ void go(int Speed, int Curve, int Direction)
 
 
 	if(Step == 11) {
-		if( legLift(0b101010, 45, Speed) == DONE )
+		if( legLift(0b101010, 12, Speed) == DONE ) //45
 			Step = 12;
 	}
 
 	else if((Step == 12) && (Direction == 1) ) {
-		if( legTurn(0b111111, -28, Speed, Curve, Direction) == DONE )
+		if( legTurn(0b111111, -8, Speed, Curve, Direction) == DONE ) //-28
 			Step = 13;
 	}
 	else if((Step == 12) && (Direction == 2) ) {
-		if( legTurn(0b111111, 28, Speed, Curve, Direction) == DONE )
+		if( legTurn(0b111111, 9, Speed, Curve, Direction) == DONE ) //28
 			Step = 13;
 	}
 
 	else if(Step == 13) {
-		if( legLift(0b101010, 15, Speed) == DONE )
+		if( legLift(0b101010, 3, Speed) == DONE ) //15
 			Step = 14;
 	}
 
 
 	else if(Step == 14) {
-		if(	legLift(0b010101, 45, Speed) == DONE )
+		if(	legLift(0b010101, 12, Speed) == DONE ) //45
 			Step = 15;
 	}
 
-	else if( (Step == 15) && (Direction == 1) ) {
-		if(	legTurn(0b111111, 28, Speed, Curve, Direction) == DONE )
+	else if( (Step == 15) && (Direction == 1) ) { //45
+		if(	legTurn(0b111111, 9, Speed, Curve, Direction) == DONE ) //28
 			Step = 16;
 	}
-	else if( (Step == 15) && (Direction == 2) ) {
-		if(	legTurn(0b111111, -28, Speed, Curve, Direction) == DONE )
+	else if( (Step == 15) && (Direction == 2) ) { //45
+		if(	legTurn(0b111111, -8, Speed, Curve, Direction) == DONE ) //28
 			Step = 16;
 	}
 
 	else if(Step == 16) {
-		if( legLift(0b010101, 15, Speed) == DONE )
+		if( legLift(0b010101, 3, Speed) == DONE ) //15
 			Step = 11;
 	}
 }
