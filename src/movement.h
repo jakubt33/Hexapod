@@ -95,7 +95,7 @@ void go(int Speed, int Curve, int Direction)
 	}
 
 	else if((Step == 12) && (Direction == 1) ) {
-		if( legTurn(0b111111, -8, Speed, Curve, Direction) == DONE ) //-28
+		if( legTurn(0b111111, -9, Speed, Curve, Direction) == DONE ) //-28
 			Step = 13;
 	}
 	else if((Step == 12) && (Direction == 2) ) {
@@ -119,7 +119,7 @@ void go(int Speed, int Curve, int Direction)
 			Step = 16;
 	}
 	else if( (Step == 15) && (Direction == 2) ) { //45
-		if(	legTurn(0b111111, -8, Speed, Curve, Direction) == DONE ) //28
+		if(	legTurn(0b111111, -9, Speed, Curve, Direction) == DONE ) //28
 			Step = 16;
 	}
 

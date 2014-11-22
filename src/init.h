@@ -73,7 +73,7 @@ void init_TIM2()
 	TIM_InitStruct.TIM_ClockDivision = TIM_CKD_DIV1; // dzielnik 1
 	TIM_InitStruct.TIM_CounterMode = TIM_CounterMode_Up; // licznik w górê
 	TIM_InitStruct.TIM_Period = 10*3; // okres licznika 10 us, 2stopnie serwo
-	TIM_InitStruct.TIM_Prescaler = 24; // preskaler 56  = 46Hz
+	TIM_InitStruct.TIM_Prescaler = 32; // preskaler 56  = 46Hz
 	TIM_TimeBaseInit(TIM2, &TIM_InitStruct); // inicjalizuje TIM2
 
 	TIM_ClearFlag( TIM2, TIM_FLAG_Update ); // czyœci flagê aktualizacji TIM2
@@ -113,7 +113,7 @@ void init_Clock()
 		  RCC_PCLK1Config(RCC_HCLK_Div2);
 
 		  // PLLCLK = 8Hz *  = 72 MHz
-		  RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_3);
+		  RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_4);
 
 		  // Wlacz PLL
 		  RCC_PLLCmd(ENABLE);
@@ -214,7 +214,7 @@ void init_ADC()
 
 void delay_ms(volatile int LocalCounter)
 {
-	LocalCounter*=5000;
+	LocalCounter*=6000;
 	while(LocalCounter--);
 }
 
