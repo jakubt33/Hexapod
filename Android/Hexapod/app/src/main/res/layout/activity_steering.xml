@@ -13,22 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="x:"
-        android:id="@+id/xPosition"
-        android:layout_alignParentTop="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="y:"
-        android:id="@+id/yPosition"
-        android:layout_below="@+id/xPosition" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="connected to:"
         android:id="@+id/textState"
         android:layout_alignParentRight="true"
@@ -45,7 +29,7 @@
         android:layout_below="@+id/textState" />
 
     <ToggleButton
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textOff="Power"
         android:textOn="Power"
@@ -56,19 +40,9 @@
         android:layout_alignEnd="@+id/textReceived"
         android:layout_marginTop="25dp" />
 
-    <ToggleButton
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:textOff="Single Leg"
-        android:textOn="Single Leg"
-        android:id="@+id/bSingleLeg"
-        android:onClick="onSingleLegClicked"
-        android:layout_below="@+id/textReceived"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
 
     <ToggleButton
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textOff="Base Position"
         android:textOn="Base Position"

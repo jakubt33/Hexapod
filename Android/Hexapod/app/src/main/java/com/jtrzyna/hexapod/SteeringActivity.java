@@ -50,8 +50,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     ToggleButton power;
     ToggleButton singleLegMode;
     ToggleButton basePosition;
-    TextView xPosition;
-    TextView yPosition;
     TextView btTargetName;
     TextView messageReceived;
     ProgressBar progressBar;
@@ -88,7 +86,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                     byte[] readBuf = (byte[]) msg.obj;
 
                     if(readBuf[0] != 0) {
-                        xPosition.setText(readBuf[0]);
                         //batteryBar.setProgress((readBuf[0] + 128) / 3);
                     }
                     break;
@@ -138,8 +135,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         batteryBar = (ProgressBar)findViewById(R.id.batteryBar);
         devices = new ArrayList<BluetoothDevice>();
-        xPosition = (TextView)findViewById(R.id.xPosition);
-        yPosition = (TextView)findViewById(R.id.yPosition);
         btTargetName = (TextView)findViewById(R.id.textState);
         messageReceived = (TextView)findViewById(R.id.textReceived);
         power = (ToggleButton)findViewById(R.id.bPower);

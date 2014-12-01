@@ -21,6 +21,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -34,7 +36,6 @@ import android.widget.Button;
 
 public class ConnectionActivity extends Activity implements OnItemClickListener {
 
-    TextView receivedData;
     ArrayAdapter<String> devicesInfo;
     ListView listView;
     BluetoothAdapter btAdapter;
@@ -45,6 +46,9 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_connection);
         init();
         if (btAdapter == null) {
@@ -60,8 +64,8 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
 
     private void init() {
 
-        receivedData = (TextView) findViewById(R.id.ReceivedData);
         listView = (ListView) findViewById(R.id.listView);
+        listView.setBackgroundColor(64);
         listView.setOnItemClickListener(this);
         devicesInfo = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, 0);
         listView.setAdapter(devicesInfo);
@@ -75,7 +79,6 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
                 // When discovery finds a device
                 if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                     Toast.makeText(getApplicationContext(), "found", Toast.LENGTH_SHORT).show();
-                    receivedData.setText("found...");
                     // Get the BluetoothDevice object from the Intent
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     devices.add(device);

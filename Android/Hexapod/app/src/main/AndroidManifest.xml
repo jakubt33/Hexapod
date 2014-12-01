@@ -8,21 +8,29 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Hexapod"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ConnectionActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:theme="@style/MyListStyle"
+            android:name="com.jtrzyna.hexapod.ConnectionActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="synergia.jakub.trzyna.CONNECTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name="com.jtrzyna.hexapod.SteeringActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".intro"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".SteeringActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_steering" >
         </activity>
     </application>
 
