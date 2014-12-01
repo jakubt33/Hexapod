@@ -26,6 +26,13 @@ void basePosition()
 	Step = 0;
 }
 
+void layDown() //protocol must be changed to handle this function
+{
+	while( legTurn(0b111111, 0, 13, 0, 0) != DONE );
+	while( legLift(0b111111, 20, 13) != DONE );
+
+}
+
 void curveAdjust(int *Curve) // 0 to 28
 {
 	*Curve -= 14;

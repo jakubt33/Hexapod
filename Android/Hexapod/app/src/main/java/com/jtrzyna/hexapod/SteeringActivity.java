@@ -64,6 +64,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     byte[] command = new byte[2];
     int[] img_coordinates = new int[2];
     int Curve, Direction;
+    boolean moving = false;
     //Curve - left, right, 0-15
     //Direction, forth, back, 0-15
 
@@ -101,7 +102,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
         init();
 
-        String getData = "start";
+        String getData;
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
         devicesArray = btAdapter.getBondedDevices();
@@ -148,14 +149,15 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         steeringWheel.setOnTouchListener(this);
 
 
-        waitForConnection = new CountDownTimer(3000, 30) {
+        waitForConnection = new CountDownTimer(2500,25) {
             public void onTick(long millisUntilFinished) {
-                progressBar.setProgress(100-(int)millisUntilFinished/30);
+                progressBar.setProgress(100-(int)millisUntilFinished/25);
             }
 
             public void onFinish() {
                 progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), "Connection ready!", Toast.LENGTH_SHORT).show();
+
                 messageHandler.start();
             }
         };
@@ -164,19 +166,50 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             public void onTick(long millisUntilFinished) {
                 startGatheringData = false;
 
+                tempCommand[0] = 64; //start message
+                tempCommand[1] = 192; //message indicator
+
                 if(power.isChecked()){
                     tempCommand[1] += 1;
                 }
+
+                if(!basePosition.isPressed()) {
+
+                    //dead zone-------------------------
+                    if (Curve > 0) Curve--;
+                    else if (Curve < 0) Curve++;
+                    if (Direction > 0) Direction--;
+                    else if (Direction < 0) Direction++;
+
+                    if (Direction >= 16) Direction = 15;
+                    if (Direction <= -16) Direction = -15;
+                    if (Curve >= 15) Curve = 14;
+                    if (Curve <= -15) Curve = -14;
+                    //----------------------------------
+
+                    if ((Curve <= 14 && Curve >= -14) && (Direction <= 15 && Direction >= -15)) {
+                        if (Direction > 0) {
+                            tempCommand[0] += 1;
+                        } else if (Direction < 0) {
+                            tempCommand[0] += 2;
+                        }
+                        tempCommand[0] += 4 * (int) ((Curve + 14) / 2);
+                        int speed = (int) Math.sqrt(Curve * Curve + Direction * Direction);
+                        tempCommand[1] += speed * 2; //speed
+                        tempCommand[1] += (Curve % 2) * 32;
+                        //-----------------------------------
+                    }
+                    //xPosition.setText(Integer.toString((int)millisUntilFinished));
+                    //yPosition.setText("comm: " + command[0] + " " + command[1] );
+                }
+                else{
+                    tempCommand[0] = 67;
+                }
+
                 command[0] = (byte) tempCommand[0];
                 command[1] = (byte) tempCommand[1];
-
-                //xPosition.setText(Integer.toString((int)millisUntilFinished));
-               // yPosition.setText("comm: " + command[0] + " " + command[1] );
-
                 connectedThread.write(command);
 
-                tempCommand[0] = 0;
-                tempCommand[1] = 0;
                 startGatheringData = true;
             }
 
@@ -225,7 +258,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         return super.onOptionsItemSelected(item);
     }
 
-    boolean moving = false;
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         float maxX, maxY = 0;
@@ -247,46 +279,11 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                     Curve = (int) ((motionEvent.getRawX() - (img_coordinates[0] + steeringWheel.getWidth() / 2)) / maxX * 21);
                     Direction = (int) ((img_coordinates[1] + steeringWheel.getHeight() / 2 - motionEvent.getRawY()) / maxY * 21);
 
-                    //dead zone-------------------------
-                    if (Curve > 0) Curve--;
-                    else if (Curve < 0) Curve++;
-                    if (Direction > 0) Direction--;
-                    else if (Direction < 0) Direction++;
-
-                    if (Direction == 16) Direction = 15;
-                    if (Direction == -16) Direction = -15;
-                    if (Curve >= 15) Curve = 14;
-                    if (Curve <= -15) Curve = -14;
-                    //----------------------------------
-
-
-                    if ((Curve <= 14 && Curve >= -14) && (Direction <= 15 && Direction >= -15)) {
-
-                        //first bit--------------------------
-                        tempCommand[0] = 64; //start message
-
-                        if (Direction > 0) {
-                            tempCommand[0] += 1;
-                        } else if (Direction < 0) {
-                            tempCommand[0] += 2;
-                        }
-                        tempCommand[0] += 4 * (int)((Curve + 14)/2);
-                        //-----------------------------------
-                        //second bit-------------------------
-                        tempCommand[1] =  192; //message indicator
-                        int speed = (int) Math.sqrt(Curve * Curve + Direction * Direction);
-                        tempCommand[1] += speed*2; //speed
-                        messageReceived.setText("speed" + Integer.toString(speed));
-                        tempCommand[1] += (Curve % 2) * 32;
-                        //-----------------------------------
-
-                        //free char[]
-                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                tempCommand[0] = 0;
-                tempCommand[1] = 0;
+                Curve = 0;
+                Direction = 0;
                 moving = false;
                 break;
         }
@@ -319,7 +316,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
 
         public void run() {
-            byte buffer[] = new byte[1000];  // buffer store for the stream
+            /*byte buffer[] = new byte[1000];  // buffer store for the stream
             int bytes; // bytes returned from read()
 
             try {
@@ -331,7 +328,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 

@@ -85,6 +85,7 @@ Discarded input sections
  .text          0x00000000        0x0 src\main.o
  .data          0x00000000        0x0 src\main.o
  .bss           0x00000000        0x0 src\main.o
+ .text.layDown  0x00000000       0x24 src\main.o
  .text.delay_us
                 0x00000000       0x12 src\main.o
  .text          0x00000000        0x0 Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_wwdg.o
@@ -2562,6 +2563,7 @@ init_Servo                                        src\main.o
 init_TIM2                                         src\main.o
 initialise_monitor_handles                        d:/program files (x86)/truestudio for arm lite 5.0.0/armtools/bin/../lib/gcc/arm-atollic-eabi/4.7.3/../../../../arm-atollic-eabi/lib/armv7-m\libc_s.a(lib_a-syscalls.o)
 iprintf                                           src\tiny_printf.o
+layDown                                           src\main.o
 legLift                                           src\main.o
 legTurn                                           src\main.o
 main                                              src\main.o
