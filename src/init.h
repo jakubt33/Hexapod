@@ -132,7 +132,7 @@ void init_Clock()
 void set_SupplyVoltage(volatile float MaxVoltage)
 {
 	float ADC_MaxVoltage = MaxVoltage/4.42;
-	float ADC_MinVoltage = 1.81; //maxvoltage 8,4
+	float ADC_MinVoltage = 1.54; //maxvoltage 8,4
 
 	float ADC_Diffrence = (ADC_MaxVoltage - ADC_MinVoltage)*0.2;
 	float x4_5 = ADC_MaxVoltage - ADC_Diffrence;
@@ -176,7 +176,7 @@ void init_Servo()
 
 void init_ADC()
 {
-	set_SupplyVoltage(8.4);
+	set_SupplyVoltage(8.3);
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	GPIO_InitTypeDef GPIO_InitStructure;

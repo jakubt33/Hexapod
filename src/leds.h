@@ -51,7 +51,7 @@
 
 void batt_5_5()
 {
-	BatteryDischarged = FALSE;
+	//BatteryDischarged = FALSE;
 
 	LED_BAT_G1_ON;
 	LED_BAT_G2_ON;
@@ -63,7 +63,7 @@ void batt_5_5()
 
 void batt_4_5()
 {
-	BatteryDischarged = FALSE;
+	//BatteryDischarged = FALSE;
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_ON;
@@ -75,7 +75,7 @@ void batt_4_5()
 
 void batt_3_5()
 {
-	BatteryDischarged = FALSE;
+	//BatteryDischarged = FALSE;
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
@@ -87,7 +87,7 @@ void batt_3_5()
 
 void batt_2_5()
 {
-	BatteryDischarged = FALSE;
+	//BatteryDischarged = FALSE;
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
 	LED_BAT_G3_ON;
@@ -98,7 +98,7 @@ void batt_2_5()
 
 void batt_1_5()
 {
-	BatteryDischarged = FALSE;
+	//BatteryDischarged = FALSE;
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
@@ -110,7 +110,7 @@ void batt_1_5()
 
 void batt_critical()
 {
-	BatteryDischarged = FALSE; //for emergency purpose set TRUE
+	BatteryDischarged = TRUE; //for emergency purpose set TRUE
 
 	LED_BAT_G1_OFF;
 	LED_BAT_G2_OFF;
