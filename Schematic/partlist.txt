@@ -1,0 +1,116 @@
+Partlist
+
+Exported from hexapod.brd at 2014-07-22 17:38:38
+
+EAGLE Version 6.4.0 Copyright (c) 1988-2013 CadSoft
+
+Assembly variant: 
+
+Part     Value          Package       Library             Position (inch)       Orientation
+
+BATTERY                 1X02          pinhead             (5.87 1.42)           R90
+C1       100n           C0805K        rcl                 (2.52 2.8)            R90
+C2       10n            C0805K        rcl                 (2.22 2.53)           R180
+C3       100n           C0805K        rcl                 (3.12 2.89)           R270
+C4       100n           C0805K        rcl                 (2.99 2.28)           R180
+C5       1u             E2,5-5        rcl                 (2.25 2.29)           R270
+C6       4.7uF          E2,5-5        rcl                 (3.42 2.9)            R270
+C7       10p            C0805K        rcl                 (2.48 3.01)           R90
+C8       10p            C0805K        rcl                 (1.98 2.71)           R180
+C9       100n           C0805K        rcl                 (2.2 2.71)            R0
+C10      100n           C0805K        rcl                 (4.05 2.87)           MR90
+C11      47uF           E2,5-5        rcl                 (4.25 2.78)           R270
+C12      47uF           E2,5-5        rcl                 (4.25 2.52)           R270
+C13      100n           C0805K        rcl                 (4 2.54)              MR270
+C14      100n           C0805K        rcl                 (4.16 2.02)           R90
+C15      47uF           E2,5-5        rcl                 (3.47 2.14)           R90
+C16      100n           C0805K        rcl                 (3.64 2.14)           MR90
+DC                      733980-62     con-conrad          (5.79 2.28)           R90
+F3       2A             SH22,5        fuse                (4.57 2.39)           R90
+IC1      STM32F10XCXT6  TQFP48        stm32               (2.75 2.55)           R270
+IC2      LM1117S(3.3)   SOT223        v-reg               (3.92 2.23)           MR0
+IC4      LM1117S(5)     SOT223        v-reg               (3.78 2.7)            MR180
+LED3V    Green          CHIP-LED0805  led                 (3.74 1.43)           R270
+LED5V    Green          CHIP-LED0805  led                 (4.16 1.44)           R270
+LED_BAT1 Green          CHIP-LED0805  led                 (3.71 2.36)           R270
+LED_BAT2 Green          CHIP-LED0805  led                 (3.71 2.51)           R270
+LED_BAT3 Green          CHIP-LED0805  led                 (3.71 2.66)           R270
+LED_BAT4 Yellow         CHIP-LED0805  led                 (3.71 2.81)           R270
+LED_BAT5 Red            CHIP-LED0805  led                 (3.71 2.96)           R270
+LED_CONN blue           CHIP-LED0805  led                 (1.72 1.89)           R90
+LED_LEG1 blue           CHIP-LED0805  led                 (1.22 1.28)           R0
+LED_LEG2 blue           CHIP-LED0805  led                 (1.22 4.07)           R180
+LED_LEG3 blue           CHIP-LED0805  led                 (2.53 1.27)           R0
+LED_LEG4 blue           CHIP-LED0805  led                 (2.63 4.05)           R180
+LED_LEG5 blue           CHIP-LED0805  led                 (4.8 1.24)            R0
+LED_LEG6 blue           CHIP-LED0805  led                 (4.55 4.05)           R180
+POT_ADC  5k             3223G         pot                 (3.79 2.07)           R90
+Q1       24MHz          SM49          crystal             (2.16 2.88)           R0
+Q2       SST5486        SOT23         transistor-fet      (2.48 1.91)           R0
+Q3       SST5486        SOT23         transistor-fet      (2.49 3.27)           R180
+Q4       SST5486        SOT23         transistor-fet      (2.27 3.27)           R180
+Q5       SST5486        SOT23         transistor-fet      (2.91 1.92)           R0
+Q6       SST5486        SOT23         transistor-fet      (3.11 1.92)           R0
+Q7       SST5486        SOT23         transistor-fet      (3.31 1.92)           R0
+Q8       SST5486        SOT23         transistor-fet      (3.32 3.27)           R180
+Q14      SST5486        SOT23         transistor-fet      (2.26 1.91)           R0
+Q15      SST5486        SOT23         transistor-fet      (2.7 1.92)            R0
+Q17      SST5486        SOT23         transistor-fet      (3.12 3.27)           R180
+Q18      SST5486        SOT23         transistor-fet      (2.92 3.27)           R180
+Q19      SST5486        SOT23         transistor-fet      (2.71 3.27)           R180
+R1       1k             M0805         resistor            (2.3 1.71)            R90
+R2       1k             M0805         resistor            (2.52 1.71)           R90
+R3       1k             M0805         resistor            (2.45 3.47)           R270
+R4       1k             M0805         resistor            (2.23 3.47)           R270
+R5       1k             M0805         resistor            (2.74 1.71)           R90
+R6       1k             M0805         resistor            (3.08 3.47)           R270
+R7       1k             M0805         resistor            (2.95 1.71)           R90
+R8       1k             M0805         resistor            (3.15 1.71)           R90
+R9       1k             M0805         resistor            (2.88 3.47)           R270
+R10      1k             M0805         resistor            (2.67 3.47)           R270
+R11      1k             M0805         resistor            (3.35 1.71)           R90
+R12      1k             M0805         resistor            (3.28 3.48)           R270
+R13      470            M0805         resistor            (3.92 2.36)           R0
+R14      470            M0805         resistor            (3.92 2.51)           R0
+R15      470            M0805         resistor            (3.92 2.66)           R0
+R16      470            M0805         resistor            (3.92 2.81)           R0
+R17      470            M0805         resistor            (3.92 2.96)           R0
+R18      470            M0805         resistor            (1.22 1.49)           R90
+R19      470            M0805         resistor            (1.22 3.85)           R270
+R20      470            M0805         resistor            (2.49 1.41)           R180
+R21      470            M0805         resistor            (2.63 3.87)           R270
+R22      470            M0805         resistor            (4.8 1.44)            R90
+R23      470            M0805         resistor            (4.55 3.86)           R90
+R24      3K9            M0805         resistor            (3.92 2.23)           R0
+R25      3k             M0805         resistor            (4.01 2.02)           R270
+R26      10k            M0805         resistor            (4.1 3.55)            MR90
+R27      10k            M0805         resistor            (3.81 3.71)           MR180
+R28      10k            M0805         resistor            (4.2 3.55)            MR90
+R29      10k            M0805         resistor            (3.81 3.19)           MR180
+R30      10k            M0805         resistor            (3.65 3.09)           MR270
+R31      10k            M0805         resistor            (3.81 3.32)           MR180
+R32      10k            M0805         resistor            (3.81 3.58)           MR180
+R33      10k            M0805         resistor            (3.81 3.45)           MR180
+R34      470            M0805         resistor            (1.53 1.89)           R180
+R35      470            M0805         resistor            (3.55 1.43)           R180
+R36      820            M0805         resistor            (3.98 1.44)           R180
+S3.3V    9077-2         9077-2        switch-misc         (3.64 1.68)           R0
+S5       reset          SMS-001       smd-special         (2.01 2.29)           R0
+S5V      9077-2         9077-2        switch-misc         (4.07 1.68)           R0
+SKEYBT   9077-2         9077-2        switch-misc         (1.91 1.45)           R0
+SR1                     MA03-1        con-lstb            (1.5 1.4)             R0
+SR2                     MA03-1        con-lstb            (1.5 1.26)            R0
+SR3                     MA03-1        con-lstb            (2.76 1.4)            R0
+SR4                     MA03-1        con-lstb            (4.81 4.03)           R0
+SR5                     MA03-1        con-lstb            (2.88 3.88)           R180
+SR6                     MA03-1        con-lstb            (2.88 4.03)           R180
+SR7                     MA03-1        con-lstb            (1.5 4.02)            R0
+SR8                     MA03-1        con-lstb            (1.5 3.88)            R0
+SR9                     MA03-1        con-lstb            (2.76 1.26)           R0
+SR10                    MA03-1        con-lstb            (4.53 1.25)           R0
+SR11                    MA03-1        con-lstb            (4.53 1.42)           R0
+SR12                    MA03-1        con-lstb            (4.81 3.88)           R0
+SV13                    ML20          con-harting-ml      (3.75 4.01)           R0
+U$1      DEANS.MALE     DEANSM        bt_electromech      (5.37 1.3)            R270
+U1       HC_06          BLUETOOTH_SMD SerialPortBluetooth (1.23 2.84)           R0
+X1       DC             AK500/2       con-ptr500          (5.85 1.85)           R90
