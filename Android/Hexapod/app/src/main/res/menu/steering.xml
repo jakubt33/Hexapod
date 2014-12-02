@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.jtrzyna.hexapod.SteeringActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+    <item android:id="@+id/about"
+        android:title="created by J.Trzyna"/>
+    <item android:id="@+id/exit"
+        android:title="exit" />
 </menu>

@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#660099"
+    android:background="#502B64"
     tools:context="com.jtrzyna.hexapod.intro">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/logo"
         android:gravity="bottom|start"
         android:layout_centerHorizontal="true"

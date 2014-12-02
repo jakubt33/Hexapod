@@ -69,6 +69,11 @@ public class intro extends Activity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

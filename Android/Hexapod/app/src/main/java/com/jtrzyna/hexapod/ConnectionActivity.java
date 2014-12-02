@@ -138,6 +138,11 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
         startActivityForResult(intent, 1);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

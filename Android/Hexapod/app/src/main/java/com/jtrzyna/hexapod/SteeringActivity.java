@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -95,6 +97,9 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_steering);
 
         init();
@@ -134,6 +139,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         batteryBar = (ProgressBar)findViewById(R.id.batteryBar);
+        batteryBar.setVisibility(View.INVISIBLE);
         devices = new ArrayList<BluetoothDevice>();
         btTargetName = (TextView)findViewById(R.id.textState);
         messageReceived = (TextView)findViewById(R.id.textReceived);
@@ -193,6 +199,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                         tempCommand[1] += speed * 2; //speed
                         tempCommand[1] += (Curve % 2) * 32;
                         //-----------------------------------
+                        messageReceived.setText(Integer.toString(speed));
                     }
                     //xPosition.setText(Integer.toString((int)millisUntilFinished));
                     //yPosition.setText("comm: " + command[0] + " " + command[1] );
@@ -220,6 +227,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     }
 
     public void onBasePositionClicked(View v){
+        basePosition.setChecked(false);
 
     }
     public void onPowerClicked(View v){
@@ -230,6 +238,24 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        messageHandler.cancel();
+        //connect.cancel();
+        /*try{
+            connectedThread.mmOutStream.flush();
+            //connectedThread.mmInStream.close();
+            //connectedThread.mmSocket.close();
+            //connectedThread.cancel();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        //connectedThread.cancel();
+        finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.steering, menu);
@@ -237,18 +263,16 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     }
 
     @Override
-    protected void onPause(){
-        connectedThread.cancel();
-        connect.cancel();
-    }
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.exit:
+                finish();
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
