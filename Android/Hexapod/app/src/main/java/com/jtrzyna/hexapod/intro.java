@@ -3,7 +3,6 @@ package com.jtrzyna.hexapod;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.CountDownTimer;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,11 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class intro extends Activity {
 
@@ -44,7 +39,7 @@ public class intro extends Activity {
         setContentView(R.layout.activity_intro);
         init();
 
-         CountDownTimer timer = new CountDownTimer(5000,1) {
+         CountDownTimer timer = new CountDownTimer(6000,1) {
             public void onTick(long millisUntilFinished) {
                 if(millisUntilFinished==4000){
                     logo.setVisibility(View.VISIBLE);

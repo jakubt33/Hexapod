@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.gesture.GesturePoint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -17,24 +15,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -58,20 +47,17 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     ProgressBar batteryBar;
     ImageView steeringWheel;
 
-    //byte[] buffer = new byte[2];
     boolean startGatheringData = false;
     int tempCommand[] = new int[2];
     byte[] command = new byte[2];
     int[] img_coordinates = new int[2];
     int Curve, Direction;
     boolean moving = false;
-    //Curve - left, right, 0-15
-    //Direction, forth, back, 0-15
 
     CountDownTimer messageHandler;
     CountDownTimer waitForConnection;
 
-    protected static final int MESSAGE_READ = 1;
+    //protected static final int MESSAGE_READ = 1;
     protected static final int SUCCESS_CONNECT = 2;
 
     Handler mHandler = new Handler() {
@@ -81,16 +67,15 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             switch (msg.what) {
                 case SUCCESS_CONNECT:
                     connectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
-                    mainLoop();//works,
+                    mainLoop();
                     break;
 
-                case MESSAGE_READ:
+                /*case MESSAGE_READ: not supported
                     byte[] readBuf = (byte[]) msg.obj;
-
                     if(readBuf[0] != 0) {
                         //batteryBar.setProgress((readBuf[0] + 128) / 3);
                     }
-                    break;
+                    break;*/
             }
         }
     };
@@ -194,7 +179,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                         } else if (Direction < 0) {
                             tempCommand[0] += 2;
                         }
-                        tempCommand[0] += 4 * (int) ((Curve + 14) / 2);
+                        tempCommand[0] += 4 * ((Curve + 14) / 2);
                         int speed = (int) Math.sqrt(Curve * Curve + Direction * Direction);
                         tempCommand[1] += speed * 2; //speed
                         tempCommand[1] += (Curve % 2) * 32;
@@ -230,12 +215,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         basePosition.setChecked(false);
 
     }
-    public void onPowerClicked(View v){
-
-    }
-    public void onSingleLegClicked(View v){
-
-    }
 
     @Override
     protected void onPause() {
@@ -250,7 +229,6 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
         }catch (IOException e) {
             e.printStackTrace();
         }*/
-
         //connectedThread.cancel();
         finish();
     }
@@ -271,6 +249,10 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             case R.id.exit:
                 finish();
                 break;
+            case R.id.about:
+                aboutMe popOut = new aboutMe();
+                popOut.show(getFragmentManager().beginTransaction(), "openIT!");
+                break;
             default:
                 break;
         }
@@ -279,7 +261,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        float maxX, maxY = 0;
+        float maxX, maxY;
         maxX = steeringWheel.getWidth()/2;
         maxY = steeringWheel.getHeight()/2;
 
@@ -312,24 +294,24 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
     private class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
-        private final InputStream mmInStream;
+        //private final InputStream mmInStream; not used in this version
         private final OutputStream mmOutStream;
 
         public ConnectedThread(BluetoothSocket socket) {
             mmSocket = socket;
-            InputStream tmpIn = null;
+            //InputStream tmpIn = null; //not supported
             OutputStream tmpOut = null;
 
             // Get the input and output streams, using temp objects because
             // member streams are final
             try {
-                tmpIn = socket.getInputStream();
+                //tmpIn = socket.getInputStream(); not used in this version
                 tmpOut = socket.getOutputStream();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            mmInStream = tmpIn;
+            //mmInStream = tmpIn; not used in this version
             mmOutStream = tmpOut;
         }
 
