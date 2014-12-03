@@ -30,6 +30,8 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
     Set<BluetoothDevice> devicesArray;
     ArrayList<String> pairedDevices;
 
+    boolean end = false;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +131,9 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
+        if(end){
+            finish();
+        }
     }
 
     @Override
@@ -154,6 +158,7 @@ public class ConnectionActivity extends Activity implements OnItemClickListener 
             String s = devices.get(arg2).getName();
             b.putString("deviceName", s);
             myIntent.putExtras(b);
+            end = true;
             startActivity(myIntent);
 
         } else {

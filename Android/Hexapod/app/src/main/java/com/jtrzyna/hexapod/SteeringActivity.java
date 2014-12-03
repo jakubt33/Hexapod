@@ -53,6 +53,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
     int[] img_coordinates = new int[2];
     int Curve, Direction;
     boolean moving = false;
+    String connectedTo;
 
     CountDownTimer messageHandler;
     CountDownTimer waitForConnection;
@@ -103,7 +104,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
             for (int i=0; i<devices.size(); i++) {
                 if(devices.get(i).getName().equals(getData)){
                     selectedDevice = devices.get(i);
-                    btTargetName.setText("connected to: " + selectedDevice.getName());
+                    connectedTo = selectedDevice.getName();
                     foundFlag = 1;
 
                     break;
@@ -142,6 +143,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
             public void onFinish() {
                 progressBar.setVisibility(View.INVISIBLE);
+                btTargetName.setText("connected to: " + connectedTo);
                 Toast.makeText(getApplicationContext(), "Connection ready!", Toast.LENGTH_SHORT).show();
 
                 messageHandler.start();
@@ -181,6 +183,7 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
                         }
                         tempCommand[0] += 4 * ((Curve + 14) / 2);
                         int speed = (int) Math.sqrt(Curve * Curve + Direction * Direction);
+                        if(speed>15)speed = 15;
                         tempCommand[1] += speed * 2; //speed
                         tempCommand[1] += (Curve % 2) * 32;
                         //-----------------------------------
@@ -213,6 +216,10 @@ public class SteeringActivity extends Activity implements View.OnTouchListener {
 
     public void onBasePositionClicked(View v){
         basePosition.setChecked(false);
+
+    }
+
+    public void onPowerClicked(View v){
 
     }
 
