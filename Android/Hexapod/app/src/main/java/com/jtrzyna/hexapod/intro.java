@@ -14,19 +14,21 @@ import android.widget.ImageView;
 
 public class intro extends Activity {
 
-    ImageView logo;
+    ImageView logo, logoh;
     private AlphaAnimation alphaDown;
     private AlphaAnimation alphaUp;
 
     private void init(){
-        logo = (ImageView)findViewById(R.id.logoPic);
+        logo = (ImageView)findViewById(R.id.logoSynergia);
+        logoh = (ImageView)findViewById(R.id.logoHexapod);
         logo.setVisibility(View.INVISIBLE);
+        logoh.setVisibility(View.INVISIBLE);
 
         alphaDown = new AlphaAnimation(1.0f, 0.0f);
         alphaUp = new AlphaAnimation(0.0f, 1.0f);
 
-        alphaDown.setDuration(1500);
-        alphaUp.setDuration(1500);
+        alphaDown.setDuration(1000);
+        alphaUp.setDuration(1000);
         alphaDown.setFillAfter(true);
         alphaUp.setFillAfter(true);
     }
@@ -39,25 +41,32 @@ public class intro extends Activity {
         setContentView(R.layout.activity_intro);
         init();
 
-         CountDownTimer timer = new CountDownTimer(6000,1) {
+         CountDownTimer timer = new CountDownTimer(8500,1) {
             public void onTick(long millisUntilFinished) {
-                if(millisUntilFinished==4000){
+                if(millisUntilFinished==7500){
                     logo.setVisibility(View.VISIBLE);
                     logo.startAnimation(alphaUp);
                 }
-                else if(millisUntilFinished==2000){
+                else if(millisUntilFinished==5000){
                     logo.startAnimation(alphaDown);
                 }
-                else if(millisUntilFinished<=500){
+                else if(millisUntilFinished<=2000){
                     logo.setVisibility(View.INVISIBLE);
+                }
+                else if (millisUntilFinished == 3000){
+                    logoh.setVisibility(View.VISIBLE);
+                    logoh.startAnimation(alphaUp);
+                }
+                else if (millisUntilFinished <= 200) {
+                    logoh.setVisibility(View.INVISIBLE);
                 }
 
 
             }
 
             public void onFinish() {
-                Intent startProgram = new Intent("synergia.jakub.trzyna.CONNECTION");
-                startActivity(startProgram);
+//                Intent startProgram = new Intent("synergia.jakub.trzyna.CONNECTION");
+//                startActivity(startProgram);
             }
         };
         timer.start();
