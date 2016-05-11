@@ -2,18 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#502B64"
+    android:background="#fcfcfc"
     tools:context="com.jtrzyna.hexapod.intro">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/logo"
+        android:layout_width="300dp"
+        android:layout_height="156dp"
+        android:background="@drawable/logo_synergia"
         android:gravity="bottom|start"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:id="@+id/logoPic"
-        android:contentDescription="logoPic"
+        android:id="@+id/logoSynergia"
+        android:contentDescription="logoSynergia"
+        android:layout_gravity="center"
+         />    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="52dp"
+        android:background="@drawable/logo_hexapod"
+        android:gravity="bottom|start"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/logoHexapod"
+        android:contentDescription="logoHexapod"
         android:layout_gravity="center"
          />
 
