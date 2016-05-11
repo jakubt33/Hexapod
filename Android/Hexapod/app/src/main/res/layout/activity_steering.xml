@@ -1,25 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#502B64"
+    android:background="#533770"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jtrzyna.hexapod.SteeringActivity">
 
 
     <TextView
-        android:textColor="#40e0d0"
+        android:textColor="#cfcfcf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="connected to:"
+        android:text="Connected to:"
         android:id="@+id/textState"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp" />
+        android:layout_below="@+id/batteryBar"
+        android:layout_toLeftOf="@+id/textReceived"
+        android:layout_toStartOf="@+id/textReceived" />
 
     <TextView
-        android:textColor="#40e0d0"
+        android:textColor="#cfcfcf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -38,11 +37,9 @@
         android:textOn="Power"
         android:id="@+id/bPower"
         android:onClick="onPowerClicked"
-        android:layout_below="@+id/textReceived"
+        android:layout_below="@+id/progressBar"
         android:layout_alignRight="@+id/textReceived"
-        android:layout_alignEnd="@+id/textReceived"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="25dp" />
+        android:layout_alignEnd="@+id/textReceived" />
 
 
     <ToggleButton
@@ -53,12 +50,10 @@
         android:textOn="Base Position"
         android:id="@+id/bBasePosition"
         android:onClick="onBasePositionClicked"
-        android:layout_below="@+id/textReceived"
+        android:elegantTextHeight="false"
+        android:layout_below="@+id/progressBar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="10dp"
-        android:elegantTextHeight="false" />
+        android:layout_alignParentStart="true" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -66,7 +61,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:layout_below="@+id/textReceived"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/bBasePosition"
+        android:layout_alignStart="@+id/bBasePosition" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -74,17 +70,9 @@
         android:id="@+id/imageView"
         android:src="@drawable/steering_wheel"
         android:contentDescription="steeringWheel"
-        android:layout_below="@+id/bBasePosition"
-        android:layout_above="@+id/napis_synergia"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/napis_synergia"
-        android:src="@drawable/napis_synergia2"
-        android:layout_alignParentBottom="true" />
+        android:layout_below="@+id/bPower"
+        android:layout_alignLeft="@+id/bBasePosition"
+        android:layout_alignStart="@+id/bBasePosition" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -92,6 +80,9 @@
         android:visibility="invisible"
         android:layout_height="5dp"
         android:id="@+id/batteryBar"
-        android:layout_centerHorizontal="true" />
+        android:foregroundGravity="top"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView" />
 
 </RelativeLayout>

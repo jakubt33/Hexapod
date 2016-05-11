@@ -65,8 +65,8 @@ public class intro extends Activity {
             }
 
             public void onFinish() {
-//                Intent startProgram = new Intent("synergia.jakub.trzyna.CONNECTION");
-//                startActivity(startProgram);
+                Intent startProgram = new Intent("synergia.jakub.trzyna.CONNECTION");
+                startActivity(startProgram);
             }
         };
         timer.start();
