@@ -17,7 +17,7 @@
         android:layout_gravity="center"
          />    <ImageView
         android:layout_width="300dp"
-        android:layout_height="52dp"
+        android:layout_height="365dp"
         android:background="@drawable/logo_hexapod"
         android:gravity="bottom|start"
         android:layout_centerHorizontal="true"
